@@ -17,10 +17,16 @@
     @apply flex-1 p-5
   }
   .listItem {
-    @apply w-[50%] mb-2
+    @apply w-[50%] mb-1
   }
   .contactItem {
     @apply mb-4 flex items-center
+  }
+  .select {
+    @apply p-1 mr-1
+  }
+  .filterColor {
+    @apply w-[20px] h-[20px] rounded-full mx-1 cursor-pointer
   }
 }
 

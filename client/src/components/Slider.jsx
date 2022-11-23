@@ -7,7 +7,7 @@ const Slider = () => {
   const [slideindex, setslideindex] = useState(0);
   const handleClick = (direction) => {
     if(direction === "left") {
-        setslideindex(slideindex > 0 ? slideindex - 1 : sliderItems.length - 2)
+        setslideindex(slideindex > 0 ? slideindex - 1 : 2 )
     } else if(direction === "right") {
         setslideindex(slideindex < 2 ? slideindex + 1 : 0)
     }
