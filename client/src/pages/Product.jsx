@@ -3,10 +3,12 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Nav from "../components/Navbar/Nav";
 import Newsletter from "../components/Newsletter";
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 const Product = () => {
   return (
-    <div className="">
+    <>
       <Announcement />
       <Nav />
       <div className="p-5 flex">
@@ -28,6 +30,8 @@ const Product = () => {
             condimentum ac, volutpat ornare.
           </p>
           <span className="font-thin text-4xl">20€</span>
+
+        {/* Filter Container */}
           <div className="flex justify-between w-[50%] my-3">
             <div className="flex items-center ">
               <span className="text-xl font-extralight">Color</span>
@@ -46,11 +50,21 @@ const Product = () => {
               </select>
             </div>
           </div>
+
+          {/* Add Container */}
+          <div className='flex items-center w-1/2 justify-between'>
+            <div className='flex items-center font-bold'>
+              <button><RemoveOutlinedIcon/></button>
+              <span className='w-[50px] h-[50px] rounded-xl border border-teal-200 flex items-center justify-center text-lg mx-1'>1</span>
+              <button><AddOutlinedIcon/></button>
+            </div>
+            <button  className='p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]'>Add to cart</button>
+          </div>
         </div>
       </div>
       <Newsletter />
       <Footer />
-    </div>
+    </>
   );
 };
 

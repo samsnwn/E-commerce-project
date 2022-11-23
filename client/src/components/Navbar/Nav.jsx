@@ -30,10 +30,10 @@ const Nav = () => {
         </Navbar.Brand>
         <Navbar.Content enableCursorHighlight hideIn="xs" variant="underline">
           <Input
+            type='search'
             aria-label='search input'
             size="sm"
             bordered
-            clearable
             placeholder="Search..."
             contentRight={<SearchSharpIcon />}
           />
