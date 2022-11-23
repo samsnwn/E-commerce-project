@@ -10,6 +10,18 @@
   .productIcon {
     @apply w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center m-2 hover:bg-[#e9f5f5] hover:scale-125 transition-all duration-500 cursor-pointer
   }
+  .socialIcons {
+    @apply w-[40px] h-[40px] rounded-full mr-10
+  }
+  .footerSection {
+    @apply flex-1 p-5
+  }
+  .listItem {
+    @apply w-[50%] mb-2
+  }
+  .contactItem {
+    @apply mb-4 flex items-center
+  }
 }
 
 :root {
