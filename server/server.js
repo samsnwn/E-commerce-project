@@ -1,9 +1,14 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const session = require('express-session');
 const PORT = process.env.PORT || 5000;
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const cors = require('cors');
 const mongoose = require("mongoose");
+const MongoStore = require('connect-mongo');
+
 
 // Route imports
 const userRoutes = require("./routes/userRoutes");
@@ -17,18 +22,22 @@ mongoose.connect(process.env.DB_LINK, (err) => {
 });
 
 // Middleware
+app.use(cors({origin: 'http://localhost:5173', credentials: true}))
 app.use(express.json())
+app.use(express.urlencoded({extended: false}))
+app.use(cookieParser());
 app.use(session({
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    store: MongoStore.create({
+        mongoUrl: process.env.DB_LINK,
+      }),
 }))
-
 
 // Routes
 app.use('/auth', authRoutes)
-
-
+app.use('/user', userRoutes)
 
 
 app.listen(PORT, () => {
