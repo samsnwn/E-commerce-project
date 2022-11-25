@@ -22,13 +22,12 @@ const ProductList = () => {
       [e.target.name]: value,
     });
   };
-  console.log(filters)
 
   return (
     <div className="">
       <Announcement />
       <Nav />
-      <h1 className="m-5">Dresses</h1>
+      <h1 className="m-5">{cat}</h1>
       <div className="flex justify-between ">
         <div className="m-5">
           <span className="text-sm font-bold mr-2">Filter Products:</span>

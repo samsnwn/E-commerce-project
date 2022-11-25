@@ -22,7 +22,6 @@ const Products = ({ cat, filters, sort }) => {
     };
     getProducts();
   }, [cat]);
-  console.log(products)
 
   useEffect(() => {
     cat &&
@@ -34,7 +33,6 @@ const Products = ({ cat, filters, sort }) => {
         )
       );
   }, [cat, filters, products]);
-  console.log(filteredProducts)
 
   useEffect(() => {
     if(sort === 'newest') {
@@ -50,7 +48,9 @@ const Products = ({ cat, filters, sort }) => {
 
   return (
     <div className="flex p-4 flex-wrap justify-between">
-      {filteredProducts.map((product, index) => (
+      {cat ? filteredProducts.map((product, index) => (
+        <Product key={index} product={product} />
+      )): products.slice(0,8).map((product, index) => (
         <Product key={index} product={product} />
       ))}
     </div>

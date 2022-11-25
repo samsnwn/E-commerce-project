@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { CartIcon } from '../Cart/CartIcon'
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -16,7 +17,9 @@ const Product = ({product}) => {
                 <CartIcon/>
             </div>
             <div className="productIcon">
+                <Link to={`/product/${product._id}`}>
                 <SearchSharpIcon/>
+                </Link>
             </div>
             <div className="productIcon">
                 <FavoriteBorderIcon/>
