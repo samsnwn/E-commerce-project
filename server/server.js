@@ -13,6 +13,10 @@ const MongoStore = require('connect-mongo');
 // Route imports
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
+const productRoutes = require("./routes/productRoutes");
+const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+
 
 
 // Connect to database
@@ -38,6 +42,10 @@ app.use(session({
 // Routes
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
+app.use('/products', productRoutes)
+app.use('/cart', cartRoutes)
+app.use('/orders', orderRoutes)
+
 
 
 app.listen(PORT, () => {
