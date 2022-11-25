@@ -12,15 +12,12 @@ exports.registrationController = async (req, res, next) => {
         const salt = await bcrypt.genSalt(12)
         const hash = await bcrypt.hash(newUser.password, salt)
         newUser.password = hash
-        // console.log(newUser)
         
         // save newUser to DB
-        const savedUser = await newUser.save();
-        console.log(savedUser)
-
+        await newUser.save();
 
         // response to frontend
-        res.status(200).json({newUser})
+        res.status(200).json(newUser)
     } catch (err) {
         // error handling
         next(new ExpressError('Failed to register, please try again', 500))

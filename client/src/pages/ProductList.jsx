@@ -4,8 +4,26 @@ import Footer from "../components/Footer";
 import Nav from "../components/Navbar/Nav";
 import Newsletter from "../components/Newsletter";
 import Products from "../components/Products/Products";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const ProductList = () => {
+  const location = useLocation();
+  const cat = location.pathname.split("/")[2];
+
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState('newest');
+
+
+  const handleFilters = (e) => {
+    const value = e.target.value;
+    setFilters({
+      ...filters,
+      [e.target.name]: value,
+    });
+  };
+  console.log(filters)
+
   return (
     <div className="">
       <Announcement />
@@ -14,19 +32,24 @@ const ProductList = () => {
       <div className="flex justify-between ">
         <div className="m-5">
           <span className="text-sm font-bold mr-2">Filter Products:</span>
-          <select name="" id="" className="select">
-            <option disabled selected>
+          <select
+            name="color"
+            id=""
+            className="select"
+            onChange={handleFilters}
+          >
+            <option disabled defaultValue>
               Color
             </option>
-            <option>White</option>
-            <option>Black</option>
-            <option>Red</option>
-            <option>Blue</option>
-            <option>Yellow</option>
-            <option>Green</option>
+            <option value="white">white</option>
+            <option value="black">black</option>
+            <option value="red">red</option>
+            <option value="blue">blue</option>
+            <option value="yellow">yellow</option>
+            <option value="green">green</option>
           </select>
-          <select name="" id="" className="select">
-          <option disabled selected>
+          <select name="size" id="" className="select" onChange={handleFilters}>
+            <option disabled defaultValue>
               Size
             </option>
             <option>XS</option>
@@ -38,14 +61,14 @@ const ProductList = () => {
         </div>
         <div className="m-5">
           <span className="text-sm font-bold mr-2">Sort Products:</span>
-          <select className="select">
-            <option selected>Newest</option>
-            <option>Price (asc)</option>
-            <option>Price (desc)</option>
+          <select className="sort" onChange={(e)=> setSort(e.target.value)}>
+            <option  value="newest" defaultValue>Newest</option>
+            <option value="asc">Price (asc)</option>
+            <option value="desc">Price (desc)</option>
           </select>
         </div>
       </div>
-      <Products />
+      <Products cat={cat} filters={filters} sort={sort}/>
       <Newsletter />
       <Footer />
     </div>

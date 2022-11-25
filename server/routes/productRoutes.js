@@ -15,6 +15,6 @@ router.delete('/delete/:id', auth, verifyAdmin, deleteProductController)
 router.get('/product/:id', getProductController)
 
 // GET ALL PRODUCTS
-router.get('/allProducts', getAllProductsController)
+router.get('/', getAllProductsController)
 
 module.exports = router

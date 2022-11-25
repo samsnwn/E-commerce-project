@@ -8,7 +8,6 @@ const Categories = () => {
         {categories.map((item, index) => (
         <CategoryItem key={index} item={item}/>
         ))}
-
     </div>
   )
 }
