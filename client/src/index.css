@@ -1,49 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
   .boxWidth {
-    @apply w-full xl:max-w-[1280px]
+    @apply w-full xl:max-w-[1280px];
   }
   .productIcon {
-    @apply w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center m-2 hover:bg-[#e9f5f5] hover:scale-125 transition-all duration-500 cursor-pointer
+    @apply w-[40px] h-[40px] rounded-full bg-white flex items-center justify-center m-2 hover:bg-[#e9f5f5] hover:scale-125 transition-all duration-500 cursor-pointer;
   }
   .socialIcons {
-    @apply w-[40px] h-[40px] rounded-full mr-10
+    @apply w-[40px] h-[40px] rounded-full mr-10;
   }
   .footerSection {
-    @apply flex-1 p-5
+    @apply flex-1 p-5;
   }
   .listItem {
-    @apply w-[50%] mb-1
+    @apply w-[50%] mb-1;
   }
   .contactItem {
-    @apply mb-4 flex items-center
+    @apply mb-4 flex items-center;
   }
   .select {
-    @apply p-1 mr-1
+    @apply p-1 mr-1;
   }
   .filterColor {
-    @apply w-[20px] h-[20px] rounded-full mx-1 cursor-pointer
+    @apply w-[20px] h-[20px] rounded-full mx-1 cursor-pointer;
   }
   .input {
-    @apply flex-1 min-w-[40%] mt-3 mr-2 p-2
+    @apply flex-1 min-w-[40%] mt-3 mr-2 p-2;
   }
   .loginLinks {
-    @apply my-1 text-sm underline cursor-pointer
+    @apply my-1 text-sm underline cursor-pointer;
   }
   .summaryItem {
-  @apply my-3 flex justify-between
-}
+    @apply my-3 flex justify-between;
+  }
 }
 
 .bgImage {
   background: linear-gradient(
-    rgba(255, 255, 255, 0.5),
-    rgba(255, 255, 255, 0.5)
-  ), url('https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center;
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url("https://images.pexels.com/photos/6984661/pexels-photo-6984661.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+      center;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -52,9 +54,11 @@
 
 .bgLogin {
   background: linear-gradient(
-    rgba(255, 255, 255, 0.5),
-    rgba(255, 255, 255, 0.5)
-  ), url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940") center;
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),
+    url("https://images.pexels.com/photos/6984650/pexels-photo-6984650.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+      center;
   background-size: cover;
   display: flex;
   align-items: center;
@@ -78,9 +82,9 @@
 }
 
 * {
-  font-family: 'Urbanist', sans-serif;
-  margin:0;
-  padding:0;
+  font-family: "Urbanist", sans-serif;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -94,7 +98,7 @@ a:hover {
 }
 
 body {
-  min-width: 320px;
+  width: 100%;
   min-height: 100vh;
 }
 

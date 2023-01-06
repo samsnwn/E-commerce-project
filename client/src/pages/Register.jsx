@@ -9,17 +9,15 @@ const Register = () => {
       <div className="p-5 w-[40%] bg-white ">
         <h1 className="text-2xl font-light">CREATE AN ACCOUNT</h1>
         <form action="" className="flex flex-col mt-4">
-          <Input bordered clearable underlined label="Name"  className="input"/>
+          <Input clearable underlined label="Name"  className="input"/>
           <Input
             type="email"
-            bordered
             clearable
             underlined
             label="Email" className="input"
           />
-          <Input.Password bordered underlined label="Password"  className="input"/>
+          <Input.Password underlined label="Password"  className="input"/>
           <Input.Password
-            bordered
             underlined
             label="Confirm password" className="input"
           />

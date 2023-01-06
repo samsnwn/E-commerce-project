@@ -32,11 +32,11 @@ app.use(express.urlencoded({extended: false}))
 app.use(cookieParser());
 app.use(session({
     secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-        mongoUrl: process.env.DB_LINK,
-      }),
+    resave: true,
+    saveUninitialized: true,
+    // store: MongoStore.create({
+    //     mongoUrl: process.env.DB_LINK,
+    //   }),
 }))
 
 // Routes
