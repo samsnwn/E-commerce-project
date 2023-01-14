@@ -57,7 +57,7 @@ const Product = () => {
       <div className="p-5 flex">
         <div className="flex-1 ">
           <img
-            src={product.img}
+            src={product.image}
             alt=""
             className="w-full h-[90vh] object-cover"
           />

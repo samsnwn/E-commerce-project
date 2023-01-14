@@ -1,61 +1,58 @@
-const User = require('../models/UserModel')
+const User = require("../models/UserModel");
 const ExpressError = require("../ExpressError");
 const bcrypt = require("bcrypt");
-
+const jwt = require("jsonwebtoken");
 
 // Registration Controller
 exports.registrationController = async (req, res, next) => {
-    const user = req.body
-    try {
-        const newUser = new User(user)
-        // password encryption
-        const salt = await bcrypt.genSalt(12)
-        const hash = await bcrypt.hash(newUser.password, salt)
-        newUser.password = hash
-        
-        console.log(newUser)
-        // save newUser to DB
-        savedUser.save().then(() => {console.log(savedUser)}).catch((err) => {console.log(err)})
-        
-        // assign user to session
-        // req.session.user = await User.findOne({email:savedUser.email}).select('-password')
+  // Create new User instance
+  const newUser = new User({
+    name: req.body.name,
+    password: req.body.password,
+    email: req.body.email,
+  });
 
-        // response to frontend
-        res.status(200).json({user:savedUser, msg: "Account created successfully"}).redirect('/login')
-    } catch (err) {
-        // error handling
-        next(new ExpressError('Failed to register, please try again', 500))
-    }
-}
+  try {
+    // Password hash is done between here by the UserSchema
+    // Save user to DB
+    const savedUser = await User.create(newUser);
+    // Send response to frontend
+    res.status(200).json(savedUser);
+  } catch (err) {
+    // error handling
+    next(new ExpressError("Failed to register, please try again", 500));
+  }
+};
 
 // Login Controller
 exports.loginController = async (req, res, next) => {
-    const {email, password} = req.body
-    try {
-        const user = await User.findOne({email:email})
+  const { email, password } = req.body;
+  try {
+    // checks if email exists in DB
+    const user = await User.findOne({ email });
 
-        // check if passwords match
-        const passwordsMatch = await bcrypt.compare(password, user.password)
-
-        // If they match, assign user to session, set isAuth state and send back user(without password) and state to frontend
-        if(passwordsMatch) {
-            // Get the user ID from database
-            const id = user._id.toString();
-            req.session.isAuth = true
-            req.session.user = await User.findOne({email:email}).select('-password')
-            res.send({user:req.session.user, isAuth: req.session.isAuth})
-
-            // assign req.user 
-            // req.user = {...user._doc, password:null}
-        } else {
-            throw new ExpressError('Email or password not valid', 500)
-        }
-    } catch (err) {
-        next(new ExpressError('Email or password not valid', 500))
+    // If user does not exist or password is incorrect(done in UserSchema)
+    if (!user || !(await user.correctPassword(password, user.password))) {
+      return next(new ExpressError("Email or password not valid", 401));
     }
-}
 
-exports.logoutController = async (req, res, next) => {
-    req.session.destroy()
-    res.json({isAuth:false})
-}
+    // Make password undefined for security purposes
+    user.password = undefined;
+
+    // If everything is ok, send token to client
+    const accessToken = jwt.sign(
+      {
+        id: user._id,
+        isAdmin: user.isAdmin,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
+    );
+
+    res.status(201).json({ status: "success", accessToken, user });
+  } catch (err) {
+    next(new ExpressError("Email or password not valid", 500));
+  }
+};

@@ -38,7 +38,7 @@ const Cart = () => {
                 <div className="productDetail flex flex-[2 2 0%]">
                   <img
                     className="w-[200px]"
-                    src={product.img}
+                    src={product.image}
                     alt=""
                   />
                   <div className="details flex flex-col p-5 justify-around">

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {registrationController, loginController, logoutController} = require('../controllers/authControllers')
+const {registrationController, loginController} = require('../controllers/authControllers')
 const {checkingUser} = require('../middleware/registerValidation')
 
 // REGISTER
@@ -9,7 +9,7 @@ router.post('/register', registrationController)
 router.post('/login', loginController)
 
 // LOGOUT
-router.get('/logout', logoutController)
+
 
 
 

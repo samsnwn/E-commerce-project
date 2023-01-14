@@ -4,24 +4,21 @@ const bcrypt = require("bcrypt");
 
 exports.updateController = async (req, res, next) => {
     const userId = req.params.id
-    const userUpdatedData = req.body;
 
     try {
-        // if all passwords are correct, encrypt newPass and update it in database
-        if(userUpdatedData.password) {
+        // If its the password that will be updated go here
+        if(req.body.password) {
             const salt = await bcrypt.genSalt(12);
             const hash = await bcrypt.hash(userUpdatedData.password, salt);
-            await User.findByIdAndUpdate(userId, {
-                password: hash,
-            });
+            req.body.password = hash;
         }
-        // update email
-        const newUser = await User.findByIdAndUpdate(userId, {
-            email: userUpdatedData.email
-        }, {new:true}).select('-password')
 
-        req.session.user = newUser;
-        res.status(200).json({user: req.session.user, msg: 'Your data has been successfully updated'})
+        // gets everything from req.body and sets it in DB
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            $set: req.body
+        }, {new:true})
+
+        res.status(200).json({updatedUser, msg: 'Your data has been successfully updated'})
 
     } catch (err) {
         next(new ExpressError('Failed to Update, Please Try Again', 400));
@@ -41,7 +38,6 @@ exports.deleteController = async (req, res, next) => {
 exports.getUserController = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id).select('-password')
-
         res.status(200).json({user})
     } catch (err) {
         next(new ExpressError('Cannot find user', 500))

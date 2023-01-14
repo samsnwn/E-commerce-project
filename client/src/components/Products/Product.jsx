@@ -11,7 +11,7 @@ const Product = ({product}) => {
         <div className="circle w-[200px] h-[200px] rounded-full bg-white absolute">
 
         </div>
-        <img src={product.img} alt="Product image" className="h-[75%] z-[2]"/>
+        <img src={product.image} alt="Product image" className="h-[75%] z-[2]"/>
         <div className="info w-full h-full absolute top-0 left-0 bg-black/20 z-[3] items-center justify-center flex opacity-0 group-hover:opacity-100 transition-all duration-500 ease cursor-pointer">
             <div className="productIcon">
                 <CartIcon/>

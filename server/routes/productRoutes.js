@@ -3,7 +3,7 @@ const {createProductController, updateProductController, deleteProductController
 const {auth, verifyAdmin} = require('../middleware/auth')
 
 // CREATE
-router.post('/create', auth, verifyAdmin, createProductController)
+router.post('/create',  createProductController)
 
 // UPDATE
 router.put('/update/:id', auth, verifyAdmin, updateProductController)

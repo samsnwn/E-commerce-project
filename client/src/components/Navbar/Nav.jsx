@@ -38,7 +38,7 @@ const Nav = () => {
         <Navbar.Brand>
           <Navbar.Toggle aria-label="toggle navigation" showIn="sm"/>
           <Text b color="inherit">
-            ACME
+            LOGO
           </Text>
         </Navbar.Brand>
         {/* <Navbar.Content enableCursorHighlight hideIn="xs" variant="underline">
@@ -64,7 +64,7 @@ const Nav = () => {
                 }}
                 ripple={false}
               >
-                Products
+                Categories
               </Dropdown.Button>
             </Navbar.Item>
             <Dropdown.Menu
@@ -88,44 +88,37 @@ const Nav = () => {
               }}
             >
               <Dropdown.Item
-                key="autoscaling"
+                key="jackets"
                 showFullDescription
-                description="ACME scales apps to meet user demand, automagically, based on load."
+                description="2nd hand jackets"
               >
-                Autoscaling
+                Jackets
               </Dropdown.Item>
               <Dropdown.Item
-                key="usage_metrics"
+                key="jewelry"
                 showFullDescription
-                description="Real-time metrics to debug issues. Slow query added? We’ll show you exactly where."
+                description="Hand made jewelry"
               >
-                Usage Metrics
+                Jewelry
               </Dropdown.Item>
               <Dropdown.Item
-                key="production_ready"
+                key="shirts"
                 showFullDescription
-                description="ACME runs on ACME, join us and others serving requests at web scale."
+                description="2nd hand shirts"
               >
-                Production Ready
+                Shirts
               </Dropdown.Item>
               <Dropdown.Item
-                key="99_uptime"
+                key="other"
                 showFullDescription
-                description="Applications stay on the grid with high availability and high uptime guarantees."
+                description="Other stuff"
               >
-                +99% Uptime
-              </Dropdown.Item>
-              <Dropdown.Item
-                key="supreme_support"
-                showFullDescription
-                description="Overcome any challenge with a supporting team ready to respond."
-              >
-                +Supreme Support
+                Others
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Navbar.Link href="#">Pricing</Navbar.Link>
-          <Navbar.Link href="#">Company</Navbar.Link>
+          <Navbar.Link href="#">Events</Navbar.Link>
+          <Navbar.Link href="#">About us</Navbar.Link>
           {/* {!user ? <> <Navbar.Item>
             <Button color="inherit" as={Link} href="/login">
               Login
