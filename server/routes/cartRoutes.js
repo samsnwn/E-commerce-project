@@ -1,22 +1,22 @@
 const router = require('express').Router()
 const { createCartController, updateCartController, deleteCartController, getUserCartController, getAllCartsController} = require('../controllers/cartControllers')
 
-const {auth, verifyAdmin} = require('../middleware/auth')
+const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
 
 // CREATE
-router.post('/create', auth, createCartController )
+router.post('/create', verifyToken, createCartController )
 
 // UPDATE
-router.put('/update/:id', auth, updateCartController)
+router.put('/update/:id', verifyTokenAndAuthorization, updateCartController)
 
 // DELETE
-router.delete('/delete/:id', auth, deleteCartController)
+router.delete('/delete/:id', verifyTokenAndAuthorization, deleteCartController)
 
 // GET USER CART
-router.get('/cart/:userId', auth, getUserCartController)
+router.get('/cart/:userId', verifyTokenAndAuthorization, getUserCartController)
 
 // GET ALL CARTS
-router.get('/', auth, verifyAdmin, getAllCartsController)
+router.get('/', verifyTokenAndAdmin, getAllCartsController)
 
 
 module.exports = router
