@@ -1,15 +1,15 @@
 const router = require('express').Router()
 const {createProductController, updateProductController, deleteProductController, getProductController, getAllProductsController} = require('../controllers/productControllers')
-const {auth, verifyAdmin} = require('../middleware/auth')
+const {verifyTokenAndAdmin} = require('../middleware/verifyToken')
 
 // CREATE
-router.post('/create',  createProductController)
+router.post('/create', verifyTokenAndAdmin, createProductController)
 
 // UPDATE
-router.put('/update/:id', auth, verifyAdmin, updateProductController)
+router.put('/update/:id', verifyTokenAndAdmin, updateProductController)
 
 // DELETE
-router.delete('/delete/:id', auth, verifyAdmin, deleteProductController)
+router.delete('/delete/:id', verifyTokenAndAdmin, deleteProductController)
 
 // GET PRODUCT
 router.get('/product/:id', getProductController)

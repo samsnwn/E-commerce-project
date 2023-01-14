@@ -45,17 +45,17 @@ exports.getProductController = async (req, res, next) => {
 }
 
 exports.getAllProductsController = async (req, res, next) => {
-    const qNew = req.query.new
-    const qCategory = req.query.category
+    const queryNew = req.query.new
+    const queryCategory = req.query.category
 
     try {
         let products;
 
-        if(qNew) {
+        if(queryNew) {
             products = await Product.find().sort({createdAt: -1 }).limit(1)
-        } else if(qCategory) {
+        } else if(queryCategory) {
             products = await Product.find({categories:{
-                $in: [qCategory]
+                $in: [queryCategory]
             }})
         } else {
             products = await Product.find()
