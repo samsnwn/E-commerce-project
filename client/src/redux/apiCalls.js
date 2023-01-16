@@ -1,13 +1,12 @@
-import baseUrl from "../config/config"
-import {userActions} from "../redux/userSlice"
+import { userActions } from "./userSlice";
+import { publicRequest } from "../requestMethods";
 
 export const login = async (dispatch, user) => {
-    dispatch(userActions.loginStart())
-    try {
-        const res = await axios.post(`${baseUrl}/auth/login`, user)
-        console.log(res)
-        dispatch(userActions.loginSuccess(res.data))
-    } catch (err) {
-        dispatch(userActions.loginFailure())
-    }
-}
+  dispatch(userActions.loginStart());
+  try {
+    const res = await publicRequest.post("/auth/login", user);
+    dispatch(userActions.loginSuccess(res.data));
+  } catch (err) {
+    dispatch(userActions.loginFailure());
+  }
+};

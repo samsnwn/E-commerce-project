@@ -8,14 +8,13 @@ import { userActions } from "../redux/userSlice";
 import { Link } from "react-router-dom";
 import { login } from "../redux/apiCalls";
 
-
 const Login = () => {
   const dispatch = useDispatch();
   const [userData, setUserData] = useState();
-  const {isFetching, error} = useSelector(state=> state.user)
+  const { isFetching, error } = useSelector((state) => state.user);
 
   const onChangeHandler = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.trim();
     setUserData((prev) => {
       return {
         ...prev,
@@ -23,18 +22,10 @@ const Login = () => {
       };
     });
   };
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(userActions.loginStart())
-    try {
-        const res = await axios.post(`${baseUrl}/auth/login`, userData)
-        console.log(res)
-        dispatch(userActions.loginSuccess(res.data))
-    } catch (err) {
-        dispatch(userActions.loginFailure())
-    }
+    login(dispatch, userData);
   };
 
   return (
@@ -59,14 +50,19 @@ const Login = () => {
             name="password"
           />
           <button
+            type="submit"
             disabled={isFetching}
             className={`w-[40%] py-2 px-3 bg-teal-200 mt-5 disabled:bg-green-300 disabled:cursor-not-allowed`}
           >
             Login
           </button>
-          {error &&  <span className="text-red-500">Something went wrong...</span>}
+          {error && (
+            <span className="text-red-500">Something went wrong...</span>
+          )}
           <a className="loginLinks mt-6">DO NOT YOU REMEMBER THE PASSWORD?</a>
-          <Link className="loginLinks" to='/register'>CREATE A NEW ACCOUNT</Link>
+          <Link className="loginLinks" to="/register">
+            CREATE A NEW ACCOUNT
+          </Link>
         </form>
       </div>
     </div>
