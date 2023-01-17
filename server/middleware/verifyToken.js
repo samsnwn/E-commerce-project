@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const ExpressError = require("../ExpressError");
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.token;
+  const authHeader = req.headers.authorization;
 
   if (authHeader) {
     const token = authHeader.split(" ")[1];
@@ -21,7 +21,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req.user.id === req.params.userId || req.user.isAdmin) {
       next();
     } else {
       throw new ExpressError("You are not allowed", 403);
