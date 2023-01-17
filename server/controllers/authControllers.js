@@ -7,10 +7,32 @@ const sendEmail = require("../utils/email");
 const catchAsync = require("../utils/catchAsync");
 const crypto = require("crypto");
 
-const signToken = id => {
-  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+
+
+const signToken = (id, isAdmin) => {
+  return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET_KEY, {
+    expiresIn: process.env.JWT_EXPIRES_IN,
   });
+};
+
+const createSendToken = (user, statusCode, res) => {
+  const accessToken = signToken(user._id, user.isAdmin);
+
+  const cookieOptions = { 
+    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+    httpOnly: true
+  }
+
+  if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
+
+  res.cookie("jwt", accessToken, cookieOptions);
+  
+// Remove password from the output
+  user.password = undefined;
+
+  res
+    .status(statusCode)
+    .json({ status: "success", accessToken, data: { user } });
 };
 
 // Registration Controller
@@ -33,21 +55,7 @@ exports.registrationController = async (req, res, next) => {
     savedUser.password = undefined;
 
     // Create token with user id and isAdmin as payload
-    const accessToken = jwt.sign(
-      {
-        id: savedUser._id,
-        isAdmin: savedUser.isAdmin,
-      },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      }
-    );
-
-    // Send response to frontend
-    res
-      .status(200)
-      .json({ status: "success", accessToken, data: { user: savedUser } });
+    createSendToken(savedUser, 201, res);
   } catch (err) {
     // error handling
     next(new ExpressError("Failed to register, please try again", 500));
@@ -70,18 +78,7 @@ exports.loginController = async (req, res, next) => {
     user.password = undefined;
 
     // If everything is ok, send token to client
-    const accessToken = jwt.sign(
-      {
-        id: user._id,
-        isAdmin: user.isAdmin,
-      },
-      process.env.JWT_SECRET_KEY,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      }
-    );
-
-    res.status(201).json({ status: "success", accessToken, user });
+    createSendToken(user, 200, res);
   } catch (err) {
     next(new ExpressError("Email or password not valid", 500));
   }
@@ -147,6 +144,7 @@ exports.restrictTo = (...roles) => {
   };
 };
 
+// Forgot Password Controller
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   //  1) Get user based on posted email
   const user = await User.findOne({ email: req.body.email });
@@ -180,6 +178,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   }
 });
 
+// Reset Password controller
 exports.resetPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto
@@ -192,29 +191,39 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   });
 
   // 2) Set the new password only if token did not expire and there is user
-  if(!user) {
+  if (!user) {
     return next(new ExpressError("Token is invalid or has expired", 400));
   }
-  user.password = req.body.password
-  user.passwordConfirm = req.body.passwordConfirm
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
-  await user.save()
+  await user.save();
 
+  // 3) Update changedPasswordAt property for the user(done in userSchema)
 
-  // 3) Update changedPasswordAt property for the user
   // 4) Log user in, send JWT
-  const accessToken = jwt.sign(
-    {
-      id: user._id,
-      isAdmin: user.isAdmin,
-    },
-    process.env.JWT_SECRET_KEY,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    }
-  );
-  user.password=undefined;
+  createSendToken(user, 200, res);
+});
 
-  res.status(201).json({ status: "success", accessToken, user });
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  // 1) Get user from collection
+  const user = await User.findById(req.user.id).select("+password");
+
+  // 2) Check if posted password is correct
+  if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
+    return next(new ExpressError("Password is incorrect", 401));
+  }
+
+  // if(newPassword !== newPasswordConfirm) {
+  //   return next(new ExpressError("Passwords do not match", 401));
+  // }
+
+  // 3) Update the password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+
+  // 4) Log user in, send JWT
+  createSendToken(user, 200, res);
 });

@@ -49,6 +49,11 @@ const UserSchema = new Schema({
     isVerified: {
         type: Boolean,
         default: true
+    },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false
     }
 }, {timestamps:true})
 
@@ -60,6 +65,11 @@ UserSchema.pre('save', function (next) {
   next()
 })
 
+UserSchema.pre(/^find/, function (next) {
+  // this points to the current query
+  this.find({active: {$ne: false}})
+  next()
+})
 
 //  This function fires before the create function is executed
 UserSchema.pre("save", async function (next) {
@@ -73,6 +83,7 @@ UserSchema.pre("save", async function (next) {
     this.passwordConfirm = undefined;
     next();
   });
+
   
   // This function compares passwords
   UserSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
