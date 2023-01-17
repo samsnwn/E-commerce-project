@@ -32,6 +32,10 @@ app.use(cookieParser());
 
 
 // Routes
+app.use((req, res, next) => {
+  // console.log(req.headers)
+  next()
+})
 app.use('/auth', authRoutes)
 app.use('/user', userRoutes)
 app.use('/products', productRoutes)

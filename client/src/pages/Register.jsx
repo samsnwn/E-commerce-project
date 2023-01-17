@@ -48,10 +48,10 @@ const Register = () => {
           />
 
           <Input.Password underlined label="Password"  className="input" onChange={onChangeHandler} name="password"/>
-          {/* <Input.Password
+          <Input.Password
             underlined
-            label="Confirm password" className="input"
-          /> */}
+            label="Confirm password" className="input" name='passwordConfirm'
+          />
             <span className="text-sm my-6">
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
