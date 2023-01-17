@@ -1,5 +1,5 @@
 const Order = require("../models/OrderModel");
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../utils/ExpressError");
 
 exports.createOrderController = async (req, res, next) => {
   const newOrder = new Order(req.body);

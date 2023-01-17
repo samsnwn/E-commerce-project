@@ -1,6 +1,6 @@
 const {check} = require('express-validator')
 const User = require('../models/UserModel')
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../utils/ExpressError");
 
 exports.checkingUser = [
     check('email')

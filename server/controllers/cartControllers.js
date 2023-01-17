@@ -1,5 +1,5 @@
 const Cart = require('../models/CartModel')
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../utils/ExpressError");
 
 
 exports.createCartController = async (req, res, next) => {

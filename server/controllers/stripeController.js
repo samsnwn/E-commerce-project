@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_KEY)
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../utils/ExpressError");
 
 
 exports.paymentController = (req, res, next) => {

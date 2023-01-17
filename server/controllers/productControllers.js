@@ -1,5 +1,5 @@
 const Product = require('../models/ProductModel')
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../utils/ExpressError");
 
 
 exports.createProductController = async (req, res, next) => {

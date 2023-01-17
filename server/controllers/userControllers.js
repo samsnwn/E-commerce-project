@@ -1,5 +1,5 @@
 const User = require('../models/UserModel')
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../utils/ExpressError");
 const bcrypt = require("bcrypt");
 
 exports.updateController = async (req, res, next) => {
