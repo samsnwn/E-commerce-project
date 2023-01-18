@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Nav from "../components/Navbar/Nav";
-import Newsletter from "../components/Newsletter";
+import { useLocation, useParams, Link } from "react-router-dom";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useEffect } from "react";
@@ -12,9 +8,7 @@ import axios from "axios";
 import {cartActions} from '../redux/cartSlice'
 import { useDispatch } from "react-redux";
 
-
-
-const Product = () => {
+const ProductPage = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
 
@@ -23,6 +17,8 @@ const Product = () => {
   const [color, setColor] = useState(null);
   const [size, setSize] = useState(null);
   const dispatch = useDispatch()
+
+  // const params = useParams()
 
 
 
@@ -49,11 +45,10 @@ const Product = () => {
   const handleAddToCart = () => {
     dispatch(cartActions.addProduct({...product, quantity, color, size}))
   }
+  console.log(product)
 
   return (
     <>
-      <Announcement />
-      <Nav />
       <div className="p-5 flex">
         <div className="flex-1 ">
           <img
@@ -108,12 +103,13 @@ const Product = () => {
               Add to cart
             </button>
           </div>
+          {/* <div>
+            <Link to={`/products/${product.categories.filter(cat => cat === )}`} relative="path" className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]">See more of this category</Link>
+          </div> */}
         </div>
       </div>
-      <Newsletter />
-      <Footer />
     </>
   );
 };
 
-export default Product;
+export default ProductPage;

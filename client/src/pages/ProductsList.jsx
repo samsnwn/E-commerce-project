@@ -1,9 +1,5 @@
 import React from "react";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
-import Nav from "../components/Navbar/Nav";
-import Newsletter from "../components/Newsletter";
-import Products from "../components/Products/Products";
+import AllProducts from "../components/Products/AllProducts";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -25,8 +21,6 @@ const ProductList = () => {
 
   return (
     <div className="">
-      <Announcement />
-      <Nav />
       <h1 className="m-5">{cat}</h1>
       <div className="flex justify-between ">
         <div className="m-5">
@@ -67,9 +61,7 @@ const ProductList = () => {
           </select>
         </div>
       </div>
-      <Products cat={cat} filters={filters} sort={sort}/>
-      <Newsletter />
-      <Footer />
+      <AllProducts cat={cat} filters={filters} sort={sort}/>
     </div>
   );
 };

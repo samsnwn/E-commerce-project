@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import baseUrl from "../../config/config"
-import Product from "./Product";
+import ProductComponent from "./ProductComponent";
 
 const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
@@ -16,6 +16,7 @@ const Products = ({ cat, filters, sort }) => {
           : `${baseUrl}/products`
           );
         setProducts(res.data);
+        console.log(res.data)
       } catch (err) {
         console.log(err);
       }
@@ -49,9 +50,9 @@ const Products = ({ cat, filters, sort }) => {
   return (
     <div className="flex p-4 flex-wrap justify-between">
       {cat ? filteredProducts.map((product, index) => (
-        <Product key={index} product={product} />
+        <ProductComponent key={index} product={product} />
       )): products.slice(0,8).map((product, index) => (
-        <Product key={index} product={product} />
+        <ProductComponent key={index} product={product} />
       ))}
     </div>
   );

@@ -1,7 +1,4 @@
 import React from "react";
-import Nav from "../components/Navbar/Nav";
-import Announcement from "../components/Announcement";
-import Footer from "../components/Footer";
 import AddOutlined from "@mui/icons-material/AddOutlined";
 import RemoveOutlined from "@mui/icons-material/RemoveOutlined";
 import { useSelector } from "react-redux";
@@ -11,8 +8,6 @@ const Cart = () => {
 
   return (
     <div className="">
-      <Nav />
-      <Announcement />
       <div className="p-5">
         <h1 className="font-extralight text-center">Your BAG</h1>
         <div className="flex items-center justify-between p-5">
@@ -101,7 +96,6 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

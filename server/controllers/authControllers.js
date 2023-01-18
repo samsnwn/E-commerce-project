@@ -42,8 +42,7 @@ exports.registrationController = async (req, res, next) => {
     name: req.body.name,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    email: req.body.email,
-    passwordChangedAt: req.body.passwordChangedAt,
+    email: req.body.email
   });
 
   try {

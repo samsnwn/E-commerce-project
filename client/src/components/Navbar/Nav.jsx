@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, redirect } from "react-router-dom";
 import {
   Navbar,
   Button,
-  Link,
+  
   Text,
   Input,
   Badge,
@@ -15,6 +15,9 @@ import { useSelector } from "react-redux";
 import baseUrl from "../../config/config";
 import axios from "axios";
 import Announcement from "../Announcement";
+import {action as logoutAction} from '../../pages/Logout'
+import { NavLink } from 'react-router-dom'
+
 
 const Nav = () => {
   const quantity = useSelector((state) => state.cart.quantity);
@@ -26,6 +29,9 @@ const Nav = () => {
 
   const logoutHandler = async () => {
     // LOGOUT NEXT STEP
+    // localStorage.removeItem("persist:root")
+    // return redirect('/')
+
   };
 
   const collapseItems = [
@@ -98,7 +104,7 @@ const Nav = () => {
               showFullDescription
               description="Hand made jewelry"
             >
-              Jewelry
+              Jeans
             </Dropdown.Item>
             <Dropdown.Item
               key="shirts"
@@ -116,8 +122,8 @@ const Nav = () => {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <Navbar.Link href="#">Events</Navbar.Link>
-        <Navbar.Link href="#">About us</Navbar.Link>
+        <Navbar.Link href="/events">Events</Navbar.Link>
+        <Navbar.Link href="/about">About us</Navbar.Link>
         {/* {!user ? <> <Navbar.Item>
             <Button color="inherit" as={Link} href="/login">
               Login
@@ -156,10 +162,10 @@ const Nav = () => {
           <Navbar.Link href="/profile">My Profile</Navbar.Link>
           <Button color="inherit" onPress={logoutHandler}>Logout </Button>
         </> : <>
-        <Navbar.Link href="/login">Login</Navbar.Link>
-        <Navbar.Link href="/register">Register</Navbar.Link>
+        <NavLink to="/login" className={({isActive}) => isActive ? 'underline' : 'nav-link'}>Login</NavLink>
+        <NavLink to="/register" className={({isActive}) => isActive ? 'underline' : 'nav-link'}>Register</NavLink>
         </>}
-        <Navbar.Link href="/cart">
+        <NavLink to="/cart" className="nav-link">
           <Badge
             color="primary"
             content={quantity >= 1 ? quantity : ""}
@@ -168,12 +174,12 @@ const Nav = () => {
           >
             <CartIcon fill="currentColor" size={30} />
           </Badge>
-        </Navbar.Link>
+        </NavLink>
       </Navbar.Content>
       <Navbar.Collapse>
         {collapseItems.map((item, index) => (
           <Navbar.CollapseItem key={index}>
-            <Link
+            <NavLink
               color="inherit"
               css={{
                 minWidth: "100%",
@@ -181,7 +187,7 @@ const Nav = () => {
               href={`/${item.toLowerCase()}`}
             >
               {item}
-            </Link>
+            </NavLink>
           </Navbar.CollapseItem>
         ))}
       </Navbar.Collapse>

@@ -37,7 +37,21 @@
   .summaryItem {
     @apply my-3 flex justify-between;
   }
+  .nav-link {
+    @apply  hover:text-gray-800 hover:underline
+  } 
+  .nav-link-active {
+    @apply active:underline 
+  }
 }
+
+/* .nav-link:hover {
+  text-decoration:underline;
+  color:gray;
+} 
+.nav-link-active a:active {
+text-decoration:underline
+} */
 
 .bgImage {
   background: linear-gradient(

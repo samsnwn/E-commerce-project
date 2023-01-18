@@ -1,22 +1,16 @@
 import React from "react";
-import Announcement from "../components/Announcement";
 import Categories from "../components/Categories/Categories";
-import Footer from "../components/Footer";
-import Nav from "../components/Navbar/Nav";
-import Newsletter from "../components/Newsletter";
-import Products from "../components/Products/Products";
+import NextEvents from "../components/NextEvents";
+import AllProducts from "../components/Products/AllProducts";
 import Slider from "../components/Slider";
 
 const Home = () => {
   return (
     <div >
-      <Announcement />
-      <Nav />
       <Slider />
       <Categories/>
-      <Products/>
-      <Newsletter/>
-      <Footer/>
+      <AllProducts/>
+      <NextEvents/>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 
-const Product = ({product}) => {
+const ProductComponent = ({product}) => {
   return (
     <div className="flex-1 m-1 min-w-[280px] h-[350px] flex items-center justify-center bg-[rgba(227,238,241,0.98)] relative group">
         <div className="circle w-[200px] h-[200px] rounded-full bg-white absolute">
@@ -29,4 +29,4 @@ const Product = ({product}) => {
   )
 }
 
-export default Product
+export default ProductComponent
