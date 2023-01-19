@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Navbar,
   Button,
-  
+  Link,
   Text,
   Input,
   Badge,
@@ -11,27 +11,22 @@ import {
 } from "@nextui-org/react";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import { CartIcon } from "../Cart/CartIcon";
-import { useSelector } from "react-redux";
-import baseUrl from "../../config/config";
-import axios from "axios";
-import Announcement from "../Announcement";
-import {action as logoutAction} from '../../pages/Logout'
-import { NavLink } from 'react-router-dom'
-
+import { useSelector, useDispatch } from "react-redux";
+import { userActions } from "../../redux/userSlice";
 
 const Nav = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   const user = useSelector((state) => state.user.currentUser);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [isInvisible, setIsInvisible] = useState(false);
 
-  const logoutHandler = async () => {
-    // LOGOUT NEXT STEP
-    // localStorage.removeItem("persist:root")
-    // return redirect('/')
-
+  const logoutHandler = () => {
+    dispatch(userActions.logout());
+    navigate("/");
+    // console.log(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).cart))
   };
 
   const collapseItems = [
@@ -43,10 +38,11 @@ const Nav = () => {
     "Login",
     "Sign Up",
   ];
+  // console.log(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).cart))
 
   return (
     <Navbar isBordered variant="floating">
-      <Navbar.Content enableCursorHighlight hideIn="xs" variant="underline">
+      {/* <Navbar.Content enableCursorHighlight hideIn="xs" variant="underline">
           <Input
             type='search'
             aria-label='search input'
@@ -55,8 +51,19 @@ const Nav = () => {
             placeholder="Search..."
             contentRight={<SearchSharpIcon />}
           />
-        </Navbar.Content>
+        </Navbar.Content> */}
+      <Navbar.Content>
+        <Navbar.Brand>
+          <Navbar.Toggle aria-label="toggle navigation" showIn="sm" />
+          <Text b color="inherit">
+            LOGO
+          </Text>
+        </Navbar.Brand>
+      </Navbar.Content>
+
       <Navbar.Content enableCursorHighlight hideIn="sm" variant="underline">
+      <Navbar.Link href="/">Home</Navbar.Link>
+
         <Dropdown isBordered>
           <Navbar.Item>
             <Dropdown.Button
@@ -104,7 +111,7 @@ const Nav = () => {
               showFullDescription
               description="Hand made jewelry"
             >
-              Jeans
+              Jewelry
             </Dropdown.Item>
             <Dropdown.Item
               key="shirts"
@@ -124,48 +131,24 @@ const Nav = () => {
         </Dropdown>
         <Navbar.Link href="/events">Events</Navbar.Link>
         <Navbar.Link href="/about">About us</Navbar.Link>
-        {/* {!user ? <> <Navbar.Item>
-            <Button color="inherit" as={Link} href="/login">
-              Login
-            </Button>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Button auto flat as={Link} href="/register">
-              Sign Up
-            </Button>
-          </Navbar.Item></> : <Navbar.Item>
+      </Navbar.Content>
+      <Navbar.Content hideIn='sm'>
+        {user ? (
+          <>
+            <Navbar.Link href="/profile">My Profile</Navbar.Link>
             <Button color="inherit" onPress={logoutHandler}>
-              logout
+              Logout{" "}
             </Button>
-          </Navbar.Item>} */}
-        {/* <Navbar.Item>
-            <Button color="inherit" as={Link} href="/login">
-              Login
-            </Button>
-          </Navbar.Item>
-          <Navbar.Item>
-            <Button auto flat as={Link} href="/register">
-              Sign Up
-            </Button>
-          </Navbar.Item> */}
-      </Navbar.Content >
-
-      <Navbar.Brand>
-        <Navbar.Toggle aria-label="toggle navigation" showIn="sm" />
-        <Text b color="inherit">
-          LOGO
-        </Text>
-      </Navbar.Brand>
-
-      <Navbar.Content >
-        {user ? <>
-          <Navbar.Link href="/profile">My Profile</Navbar.Link>
-          <Button color="inherit" onPress={logoutHandler}>Logout </Button>
-        </> : <>
-        <NavLink to="/login" className={({isActive}) => isActive ? 'underline' : 'nav-link'}>Login</NavLink>
-        <NavLink to="/register" className={({isActive}) => isActive ? 'underline' : 'nav-link'}>Register</NavLink>
-        </>}
-        <NavLink to="/cart" className="nav-link">
+          </>
+        ) : (
+          <>
+            <Navbar.Link href="/login">Login</Navbar.Link>
+            <Navbar.Link href="/register">Register</Navbar.Link>
+          </>
+        )}
+          </Navbar.Content>
+          <Navbar.Content>
+        <Navbar.Link href="/cart">
           <Badge
             color="primary"
             content={quantity >= 1 ? quantity : ""}
@@ -174,12 +157,12 @@ const Nav = () => {
           >
             <CartIcon fill="currentColor" size={30} />
           </Badge>
-        </NavLink>
-      </Navbar.Content>
+        </Navbar.Link>
+        </Navbar.Content>
       <Navbar.Collapse>
         {collapseItems.map((item, index) => (
           <Navbar.CollapseItem key={index}>
-            <NavLink
+            <Link
               color="inherit"
               css={{
                 minWidth: "100%",
@@ -187,7 +170,7 @@ const Nav = () => {
               href={`/${item.toLowerCase()}`}
             >
               {item}
-            </NavLink>
+            </Link>
           </Navbar.CollapseItem>
         ))}
       </Navbar.Collapse>

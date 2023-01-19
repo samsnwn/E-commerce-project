@@ -1,29 +1,25 @@
 import { useSelector } from "react-redux";
-import Cart from "./pages/Cart";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import ProductPage from "./pages/ProductPage";
-import ProductsList from "./pages/ProductsList";
-import Register from "./pages/Register";
+import { useEffect } from "react";
 import {
   createBrowserRouter,
-  RouterProvider,
-  createRoutesFromElements,
-  Route,
+  RouterProvider
 } from "react-router-dom";
-import { useEffect } from "react";
+import Cart from "./pages/Cart/Cart";
+import Home from "./pages/Home";
+import Login from "./pages/Auth/Login";
+import ProductPage from "./pages/Products/ProductPage";
+import ProductsList from "./pages/Products/ProductsList";
+import Register from "./pages/Auth/Register";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/ErrorPage";
 import AllProducts from "./components/Products/AllProducts";
 import Events from "./pages/Events/Events";
 import EventPage from "./pages/Events/EventPage";
 import AboutUs from "./pages/AboutUs";
-
-// const routeDefinitions = createRoutesFromElements(
-//   <Route>
-//     <Route path="/" element={<Home/>}/>
-//   </Route>
-// )
+import ConfirmEmail from "./pages/Auth/ConfirmEmail";
+import Wishlist from "./pages/Wishlist";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -38,33 +34,30 @@ const router = createBrowserRouter([
       { path: "cart", element: <Cart /> },
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
+      { path: "email_confirmation/:token", element: <ConfirmEmail /> },
+      { path: "forgot_password", element: <ForgotPassword /> },
       { path: "events", element: <Events /> },
       { path: "events/:eventId", element: <EventPage /> },
       { path: "about", element: <AboutUs /> },
+      { path: "wishlist", element: <Wishlist /> },
+      { path: "profile", element: <Profile /> },
+
+
     ],
   }
 ]);
 
 const App = () => {
-  // const user = useSelector(state => state.user.currentUser)
+  
+  const user = useSelector(state => state.user.currentUser)
 
+  // When page is loaded, first check if user is logged in(send req to backend to check login status)
   // useEffect(()=> {
-
+    
   // },[])
 
   return (
     <RouterProvider router={router} />
-    // <>
-    //   {" "}
-    //   <Routes>
-    //     <Route path="/" element={<Home />} />
-    //     <Route path="/products/:category" element={<ProductList />} />
-    //     <Route path="/product/:productId" element={<Product />} />
-    //     <Route path="/cart" element={<Cart />} />
-    //     <Route path='/login' element={user ? <Navigate to='/' /> : <Login/>} />
-    //     <Route path='/register' element={user ? <Navigate to='/' /> : <Register/>} />
-    //   </Routes>
-    // </>
   );
 };
 

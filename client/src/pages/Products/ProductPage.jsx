@@ -3,10 +3,10 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useEffect } from "react";
-import baseUrl from "../config/config";
+import baseUrl from "../../config/config";
 import axios from "axios";
-import {cartActions} from '../redux/cartSlice'
-import { useDispatch } from "react-redux";
+import {cartActions} from '../../redux/cartSlice'
+import { useDispatch, useSelector } from "react-redux";
 
 const ProductPage = () => {
   const location = useLocation();
@@ -17,6 +17,9 @@ const ProductPage = () => {
   const [color, setColor] = useState(null);
   const [size, setSize] = useState(null);
   const dispatch = useDispatch()
+
+  const cart = useSelector((state) => state.cart);
+
 
   // const params = useParams()
 
@@ -33,6 +36,7 @@ const ProductPage = () => {
     };
     getProduct();
   }, [id]);
+  
 
   const handleQuantity = (method) => {
     if(method === 'decrease') {
@@ -45,7 +49,6 @@ const ProductPage = () => {
   const handleAddToCart = () => {
     dispatch(cartActions.addProduct({...product, quantity, color, size}))
   }
-  console.log(product)
 
   return (
     <>

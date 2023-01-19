@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "@nextui-org/react";
 import axios from "axios";
-import baseUrl from "../config/config";
+import baseUrl from "../../config/config";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -23,13 +23,16 @@ const Register = () => {
 
     try {
       const res = await axios.post(`${baseUrl}/auth/register`, userData)
-
-      // 1) get token from response coming from server,setItem to localStorage
+      
       console.log(res)
+      if(res) {
+        const token = res.data.accessToken
+        navigate(`/email_confirmation/${token}`)
+      }
     } catch (error) {
       console.log(error)
+      // Incorrect error incoming. MUST FIX IN VALIDATION OR RESPONSE CONTROLLER
     }
-    // navigate('/login')
   };
 
   return (

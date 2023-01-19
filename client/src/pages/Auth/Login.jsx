@@ -3,15 +3,15 @@ import { Input } from "@nextui-org/react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import baseUrl from "../config/config";
-import { userActions } from "../redux/userSlice";
-import { Link } from "react-router-dom";
-import { login } from "../redux/apiCalls";
+import baseUrl from "../../config/config";
+import { userActions } from "../../redux/userSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [userData, setUserData] = useState();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
 
   const onChangeHandler = (e) => {
     const value = e.target.value.trim();
@@ -25,8 +25,20 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    login(dispatch, userData);
-  };
+    dispatch(userActions.loginStart())
+    try {
+      const res = await axios.post(`${baseUrl}/auth/login`, userData)
+      if(res) {
+        dispatch(userActions.loginSuccess(res.data))
+        // localStorage.removeItem('persist:root').user.cart
+        navigate('/')
+      }
+    } catch (error) {
+      dispatch(userActions.loginFailure())
+      console.log(error)
+    }
+  }
+
 
   return (
     <div className="w-screen h-screen bgLogin flex items-center justify-center">
@@ -51,15 +63,15 @@ const Login = () => {
           />
           <button
             type="submit"
-            disabled={isFetching}
+            disabled={user.isFetching}
             className={`w-[40%] py-2 px-3 bg-teal-200 mt-5 disabled:bg-green-300 disabled:cursor-not-allowed`}
           >
             Login
           </button>
-          {error && (
+          {user.error && (
             <span className="text-red-500">Something went wrong...</span>
           )}
-          <a className="loginLinks mt-6">DO NOT YOU REMEMBER THE PASSWORD?</a>
+          <Link to='/forgot_password' className="loginLinks mt-6">DON'T REMEMBER THE PASSWORD?</Link>
           <Link className="loginLinks" to="/register">
             CREATE A NEW ACCOUNT
           </Link>

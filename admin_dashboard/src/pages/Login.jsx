@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../../client/src/redux/apiCalls";
 
@@ -7,6 +7,7 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [userData, setUserData] = useState();
+  const user = useSelector(state => state.user.currentUser)
 
   const onChangeHandler = (e) => {
     const inputValue = e.target.value;
@@ -21,8 +22,8 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     login(dispatch, userData)
-    navigate('/')
   }
+  console.log(user)
 
   return (
     <form onSubmit={submitHandler} style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height:'100vh', flexDirection: 'column'}}>

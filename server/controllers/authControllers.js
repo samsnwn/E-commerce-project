@@ -145,7 +145,7 @@ exports.restrictTo = (...roles) => {
 
 // Forgot Password Controller
 exports.forgotPassword = catchAsync(async (req, res, next) => {
-  //  1) Get user based on posted email
+  //  1) Get user based on posted email+
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new ExpressError("A user does not exist with this email", 404));

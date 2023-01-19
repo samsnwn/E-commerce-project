@@ -16,7 +16,6 @@ const Products = ({ cat, filters, sort }) => {
           : `${baseUrl}/products`
           );
         setProducts(res.data);
-        console.log(res.data)
       } catch (err) {
         console.log(err);
       }

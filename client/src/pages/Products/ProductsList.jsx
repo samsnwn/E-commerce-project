@@ -1,5 +1,5 @@
 import React from "react";
-import AllProducts from "../components/Products/AllProducts";
+import AllProducts from "../../components/Products/AllProducts";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
