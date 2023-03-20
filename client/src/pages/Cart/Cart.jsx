@@ -25,7 +25,7 @@ const Cart = () => {
   // }, [user, cart]);
 
   return (
-    <div className="">
+    <div className="min-h-[90vh]">
       <div className="p-5">
         <h1 className="font-extralight text-center">Your BAG</h1>
         <div className="flex items-center justify-between p-5">
