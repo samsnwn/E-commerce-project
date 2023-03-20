@@ -4,21 +4,25 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import CartProduct from "../../components/Products/CartProduct";
+import baseUrl from "../../config/config";
+import { cartActions } from "../../redux/cartSlice";
+import axios from "axios";
 
 const Cart = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const [products, setProducts] = useState([]);
+  const user = useSelector((state) => state.user.currentUser);
+  const [userCart, setUserCart] = useState();
 
-  // When cart is loaded, check if user has products in the cart already
-
-    // check in local storage if there is a cart for this user
-    useEffect(()=> {
-      const productsArray = JSON.parse(JSON.parse(localStorage.getItem('persist:root')).cart).products
-      if(productsArray.length > 0) {
-        setProducts(productsArray)
-      }
-    }, [])
+  // useEffect(() => {
+  //   const getUserCart = async () => {
+  //     if (user) {
+  //       const res = await axios.get(`${baseUrl}/cart/user_cart/${user._id}`);
+  //       setUserCart(res.data);
+  //     }
+  //   }
+  //   getUserCart()
+  // }, [user, cart]);
 
   return (
     <div className="">
@@ -35,48 +39,50 @@ const Cart = () => {
           <Link to="/wishlist" className="underline cursor-pointer mx-2">
             Your Wishlist(0)
           </Link>
-          <div className="">
-            <button className="p-3 font-semibold cursor-pointer bg-black text-white">
-              CHECKOUT NOW
-            </button>
-          </div>
         </div>
 
-        <div className="flex justify-between p-10 flex-col lg:flex-row">
-          {products.length <= 0 ? (
-            <h1>Your cart is empty</h1>
+        <div className="flex justify-center p-10 flex-col lg:flex-row">
+          {cart.products.length <= 0 ? (
+            <div className="self-center">
+              <h1>Your cart is empty</h1>
+              <Link
+                to="/products"
+                className="p-3 font-semibold cursor-pointer border border-black-400"
+              >
+                CONTINUE SHOPPING
+              </Link>
+            </div>
           ) : (
             <CartProduct />
           )}
-           <div className="bottom flex justify-between">
-          <div className="summary flex-1 border border-thin rounded-xl p-4">
-            <div className="summaryTitle font-semibold text-2xl">
-              ORDER SUMMARY
+          <div className="bottom flex justify-between">
+            <div
+              className={`summary flex-1 border border-thin rounded-xl p-4 ${
+                cart.products.length <= 0 && "hidden"
+              }`}
+            >
+              <div className="summaryTitle font-semibold text-2xl">
+                ORDER SUMMARY
+              </div>
+              <div>
+                {cart.products.map((product, idx) => (
+                  <div key={product._id} className="summaryItem">
+                    <span className="summaryItemText">1x {product.title}</span>
+                    <span className="summaryItemPrice">{product.price}€</span>
+                  </div>
+                ))}
+              </div>
+              <div className="h-[5px] w-full border"></div>
+              <div className="summaryItem  font-extrabold">
+                <span className="summaryItemText">Subtotal</span>
+                <span className="summaryItemPrice">{cart.total}€</span>
+              </div>
+              <button className="w-full p-2 bg-black text-white font-bold ">
+                <Link to="/checkout">Checkout Now</Link>
+              </button>
             </div>
-            <div className="summaryItem">
-              <span className="summaryItemText">Subtotal</span>
-              <span className="summaryItemPrice">{cart.total}€</span>
-            </div>
-            <div className="summaryItem">
-              <span className="summaryItemText">Estimated Shipping</span>
-              <span className="summaryItemPrice">5.95€</span>
-            </div>
-            <div className="summaryItem">
-              <span className="summaryItemText">Shipping Discount</span>
-              <span className="summaryItemPrice">-5.95€</span>
-            </div>
-            <div className="summaryItem font-bold text-xl">
-              <span className="summaryItemText">Total</span>
-              <span className="summaryItemPrice">{cart.total}€</span>
-            </div>
-            <button className="w-full p-2 bg-black text-white font-bold ">
-              Checkout Now
-            </button>
           </div>
         </div>
-        </div>
-
-       
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import axios from "axios";
 import baseUrl from "../../config/config";
 import { userActions } from "../../redux/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { cartActions } from "../../redux/cartSlice";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ const Login = () => {
       const res = await axios.post(`${baseUrl}/auth/login`, userData)
       if(res) {
         dispatch(userActions.loginSuccess(res.data))
-        // localStorage.removeItem('persist:root').user.cart
+        dispatch(cartActions.clearCart())
         navigate('/')
       }
     } catch (error) {

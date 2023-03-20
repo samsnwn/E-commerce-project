@@ -153,6 +153,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   //  2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
+  console.log(resetToken, "STOP")
   await user.save({ validateBeforeSave: false });
 
   //  3) Send it to user email
@@ -168,7 +169,8 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       subject: "Your password reset token (valid for 10 min)",
       message,
     });
-    res.status(200).json({ status: "success", message: "Token sent to email" });
+    res.status(200).json({ status: "success", message: "Token sent to email", 
+    resetToken: resetToken });
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
@@ -208,19 +210,20 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select("+password");
+  const {currentPassword ,newPassword, newPasswordConfirm } = req.body;
 
   // 2) Check if posted password is correct
-  if (!(await user.correctPassword(req.body.currentPassword, user.password))) {
+  if (!(await user.correctPassword(currentPassword, user.password))) {
     return next(new ExpressError("Password is incorrect", 401));
   }
 
-  // if(newPassword !== newPasswordConfirm) {
-  //   return next(new ExpressError("Passwords do not match", 401));
-  // }
+  if(newPassword !== newPasswordConfirm) {
+    return next(new ExpressError("Passwords do not match", 401));
+  }
 
   // 3) Update the password
-  user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.password = newPassword
+  user.passwordConfirm = newPasswordConfirm
   await user.save();
 
   // 4) Log user in, send JWT

@@ -18,10 +18,10 @@ const ProductSchema = new mongoose.Schema({
         type: Array
     },
     size: {
-        type: Array
+        type: String
     },
     color: {
-        type: Array
+        type: String
     },
     price: {
         type: Number,
@@ -30,9 +30,6 @@ const ProductSchema = new mongoose.Schema({
     inStock: {
         type: Boolean,
         default: true
-    },
-    quantityInStock: {
-        type: Number
     }
 }, {timestamps:true})
 

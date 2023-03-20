@@ -1,9 +1,9 @@
 const router = require('express').Router()
-const {registrationController, loginController, forgotPassword, resetPassword, updatePassword, protect} = require('../controllers/authControllers')
+const {registrationController, loginController, forgotPassword, resetPassword, updatePassword, protect, restrictTo} = require('../controllers/authControllers')
 const {checkingUser} = require('../middleware/registerValidation')
 
 // REGISTER
-router.post('/register', registrationController)
+router.post('/register', checkingUser, registrationController)
 
 // LOGIN 
 router.post('/login', loginController)

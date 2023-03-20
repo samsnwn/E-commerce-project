@@ -3,7 +3,7 @@ const ExpressError = require("../utils/ExpressError");
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
+  
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
@@ -21,7 +21,9 @@ const verifyToken = (req, res, next) => {
 
 const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
-    if (req.user.id === req.params.userId || req.user.isAdmin) {
+    console.log(req.user.id);
+    console.log(req.params.id);
+    if (req.user.id === req.params.userId || req.user.isAdmin || req.user.id === req.params.id) {
       next();
     } else {
       throw new ExpressError("You are not allowed", 403);

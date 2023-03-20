@@ -1,22 +1,17 @@
-import React, {useState} from 'react'
-import { useSelector } from "react-redux";
-import AddOutlined from "@mui/icons-material/AddOutlined";
+import React from 'react'
+import { useDispatch, useSelector } from "react-redux";
 import RemoveOutlined from "@mui/icons-material/RemoveOutlined";
+import { cartActions } from '../../redux/cartSlice';
 
 const CartProduct = () => {
 
   const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
-  const [quantity, setQuantity] = useState();
-
-
-  const handleQuantity = (method) => {
-    if(method === 'decrease') {
-      quantity > 1 && setQuantity(quantity - 1)
-    } else {
-      setQuantity(quantity + 1);
-    }
+  const removeFromCart = (product) => {
+    dispatch(cartActions.removeFromCart(product));
   }
+
 
   return (
     <div className="info flex-[3]">
@@ -50,17 +45,12 @@ const CartProduct = () => {
 
                 <div className="priceDetail flex items-center justify-center flex-1 flex-col">
                   <div className="amountContainer flex items-center mb-5">
-                    <button>
-                    <RemoveOutlined onClick={()=>console.log(product.quantity)}/>
-                    </button>
-                    <div className="productAmount text-2xl m-0.5">{product.quantity}</div>
-
-                    <button >
-                    <AddOutlined onClick={()=>handleQuantity('increase')}/>
+                    <button onClick={()=> removeFromCart(product)}>
+                    <RemoveOutlined />Remove
                     </button>
                   </div>
                   <div className="productPrice text-3xl font-extralight">
-                    {product.price*product.quantity}€
+                    {product.price}€
                   </div>
                 </div>
               </div>

@@ -14,7 +14,7 @@ router.put('/update/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAu
 router.delete('/delete/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, deleteCartController)
 
 // GET USER CART
-router.get('/cart/:userId', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, getUserCartController)
+router.get('/user_cart/:userId', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, getUserCartController)
 
 // GET ALL CARTS
 router.get('/', protect, restrictTo('admin'), verifyTokenAndAdmin, getAllCartsController)

@@ -10,7 +10,6 @@ const ForgotPassword = () => {
     const onChangeHandler = (e) => {
         setEmail(e.target.value.trim())
     }
-    console.log(email)
 
     const submitHandler = async(e) => {
         e.preventDefault()

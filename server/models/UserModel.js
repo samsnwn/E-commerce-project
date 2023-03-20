@@ -8,10 +8,10 @@ const crypto = require('crypto');
 const UserSchema = new Schema({
     email: {
         type: String,
-        required: [true, 'Please provide a valid email address'],
+        required: [true, 'Please provide your email'],
         unique: true,
         lowercase: true,
-        validate: [validator.isEmail, 'Please provide your email']
+        validate: [validator.isEmail, 'Please provide a valid email address']
     },
     role: {
         type: String,
@@ -20,7 +20,7 @@ const UserSchema = new Schema({
     },
     password: {
         type: String,
-        required: [true, 'Please enter a valid password'],
+        required: [true, 'Please enter your password'],
         minLength: 8,
         select: false
     },

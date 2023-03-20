@@ -11,19 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 const ProductPage = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-
-  const [product, setProduct] = useState({});
-  const [quantity, setQuantity] = useState(1);
-  const [color, setColor] = useState(null);
-  const [size, setSize] = useState(null);
   const dispatch = useDispatch()
-
+  const [product, setProduct] = useState({});
   const cart = useSelector((state) => state.cart);
-
-
-  // const params = useParams()
-
-
+  const [isIncluded, setIsIncluded] = useState(cart.products.some((product) => product._id === id))
 
   useEffect(() => {
     const getProduct = async () => {
@@ -36,18 +27,15 @@ const ProductPage = () => {
     };
     getProduct();
   }, [id]);
-  
 
-  const handleQuantity = (method) => {
-    if(method === 'decrease') {
-      quantity > 1 && setQuantity(quantity - 1)
-    } else {
-      setQuantity(quantity + 1);
-    }
-  }
 
   const handleAddToCart = () => {
-    dispatch(cartActions.addProduct({...product, quantity, color, size}))
+    setIsIncluded(true)
+    dispatch(cartActions.addToCart(product))
+  }
+  const handleRemoveFromCart = () => {
+    setIsIncluded(false)
+    dispatch(cartActions.removeFromCart(product));
   }
 
   return (
@@ -68,43 +56,25 @@ const ProductPage = () => {
           {/* Filter Container */}
           <div className="flex justify-between w-[50%] my-3">
             <div className="flex items-center ">
-              <span className="text-xl font-extralight">Color</span>
-              {product.color?.map((color, index) => (
-                <div
-                  key={index}
-                  className={`filterColor`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setColor(color)}
-                ></div>
-              ))}
+              <span className="text-xl font-extralight">Color {product.color}</span>
             </div>
             <div className="filter">
-              <span className="text-xl font-extralight">Size</span>
-              <select name="" id="" className="ml-1 p-2" onChange={(e)=> setSize(e.target.value)} required>
-                <option value="size" defaultValue disabled></option>
-                {product.size?.map((size, index) => (
-                  <option key={index}>{size}</option>
-                ))}
-              </select>
+              <span className="text-xl font-extralight">Size {product.size}</span>
+
             </div>
           </div>
 
           {/* Add Container */}
           <div className="flex items-center w-1/2 justify-between">
-            <div className="flex items-center font-bold">
-              <button onClick={()=>handleQuantity('decrease')}>
-                <RemoveOutlinedIcon />
-              </button>
-              <span className="w-[50px] h-[50px] rounded-xl border border-teal-200 flex items-center justify-center text-lg mx-1">
-                {quantity}
-              </span>
-              <button onClick={()=>handleQuantity('increase')}>
-                <AddOutlinedIcon />
-              </button>
-            </div>
-            <button className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]" onClick={handleAddToCart}>
+            {isIncluded ? (
+            <button className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]" onClick={handleRemoveFromCart}>
+            Remove from cart
+          </button>
+            ) : (
+              <button className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]" onClick={handleAddToCart}>
               Add to cart
             </button>
+            )}
           </div>
           {/* <div>
             <Link to={`/products/${product.categories.filter(cat => cat === )}`} relative="path" className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]">See more of this category</Link>

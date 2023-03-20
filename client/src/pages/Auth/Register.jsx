@@ -23,8 +23,6 @@ const Register = () => {
 
     try {
       const res = await axios.post(`${baseUrl}/auth/register`, userData)
-      
-      console.log(res)
       if(res) {
         const token = res.data.accessToken
         navigate(`/email_confirmation/${token}`)

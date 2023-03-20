@@ -2,7 +2,8 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  useLocation
 } from "react-router-dom";
 import Cart from "./pages/Cart/Cart";
 import Home from "./pages/Home";
@@ -20,6 +21,8 @@ import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import Wishlist from "./pages/Wishlist";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Profile from "./pages/Profile";
+import Checkout from "./pages/checkout/Checkout";
+import Confirmation from "./pages/checkout/Confirmation";
 
 const router = createBrowserRouter([
   {
@@ -41,13 +44,15 @@ const router = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
       { path: "profile", element: <Profile /> },
-
-
+      { path: "checkout", element: <Checkout /> },
+      { path: "checkout/success", element: <Confirmation /> },
     ],
   }
 ]);
 
 const App = () => {
+
+
   
   const user = useSelector(state => state.user.currentUser)
 

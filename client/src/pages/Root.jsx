@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet, useNavigation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Nav from "../components/Navbar/Nav";
@@ -7,8 +7,18 @@ import Newsletter from "../components/Newsletter";
 
 const RootLayout = () => {
   const navigation = useNavigation()
+  const {pathname} = useLocation();
+
+  const ScrollToTop = () => {
+    useEffect(() => {
+      window.scrollTo(0,0)
+    },[pathname])
+    return null
+  }
+
   return (
     <>
+    <ScrollToTop />
       <Announcement />
       <Nav />
       <main>

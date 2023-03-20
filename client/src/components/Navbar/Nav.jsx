@@ -13,10 +13,12 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import { CartIcon } from "../Cart/CartIcon";
 import { useSelector, useDispatch } from "react-redux";
 import { userActions } from "../../redux/userSlice";
+import { cartActions } from "../../redux/cartSlice";
 
 const Nav = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   const user = useSelector((state) => state.user.currentUser);
+  // const cart = useSelector((state) => state.cart.cart);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,8 +27,8 @@ const Nav = () => {
 
   const logoutHandler = () => {
     dispatch(userActions.logout());
+    dispatch(cartActions.clearCart());    
     navigate("/");
-    // console.log(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).cart))
   };
 
   const collapseItems = [
@@ -55,9 +57,9 @@ const Nav = () => {
       <Navbar.Content>
         <Navbar.Brand>
           <Navbar.Toggle aria-label="toggle navigation" showIn="sm" />
-          <Text b color="inherit">
+          <Navbar.Link color="inherit" href="/">
             LOGO
-          </Text>
+          </Navbar.Link>
         </Navbar.Brand>
       </Navbar.Content>
 
