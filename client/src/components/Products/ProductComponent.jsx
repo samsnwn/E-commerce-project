@@ -12,9 +12,11 @@ import { wishlistActions } from "../../redux/wishlistSlice";
 const ProductComponent = ({ product }) => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.products);
+  const user = useSelector((state) => state.user.currentUser);
   const wishlist = useSelector((state) => state.wishlist.items);
   let isIncluded = products.some((p) => p._id === product._id);
-  let isInWishlist = wishlist.some((p) => p._id === product._id);
+  let isInWishlist = wishlist.some((p) => p._id === product._id)
+
 
   const handleAddToCart = () => {
     isIncluded = true;
@@ -59,7 +61,7 @@ const ProductComponent = ({ product }) => {
           {isInWishlist ? (
             <>
               <button onClick={() => handleRemoveFromWishlist(product)}>
-              <FavoriteIcon />
+              <FavoriteIcon color="error"/>
               </button>
             </>
           ) : (

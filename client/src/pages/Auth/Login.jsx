@@ -7,9 +7,10 @@ import baseUrl from "../../config/config";
 import { userActions } from "../../redux/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { cartActions } from "../../redux/cartSlice";
+import { wishlistActions } from "../../redux/wishlistSlice";
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState();
   const user = useSelector((state) => state.user);
@@ -26,23 +27,26 @@ const Login = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(userActions.loginStart())
+    dispatch(userActions.loginStart());
     try {
-      const res = await axios.post(`${baseUrl}/auth/login`, userData)
-      if(res) {
-        dispatch(userActions.loginSuccess(res.data))
-        dispatch(cartActions.clearCart())
-        navigate('/')
+      const res = await axios.post(`${baseUrl}/auth/login`, userData);
+      if (res) {
+        dispatch(userActions.loginSuccess(res.data));
+        dispatch(cartActions.clearCart());
+        dispatch(wishlistActions.clearWishlist());
+        navigate("/");
       }
     } catch (error) {
-      dispatch(userActions.loginFailure())
-      console.log(error)
+      dispatch(userActions.loginFailure());
+      console.log(error);
     }
-  }
-
+  };
 
   return (
-    <div className="w-screen h-screen bgLogin flex items-center justify-center">
+    <div className="w-screen h-screen bgLogin flex flex-col items-center justify-center">
+      <Link className="" to="/">
+        GO BACK TO SHOP
+      </Link>
       <div className="p-5 w-[40%] bg-white ">
         <h1 className="text-2xl font-light">Welcome Back!</h1>
         <form action="" className="flex flex-col mt-4" onSubmit={submitHandler}>
@@ -72,7 +76,9 @@ const Login = () => {
           {user.error && (
             <span className="text-red-500">Something went wrong...</span>
           )}
-          <Link to='/forgot_password' className="loginLinks mt-6">DON'T REMEMBER THE PASSWORD?</Link>
+          <Link to="/forgot_password" className="loginLinks mt-6">
+            DON'T REMEMBER THE PASSWORD?
+          </Link>
           <Link className="loginLinks" to="/register">
             CREATE A NEW ACCOUNT
           </Link>

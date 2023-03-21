@@ -12,17 +12,26 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
-  const [userCart, setUserCart] = useState();
+  const wishlist = useSelector((state) => state.wishlist);
 
-  // useEffect(() => {
-  //   const getUserCart = async () => {
-  //     if (user) {
-  //       const res = await axios.get(`${baseUrl}/cart/user_cart/${user._id}`);
-  //       setUserCart(res.data);
-  //     }
-  //   }
-  //   getUserCart()
-  // }, [user, cart]);
+  const getUserCart = async () => {
+    const headers = {
+      "Authorization": `Bearer ${user.accessToken}`,
+      "Content-Type": "application/json",
+    };
+    const userCart = await axios.get(
+      `${baseUrl}/cart/user_cart/${user.data.user._id}`,
+      { headers }
+    );
+    if (userCart & userCart.data.length > 0) {
+      dispatch(cartActions.setProducts(userCart.data));
+    }
+  };
+
+  useEffect(() => {
+    getUserCart();
+    console.log(cart.products)
+  }, [cart.products.length]);
 
   return (
     <div className="min-h-[90vh]">
@@ -35,9 +44,8 @@ const Cart = () => {
           >
             CONTINUE SHOPPING
           </Link>
-          <div className="underline cursor-pointer mx-2">Shopping Bag(2)</div>
           <Link to="/wishlist" className="underline cursor-pointer mx-2">
-            Your Wishlist(0)
+            Your Wishlist({wishlist.items.length})
           </Link>
         </div>
 

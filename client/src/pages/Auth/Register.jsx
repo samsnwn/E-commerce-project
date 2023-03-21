@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Input } from "@nextui-org/react";
 import axios from "axios";
 import baseUrl from "../../config/config";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [userData, setUserData] = useState();
@@ -18,23 +18,26 @@ const Register = () => {
     });
   };
 
-  const submitHandler = async(e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${baseUrl}/auth/register`, userData)
-      if(res) {
-        const token = res.data.accessToken
-        navigate(`/email_confirmation/${token}`)
+      const res = await axios.post(`${baseUrl}/auth/register`, userData);
+      if (res) {
+        const token = res.data.accessToken;
+        navigate(`/email_confirmation/${token}`);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       // Incorrect error incoming. MUST FIX IN VALIDATION OR RESPONSE CONTROLLER
     }
   };
 
   return (
-    <div className="w-screen h-screen bgImage flex items-center justify-center">
+    <div className="w-screen h-screen bgImage flex flex-col items-center justify-center">
+      <Link className="" to="/">
+        GO BACK TO SHOP
+      </Link>
       <div className="p-5 w-[40%] bg-white ">
         <h1 className="text-2xl font-light">CREATE AN ACCOUNT</h1>
         <form action="" className="flex flex-col mt-4" onSubmit={submitHandler}>
@@ -76,6 +79,9 @@ const Register = () => {
           <button className="w-[40%] py-2 px-3 bg-teal-200" type="submit">
             CREATE
           </button>
+          <Link className="loginLinks mt-3" to="/login">
+            LOGIN TO EXISTING ACCOUNT
+          </Link>
         </form>
       </div>
     </div>

@@ -5,16 +5,24 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { useEffect } from "react";
 import baseUrl from "../../config/config";
 import axios from "axios";
-import {cartActions} from '../../redux/cartSlice'
+import { cartActions } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { wishlistActions } from "../../redux/wishlistSlice";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const ProductPage = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [product, setProduct] = useState({});
   const cart = useSelector((state) => state.cart);
-  const [isIncluded, setIsIncluded] = useState(cart.products.some((product) => product._id === id))
+  const wishlist = useSelector((state) => state.wishlist.items);
+
+  const [isIncluded, setIsIncluded] = useState(
+    cart.products.some((product) => product._id === id)
+  );
+  let isInWishlist = wishlist.some((p) => p._id === product._id);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -28,15 +36,23 @@ const ProductPage = () => {
     getProduct();
   }, [id]);
 
-
   const handleAddToCart = () => {
-    setIsIncluded(true)
-    dispatch(cartActions.addToCart(product))
-  }
+    setIsIncluded(true);
+    dispatch(cartActions.addToCart(product));
+  };
   const handleRemoveFromCart = () => {
-    setIsIncluded(false)
+    setIsIncluded(false);
     dispatch(cartActions.removeFromCart(product));
-  }
+  };
+
+  const handleAddToWishlist = () => {
+    isInWishlist = true;
+    dispatch(wishlistActions.addToWishlist(product));
+  };
+  const handleRemoveFromWishlist = (product) => {
+    isInWishlist = false;
+    dispatch(wishlistActions.removeFromWishlist(product));
+  };
 
   return (
     <>
@@ -56,24 +72,48 @@ const ProductPage = () => {
           {/* Filter Container */}
           <div className="flex justify-between w-[50%] my-3">
             <div className="flex items-center ">
-              <span className="text-xl font-extralight">Color {product.color}</span>
+              <span className="text-xl font-extralight">
+                Color {product.color}
+              </span>
             </div>
             <div className="filter">
-              <span className="text-xl font-extralight">Size {product.size}</span>
-
+              <span className="text-xl font-extralight">
+                Size {product.size}
+              </span>
             </div>
           </div>
 
           {/* Add Container */}
           <div className="flex items-center w-1/2 justify-between">
             {isIncluded ? (
-            <button className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]" onClick={handleRemoveFromCart}>
-            Remove from cart
-          </button>
+              <button
+                className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                onClick={handleRemoveFromCart}
+              >
+                Remove from cart
+              </button>
             ) : (
-              <button className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]" onClick={handleAddToCart}>
-              Add to cart
-            </button>
+              <button
+                className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                onClick={handleAddToCart}
+              >
+                Add to cart
+              </button>
+            )}
+            {isInWishlist ? (
+              <button
+                className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                onClick={()=>handleRemoveFromWishlist(product)}
+              >
+                <FavoriteIcon color="error" />
+              </button>
+            ) : (
+              <button
+                className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                onClick={handleAddToWishlist}
+              >
+                <FavoriteBorderIcon />
+              </button>
             )}
           </div>
           {/* <div>

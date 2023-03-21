@@ -35,8 +35,8 @@ const router = createBrowserRouter([
       { path: "products/:category", element: <ProductsList /> },
       { path: "product/:productId", element: <ProductPage /> },
       { path: "cart", element: <Cart /> },
-      { path: "login", element: <Login /> },
-      { path: "register", element: <Register /> },
+      // { path: "login", element: <Login /> },
+      // { path: "register", element: <Register /> },
       { path: "email_confirmation/:token", element: <ConfirmEmail /> },
       { path: "forgot_password", element: <ForgotPassword /> },
       { path: "events", element: <Events /> },
@@ -47,6 +47,14 @@ const router = createBrowserRouter([
       { path: "checkout", element: <Checkout /> },
       { path: "checkout/success", element: <Confirmation /> },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register />
   }
 ]);
 

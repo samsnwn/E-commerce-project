@@ -28,7 +28,7 @@ const Slider = () => {
         {sliderItems.map((item, index) => (
           <div
             style={{ backgroundColor: item.bg }}
-            key={index}
+            key={item.id}
             className="slide flex items-center w-screen h-screen"
           >
             <div className="h-full flex items-center justify-end flex-auto">

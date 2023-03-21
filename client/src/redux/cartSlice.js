@@ -10,9 +10,9 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: cartInitialState,
     reducers: {
-        // setProducts: (state, action) => {
-        //     state.products = action.payload;
-        //   },
+        setProducts: (state, action) => {
+            state.products = action.payload;
+          },
         addToCart(state, action) {
             const isIncluded = state.products.some(product => product._id === action.payload._id);
             if(!isIncluded) {
