@@ -23,7 +23,7 @@
     @apply mb-4 flex items-center;
   }
   .select {
-    @apply p-1 mr-1;
+    @apply p-1 mr-1 bg-white border;
   }
   .filterColor {
     @apply w-[20px] h-[20px] rounded-full mx-1 cursor-pointer;

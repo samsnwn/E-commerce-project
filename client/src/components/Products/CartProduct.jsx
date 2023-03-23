@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import RemoveOutlined from "@mui/icons-material/RemoveOutlined";
 import { cartActions } from '../../redux/cartSlice';

@@ -1,4 +1,3 @@
-import React from 'react'
 import {categories} from '../../assets/api/salesData'
 import CategoryItem from './CategoryItem'
 

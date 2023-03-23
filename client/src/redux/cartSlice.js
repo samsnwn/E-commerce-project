@@ -1,41 +1,51 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const cartInitialState = {
-    products: [],
-    quantity:0,
-    total: 0,
-}
+  products: [],
+  // userProducts: [],
+  // userQuantity: 0,
+  quantity: 0,
+  total: 0,
+};
 
 const cartSlice = createSlice({
-    name: 'cart',
-    initialState: cartInitialState,
-    reducers: {
-        setProducts: (state, action) => {
-            state.products = action.payload;
-          },
-        addToCart(state, action) {
-            const isIncluded = state.products.some(product => product._id === action.payload._id);
-            if(!isIncluded) {
-                state.products = [...state.products, action.payload]
-                state.quantity++
-                state.total += action.payload.price 
-            } else {
-                state.products = state.products
-            }
-        },
-        removeFromCart: (state, action) => {
-            state.products = state.products.filter((item) => item._id !== action.payload._id);
-            state.quantity--
-            state.total = state.total - action.payload.price
-          },
-          clearCart: (state) => {
-            state.products = []
-            state.quantity = 0
-            state.total = 0
-          }
+  name: "cart",
+  initialState: cartInitialState,
+  reducers: {
+    setProducts: (state, action) => {
+      state.products = action.payload;
+      state.quantity++;
+    },
+    // setUserProducts: (state, action) => {
+    //   state.userProducts = action.payload;
+    //   state.userQuantity++;
+    // },
+    addToCart(state, action) {
+      const isIncluded = state.products.some(
+        (product) => product._id === action.payload._id
+      );
+      if (!isIncluded) {
+        state.products = [...state.products, action.payload];
+        state.quantity++;
+        state.total += action.payload.price;
+      } else {
+        state.products = state.products;
+      }
+    },
+    removeFromCart: (state, action) => {
+      state.products = state.products.filter(
+        (item) => item._id !== action.payload._id
+      );
+      state.quantity--;
+      state.total = state.total - action.payload.price;
+    },
+    clearCart: (state) => {
+      state.products = [];
+      state.quantity = 0;
+      state.total = 0;
+    },
+  },
+});
 
-    }
-})
-
-export const cartActions = cartSlice.actions
-export default cartSlice.reducer
+export const cartActions = cartSlice.actions;
+export default cartSlice.reducer;

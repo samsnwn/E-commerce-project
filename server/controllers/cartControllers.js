@@ -14,7 +14,6 @@ exports.createCartController = async (req, res, next) => {
 
 exports.updateCartController = async (req, res, next) => {
     const cartId = req.params.id
-    console.log(cartId)
     const updatedCartData = req.body
     try {
         const updatedCart = await Cart.findByIdAndUpdate(cartId, {

@@ -64,6 +64,7 @@ const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const stripeRoutes = require("./routes/stripeRoutes");
 
 // Connect to database
 mongoose.connect(process.env.DB_LINK, (err) => {
@@ -77,6 +78,8 @@ app.use('/user', userRoutes)
 app.use('/products', productRoutes)
 app.use('/cart', cartRoutes)
 app.use('/orders', orderRoutes)
+app.use('/stripe', stripeRoutes)
+
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

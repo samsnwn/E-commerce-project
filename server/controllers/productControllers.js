@@ -1,9 +1,21 @@
 const Product = require('../models/ProductModel')
 const ExpressError = require("../utils/ExpressError");
-
+const { faker } = require('@faker-js/faker');
 
 exports.createProductController = async (req, res, next) => {
-    const newProduct = new Product(req.body)
+
+    const fakeProduct = {
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        image: faker.image.fashion(width = 640, height= 480, randomize = true),
+        categories: ["jackets", "jeans", "shirts"],
+        size: "S",
+        color: faker.color.human(),
+        price: faker.commerce.price(),
+        priceId: "price_1MolBWJNdqxiOr5VRjXrvTGl"
+    }
+
+    const newProduct = new Product(fakeProduct)
     try {
         const savedProduct = await newProduct.save()
         res.status(200).json(savedProduct)

@@ -8,7 +8,7 @@ const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require(
 router.post('/create', protect, verifyToken, createCartController )
 
 // UPDATE
-router.put('/update/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, updateCartController)
+router.put('/update/:cartId', protect, restrictTo('admin', 'user'), updateCartController)
 
 // DELETE
 router.delete('/delete/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, deleteCartController)

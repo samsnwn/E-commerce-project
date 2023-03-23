@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import { useLocation, useParams, Link } from "react-router-dom";
-import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import baseUrl from "../../config/config";
 import axios from "axios";
 import { cartActions } from "../../redux/cartSlice";
@@ -20,7 +17,7 @@ const ProductPage = () => {
   const wishlist = useSelector((state) => state.wishlist.items);
 
   const [isIncluded, setIsIncluded] = useState(
-    cart.products.some((product) => product._id === id)
+    cart.products?.some((product) => product._id === id)
   );
   let isInWishlist = wishlist.some((p) => p._id === product._id);
 
@@ -66,7 +63,7 @@ const ProductPage = () => {
         </div>
         <div className="flex-1 px-5">
           <h1 className="font-extralight">{product.title}</h1>
-          <p className="my-4"> {product.desc}</p>
+          <p className="my-4"> {product.description}</p>
           <span className="font-thin text-4xl">{product.price}€</span>
 
           {/* Filter Container */}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Outlet, useLocation, useNavigation } from "react-router-dom";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";

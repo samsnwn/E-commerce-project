@@ -54,7 +54,7 @@ const MainCarousel = () => {
       )}
       autoPlay={true}
       interval={3500}
-      transitionTime={1500}
+      transitionTime={1000}
     >
       {Object.values(heroImageImports).map((image, index) => (
         <Box key={`carousel-image-${index}`}>

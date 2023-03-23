@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "@nextui-org/react";
 import axios from "axios";
 import baseUrl from "../../config/config";

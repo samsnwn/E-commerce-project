@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { cartActions } from "../../redux/cartSlice";
@@ -8,19 +8,56 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import RemoveOutlined from "@mui/icons-material/RemoveOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { wishlistActions } from "../../redux/wishlistSlice";
+import axios from "axios";
+import baseUrl from "../../config/config";
 
 const ProductComponent = ({ product }) => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.cart.products);
+  const userProducts = useSelector((state) => state.cart.userProducts);
   const user = useSelector((state) => state.user.currentUser);
   const wishlist = useSelector((state) => state.wishlist.items);
-  let isIncluded = products.some((p) => p._id === product._id);
+  let isIncluded = products?.some((p) => p._id === product._id);
   let isInWishlist = wishlist.some((p) => p._id === product._id)
+  
+  
+  // const setUserCart = async () => {
+  //   if(userProducts.length === 0) {
+  //     const CartToCreate = {
+  //       userId: user.data.user._id,
+  //       products:[
+  //         {
+  //           title: product.title,
+  //           productId: product._id,
+  //           image: product.image,
+  //           price: product.price
+  //         }
+  //       ] 
+  //     }
+  //     const headers = {
+  //       Authorization: `Bearer ${user.accessToken}`,
+  //       "Content-Type": "application/json",
+  //     };
+  //     const newCart = await axios.post( `${baseUrl}/cart/create`, CartToCreate, {headers})
+  //     console.log(newCart.products)
+  //     dispatch(cartActions.setUserProducts(newCart.products));
+  //   } else {
+  //     dispatch(cartActions.addToCart(product));
+  //   }
+  // }
 
 
-  const handleAddToCart = () => {
-    isIncluded = true;
-    dispatch(cartActions.addToCart(product));
+  // const handleAddToCart = async () => {
+  //   if (user) {
+  //       setUserCart()
+  //   } else {
+  //     isIncluded = true;
+  //     dispatch(cartActions.addToCart(product));
+  //   }
+  // };
+  const handleAddToCart = async () => {
+      isIncluded = true;
+      dispatch(cartActions.addToCart(product));
   };
   const handleRemoveFromCart = (product) => {
     isIncluded = false;

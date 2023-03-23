@@ -18,15 +18,17 @@ const userSlice = createSlice({
             state.isFetching=false;
             state.currentUser=action.payload
             state.isLoggedIn=true
+            state.error=false
         },
         loginFailure(state) {
             state.isFetching=false;
             state.error=true
+            state.isLoggedIn=false
         },
         logout(state) {
             state.isLoggedIn=false
             state.currentUser=null
-        }
+        },
     }
 })
 

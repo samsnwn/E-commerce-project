@@ -1,4 +1,5 @@
 const User = require("../models/UserModel");
+const Cart = require("../models/CartModel");
 const ExpressError = require("../utils/ExpressError");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -20,7 +21,8 @@ const createSendToken = (user, statusCode, res) => {
 
   const cookieOptions = { 
     expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-    httpOnly: true
+    httpOnly: true,
+    SameSite: "none",
   }
 
   if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
@@ -153,7 +155,6 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   //  2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
-  console.log(resetToken, "STOP")
   await user.save({ validateBeforeSave: false });
 
   //  3) Send it to user email

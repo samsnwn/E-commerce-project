@@ -1,7 +1,4 @@
-import React from "react";
-import { Card, Text } from "@nextui-org/react";
-import EventPage from "./EventPage";
-import { Link } from "react-router-dom";
+import { Card } from "@nextui-org/react";
 import NextEvents from "../../components/NextEvents";
 
 const Events = () => {

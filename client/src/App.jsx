@@ -1,9 +1,6 @@
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import {
   createBrowserRouter,
-  RouterProvider,
-  useLocation
+  RouterProvider
 } from "react-router-dom";
 import Cart from "./pages/Cart/Cart";
 import Home from "./pages/Home";
@@ -23,6 +20,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/checkout/Checkout";
 import Confirmation from "./pages/checkout/Confirmation";
+import Payment from "./pages/checkout/Payment";
 
 const router = createBrowserRouter([
   {
@@ -35,8 +33,6 @@ const router = createBrowserRouter([
       { path: "products/:category", element: <ProductsList /> },
       { path: "product/:productId", element: <ProductPage /> },
       { path: "cart", element: <Cart /> },
-      // { path: "login", element: <Login /> },
-      // { path: "register", element: <Register /> },
       { path: "email_confirmation/:token", element: <ConfirmEmail /> },
       { path: "forgot_password", element: <ForgotPassword /> },
       { path: "events", element: <Events /> },
@@ -44,8 +40,6 @@ const router = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
       { path: "profile", element: <Profile /> },
-      { path: "checkout", element: <Checkout /> },
-      { path: "checkout/success", element: <Confirmation /> },
     ],
   },
   {
@@ -55,20 +49,14 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: "/checkout-success",
+    element: <Confirmation />
   }
 ]);
 
 const App = () => {
-
-
-  
-  const user = useSelector(state => state.user.currentUser)
-
-  // When page is loaded, first check if user is logged in(send req to backend to check login status)
-  // useEffect(()=> {
-    
-  // },[])
-
   return (
     <RouterProvider router={router} />
   );

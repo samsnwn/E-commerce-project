@@ -1,5 +1,3 @@
-import React from "react";
-import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,6 +5,7 @@ import CartProduct from "../../components/Products/CartProduct";
 import baseUrl from "../../config/config";
 import { cartActions } from "../../redux/cartSlice";
 import axios from "axios";
+import PayButton from "../../components/PayButton";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -14,24 +13,26 @@ const Cart = () => {
   const user = useSelector((state) => state.user.currentUser);
   const wishlist = useSelector((state) => state.wishlist);
 
-  const getUserCart = async () => {
-    const headers = {
-      "Authorization": `Bearer ${user.accessToken}`,
-      "Content-Type": "application/json",
-    };
-    const userCart = await axios.get(
-      `${baseUrl}/cart/user_cart/${user.data.user._id}`,
-      { headers }
-    );
-    if (userCart & userCart.data.length > 0) {
-      dispatch(cartActions.setProducts(userCart.data));
-    }
-  };
+  // useEffect(() => {
+  //   const getUserCart = async () => {
+  //     if (user) {
+  //     const headers = {
+  //       Authorization: `Bearer ${user.accessToken}`,
+  //       "Content-Type": "application/json",
+  //     };
+  //       const userCart = await axios.get(
+  //         `${baseUrl}/cart/user_cart/${user.data.user._id}`,
+  //         { headers }
+  //       );
+  //       console.log(userCart.data.products)
+  //       if (userCart) {
+  //         dispatch(cartActions.setUserProducts(userCart.data.products));
+  //       }
+  //     }
+  //   };
+  //   getUserCart();
+  // }, [user]);
 
-  useEffect(() => {
-    getUserCart();
-    console.log(cart.products)
-  }, [cart.products.length]);
 
   return (
     <div className="min-h-[90vh]">
@@ -73,7 +74,7 @@ const Cart = () => {
                 ORDER SUMMARY
               </div>
               <div>
-                {cart.products.map((product, idx) => (
+                {cart.products.map((product) => (
                   <div key={product._id} className="summaryItem">
                     <span className="summaryItemText">1x {product.title}</span>
                     <span className="summaryItemPrice">{product.price}€</span>
@@ -85,9 +86,8 @@ const Cart = () => {
                 <span className="summaryItemText">Subtotal</span>
                 <span className="summaryItemPrice">{cart.total}€</span>
               </div>
-              <button className="w-full p-2 bg-black text-white font-bold ">
-                <Link to="/checkout">Checkout Now</Link>
-              </button>
+                <PayButton cart={cart.products}/>
+                {/* <Link to="/checkout">Checkout Now</Link> */}
             </div>
           </div>
         </div>

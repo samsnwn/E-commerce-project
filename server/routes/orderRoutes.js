@@ -16,7 +16,7 @@ const {
 } = require("../middleware/verifyToken");
 
 // CREATE
-router.post("/create", protect, verifyToken, createOrderController);
+router.post("/create", createOrderController);
 
 // UPDATE
 router.put("/update/:id", protect, restrictTo("admin"), verifyTokenAndAdmin, updateOrderController);

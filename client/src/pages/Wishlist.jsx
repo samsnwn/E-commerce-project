@@ -1,4 +1,3 @@
-import React from "react";
 import { wishlistActions } from "../redux/wishlistSlice";
 import { useDispatch, useSelector } from "react-redux";
 
