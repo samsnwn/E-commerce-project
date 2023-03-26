@@ -2,12 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const cartInitialState = {
   products: [],
-  // userProducts: [],
-  // userQuantity: 0,
   quantity: 0,
   total: 0,
+  status: null
 };
-
 const cartSlice = createSlice({
   name: "cart",
   initialState: cartInitialState,
@@ -16,10 +14,6 @@ const cartSlice = createSlice({
       state.products = action.payload;
       state.quantity++;
     },
-    // setUserProducts: (state, action) => {
-    //   state.userProducts = action.payload;
-    //   state.userQuantity++;
-    // },
     addToCart(state, action) {
       const isIncluded = state.products.some(
         (product) => product._id === action.payload._id
@@ -44,7 +38,7 @@ const cartSlice = createSlice({
       state.quantity = 0;
       state.total = 0;
     },
-  },
+  }
 });
 
 export const cartActions = cartSlice.actions;

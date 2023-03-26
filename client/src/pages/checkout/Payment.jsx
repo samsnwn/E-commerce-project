@@ -5,6 +5,7 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import baseUrl from "../../config/config";
 
 export default function Payment() {
   const stripe = useStripe();
@@ -60,7 +61,7 @@ export default function Payment() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: `${baseUrl}/checkout-success`,
       },
     });
 

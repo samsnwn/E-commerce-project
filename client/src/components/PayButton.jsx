@@ -32,6 +32,9 @@ const PayButton = ({ cart }) => {
         `${baseUrl}/stripe/create-checkout-session`,
         cart
       );
+      // if(res) {
+      //   const order = await axios.post(`${baseUrl}/orders/create`)
+      // }
       if (res.data.url) {
         window.location.href = res.data.url;
       }

@@ -1,19 +1,55 @@
 const stripe = require('stripe')(process.env.STRIPE_KEY)
 
-let lineItems = []
+
+
+// let lineItems = []
 const createCheckoutSession = async (req, res) => {
-  const items = req.body
-  items.forEach(item => {
-    return lineItems.push({
-      price:item.priceId,
-      quantity:1
-    })
+  const line_items = req.body.map(item => {
+    return {
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.title,
+          images: [item.image],
+          description: item.description ,
+          metadata: {
+            id: item._id,
+          },
+        },
+        unit_amount: item.price * 100,
+      },
+      quantity: 1,
+    }
   })
+  // const items = req.body
+  // items.map(item => {
+  //    return lineItems.push({
+  //     price:item.priceId,
+  //     quantity:1
+  //   })
+  // })
   try {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: lineItems,
+      shipping_address_collection: {allowed_countries: ['ES', 'DE']},
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            fixed_amount: {amount: 0, currency: 'eur'},
+            display_name: 'Free shipping',
+            delivery_estimate: {
+              minimum: {unit: 'business_day', value: 5},
+              maximum: {unit: 'business_day', value: 7},
+            },
+          },
+        },
+      ],
+      phone_number_collection: {
+        enabled:true
+      },
+      line_items,
       mode: 'payment',
       success_url:  `${process.env.CLIENT_URL}/checkout-success`,
       cancel_url:`${process.env.CLIENT_URL}/cart`,

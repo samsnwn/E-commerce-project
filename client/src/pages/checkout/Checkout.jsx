@@ -13,7 +13,7 @@ import PayButton from "../../components/PayButton";
 import { Elements } from "@stripe/react-stripe-js";
 
 const stripePromise = loadStripe(
-  "pk_test_51LgU7yConHioZHhlAcZdfDAnV9643a7N1CMpxlKtzI1AUWLsRyrord79GYzZQ6m8RzVnVQaHsgbvN1qSpiDegoPi006QkO0Mlc"
+ "pk_test_51MQCGjJNdqxiOr5VdcjUVI4P5yM5jm3WuE2Zs40Uw6i4qsLDDPNGGxj0sMjRfgmYhUvqCYONiixXtFXDEcek1wsq00VZUGeA04"
 );
 
 const Checkout = () => {
@@ -53,8 +53,8 @@ const Checkout = () => {
       address: values.shippingAddress,
     };
 
-    const response = await axios.post(`${baseUrl}/orders/create`, requestBody);
-    // const session = await response.json();
+    // const response = await axios.post(`${baseUrl}/orders/create`, requestBody);
+    const session = await response.json();
     console.log(response);
     await stripe.redirectToCheckout({
       sessionId: response.data._id,
@@ -174,7 +174,7 @@ const Checkout = () => {
                     }}
                   >NEXT</Button>
                 ) : (
-                  <PayButton cartItems={cart.products}>CHECKOUT</PayButton>
+                  <PayButton cart={cart.products}>CHECKOUT</PayButton>
                 )}
               </Box>
             </form>
