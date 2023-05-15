@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {registrationController, loginController, forgotPassword, resetPassword, updatePassword, protect, restrictTo} = require('../controllers/authControllers')
+const {registrationController, loginController, forgotPassword, resetPassword, updatePassword, protect, restrictTo, logout} = require('../controllers/authControllers')
 const {checkingUser} = require('../middleware/registerValidation')
 
 // REGISTER
@@ -16,6 +16,7 @@ router.patch('/resetPassword/:token', resetPassword)
 router.patch('/updateMyPassword', protect, updatePassword)
 
 // LOGOUT
+router.post('/logout', logout)
 
 
 

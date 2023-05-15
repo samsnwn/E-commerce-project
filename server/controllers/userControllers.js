@@ -3,6 +3,8 @@ const ExpressError = require("../utils/ExpressError");
 const bcrypt = require("bcrypt");
 const catchAsync = require('../utils/catchAsync');
 
+const asyncHandler = require("express-async-handler");
+
 const filterObj = (obj, ...allowedFields) => {
     const newObj = {}
     Object.keys(obj).forEach((el)=> {

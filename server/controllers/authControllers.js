@@ -6,9 +6,8 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const sendEmail = require("../utils/email");
 const catchAsync = require("../utils/catchAsync");
+const asyncHandler = require("express-async-handler");
 const crypto = require("crypto");
-
-
 
 const signToken = (id, isAdmin) => {
   return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET_KEY, {
@@ -19,17 +18,19 @@ const signToken = (id, isAdmin) => {
 const createSendToken = (user, statusCode, res) => {
   const accessToken = signToken(user._id, user.isAdmin);
 
-  const cookieOptions = { 
-    expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+  const cookieOptions = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
     httpOnly: true,
     SameSite: "none",
-  }
+  };
 
-  if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", accessToken, cookieOptions);
-  
-// Remove password from the output
+
+  // Remove password from the output
   user.password = undefined;
 
   res
@@ -38,30 +39,48 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 // Registration Controller
-exports.registrationController = async (req, res, next) => {
+exports.registrationController = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+
+  const userExists = await User.findOne({ email });
+
+  if (userExists) {
+    res.status(400);
+    throw new Error(`User already exists`);
+  }
   // Create new User instance
   const newUser = new User({
     name: req.body.name,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    email: req.body.email
+    email: req.body.email,
   });
 
-  try {
-    // Password hash is done between here by the UserSchema
-    // Save user to DB
-    const savedUser = await User.create(newUser);
+  // Password hash is done between here by the UserSchema
+  // Save user to DB
+  const savedUser = await User.create(newUser);
 
-    // Make password undefined for security purposes
+  if (savedUser) {
     savedUser.password = undefined;
-
-    // Create token with user id and isAdmin as payload
-    createSendToken(savedUser, 201, res);
-  } catch (err) {
-    // error handling
-    next(new ExpressError("Failed to register, please try again", 500));
+    res
+      .status(201)
+      .json({
+        id: savedUser._id,
+        name: savedUser.name,
+        email: savedUser.email,
+      });
+  } else {
+    throw new Error('Invalid user data')
   }
-};
+
+  // Make password undefined for security purposes
+
+  // // Create token with user id and isAdmin as payload
+  // createSendToken(savedUser, 201, res);
+
+  // // error handling
+  // next(new ExpressError("Failed to register, please try again", 500));
+});
 
 // Login Controller
 exports.loginController = async (req, res, next) => {
@@ -170,8 +189,13 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       subject: "Your password reset token (valid for 10 min)",
       message,
     });
-    res.status(200).json({ status: "success", message: "Token sent to email", 
-    resetToken: resetToken });
+    res
+      .status(200)
+      .json({
+        status: "success",
+        message: "Token sent to email",
+        resetToken: resetToken,
+      });
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
@@ -211,22 +235,26 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select("+password");
-  const {currentPassword ,newPassword, newPasswordConfirm } = req.body;
+  const { currentPassword, newPassword, newPasswordConfirm } = req.body;
 
   // 2) Check if posted password is correct
   if (!(await user.correctPassword(currentPassword, user.password))) {
     return next(new ExpressError("Password is incorrect", 401));
   }
 
-  if(newPassword !== newPasswordConfirm) {
+  if (newPassword !== newPasswordConfirm) {
     return next(new ExpressError("Passwords do not match", 401));
   }
 
   // 3) Update the password
-  user.password = newPassword
-  user.passwordConfirm = newPasswordConfirm
+  user.password = newPassword;
+  user.passwordConfirm = newPasswordConfirm;
   await user.save();
 
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
+
+exports.logout = (req, res, next) => {
+  res.status(200).json({ message: "Logout User" });
+};

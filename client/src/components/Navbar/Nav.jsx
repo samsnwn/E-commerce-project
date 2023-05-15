@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Navbar,
   Button,
@@ -12,24 +11,13 @@ import {
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import { CartIcon } from "../Cart/CartIcon";
 import { useSelector, useDispatch } from "react-redux";
-import { userActions } from "../../redux/userSlice";
-import { cartActions } from "../../redux/cartSlice";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Avatar } from "@nextui-org/react";
 
 const Nav = () => {
   const quantity = useSelector((state) => state.cart.quantity);
   const user = useSelector((state) => state.user.currentUser);
-  // const cart = useSelector((state) => state.cart.cart);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const [isInvisible, setIsInvisible] = useState(false);
-
-  const logoutHandler = () => {
-    dispatch(userActions.logout());
-    dispatch(cartActions.clearCart());    
-    navigate("/");
-  };
 
   const collapseItems = [
     "Categories",
@@ -40,7 +28,6 @@ const Nav = () => {
     "Login",
     "Sign Up",
   ];
-  // console.log(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).cart))
 
   return (
     <Navbar isBordered variant="floating">
@@ -64,8 +51,6 @@ const Nav = () => {
       </Navbar.Content>
 
       <Navbar.Content enableCursorHighlight hideIn="sm" variant="underline">
-      <Navbar.Link href="/">Home</Navbar.Link>
-
         <Dropdown isBordered>
           <Navbar.Item>
             <Dropdown.Button
@@ -133,23 +118,35 @@ const Nav = () => {
         </Dropdown>
         <Navbar.Link href="/events">Events</Navbar.Link>
         <Navbar.Link href="/about">About us</Navbar.Link>
+        <Navbar.Link href="/contact">Contact</Navbar.Link>
       </Navbar.Content>
-      <Navbar.Content hideIn='sm'>
+      <Navbar.Content>
+        {/* <Input
+            type='search'
+            aria-label='search input'
+            size="sm"
+            bordered
+            isInvisible
+            placeholder="Search..."
+            contentRight={<SearchSharpIcon />}
+          /> */}
+        <SearchSharpIcon />
         {user ? (
-          <>
-            <Navbar.Link href="/profile">My Profile</Navbar.Link>
-            <Button color="inherit" onPress={logoutHandler}>
-              Logout{" "}
-            </Button>
-          </>
+          <Navbar.Link href="/profile">
+            <Avatar
+              text={user.data.user.name.slice(0, 1).toUpperCase()}
+              size="sm"
+              bordered
+              color="gradient"
+              pointer="true"
+              textColor="white"
+            />
+          </Navbar.Link>
         ) : (
-          <>
-            <Navbar.Link href="/login">Login</Navbar.Link>
-            <Navbar.Link href="/register">Register</Navbar.Link>
-          </>
+          <Navbar.Link href="/login">
+            <AccountCircleIcon />
+          </Navbar.Link>
         )}
-          </Navbar.Content>
-          <Navbar.Content>
         <Navbar.Link href="/cart">
           <Badge
             color="primary"
@@ -157,10 +154,10 @@ const Nav = () => {
             isInvisible={isInvisible}
             shape="circle"
           >
-            <CartIcon fill="currentColor" size={30} />
+            <CartIcon fill="currentColor" size={25} />
           </Badge>
         </Navbar.Link>
-        </Navbar.Content>
+      </Navbar.Content>
       <Navbar.Collapse>
         {collapseItems.map((item, index) => (
           <Navbar.CollapseItem key={index}>

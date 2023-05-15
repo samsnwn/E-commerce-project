@@ -8,6 +8,7 @@ const ForgotPassword = () => {
 
     const onChangeHandler = (e) => {
         setEmail(e.target.value.trim())
+        
     }
 
     const submitHandler = async(e) => {
@@ -25,7 +26,6 @@ const ForgotPassword = () => {
         <input type="email" name='email' className='border-2' onChange={onChangeHandler} required/>
         <button type="submit" className="">Send password reset</button>
         </form>
-
         {message && <h2 >{message}</h2>}
     </div>
   )

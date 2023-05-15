@@ -4,15 +4,19 @@ const cartInitialState = {
   products: [],
   quantity: 0,
   total: 0,
-  status: null
+  status: null,
+  userProducts: {
+    products: [],
+    cartId: null,
+  },
 };
 const cartSlice = createSlice({
   name: "cart",
   initialState: cartInitialState,
   reducers: {
     setProducts: (state, action) => {
-      state.products = action.payload;
-      state.quantity++;
+      state.products = [...state.products, action.payload];
+      state.id = action.payload._id;
     },
     addToCart(state, action) {
       const isIncluded = state.products.some(
@@ -38,7 +42,7 @@ const cartSlice = createSlice({
       state.quantity = 0;
       state.total = 0;
     },
-  }
+  },
 });
 
 export const cartActions = cartSlice.actions;

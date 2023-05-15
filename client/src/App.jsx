@@ -21,6 +21,7 @@ import Profile from "./pages/Profile";
 import Checkout from "./pages/checkout/Checkout";
 import Confirmation from "./pages/checkout/Confirmation";
 import Payment from "./pages/checkout/Payment";
+import ContactForm from "./pages/Contact";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home />, },
       { path: "products", element: <AllProducts /> },
+      { path: "contact", element: <ContactForm /> },
       { path: "products/:category", element: <ProductsList /> },
       { path: "product/:productId", element: <ProductPage /> },
       { path: "cart", element: <Cart /> },

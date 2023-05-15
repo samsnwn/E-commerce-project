@@ -74,7 +74,7 @@ const Cart = () => {
                 ORDER SUMMARY
               </div>
               <div>
-                {cart.products.map((product) => (
+                {cart.products.length > 0 && cart.products.map((product) => (
                   <div key={product._id} className="summaryItem">
                     <span className="summaryItemText">1x {product.title}</span>
                     <span className="summaryItemPrice">{product.price}€</span>

@@ -1,17 +1,14 @@
-const stripe = require('stripe')(process.env.STRIPE_KEY)
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-
-
-// let lineItems = []
 const createCheckoutSession = async (req, res) => {
-  const line_items = req.body.map(item => {
+  const line_items = req.body.map((item) => {
     return {
       price_data: {
         currency: "eur",
         product_data: {
           name: item.title,
           images: [item.image],
-          description: item.description ,
+          description: item.description,
           metadata: {
             id: item._id,
           },
@@ -19,46 +16,41 @@ const createCheckoutSession = async (req, res) => {
         unit_amount: item.price * 100,
       },
       quantity: 1,
-    }
-  })
-  // const items = req.body
-  // items.map(item => {
-  //    return lineItems.push({
-  //     price:item.priceId,
-  //     quantity:1
-  //   })
-  // })
-  try {
+    };
+  });
 
+  try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      shipping_address_collection: {allowed_countries: ['ES', 'DE']},
+      payment_method_types: ["card"],
+      shipping_address_collection: { allowed_countries: ["ES", "DE"] },
       shipping_options: [
         {
           shipping_rate_data: {
-            type: 'fixed_amount',
-            fixed_amount: {amount: 0, currency: 'eur'},
-            display_name: 'Free shipping',
+            type: "fixed_amount",
+            fixed_amount: { amount: 0, currency: "eur" },
+            display_name: "Free shipping",
             delivery_estimate: {
-              minimum: {unit: 'business_day', value: 5},
-              maximum: {unit: 'business_day', value: 7},
+              minimum: { unit: "business_day", value: 5 },
+              maximum: { unit: "business_day", value: 7 },
             },
           },
         },
       ],
       phone_number_collection: {
-        enabled:true
+        enabled: true,
       },
       line_items,
-      mode: 'payment',
-      success_url:  `${process.env.CLIENT_URL}/checkout-success`,
-      cancel_url:`${process.env.CLIENT_URL}/cart`,
+      mode: "payment",
+      success_url: `${process.env.CLIENT_URL}/checkout-success`,
+      cancel_url: `${process.env.CLIENT_URL}/cart`,
     });
 
     res.json({ url: session.url });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ error: 'An error occurred while creating checkout session' });
+    res
+      .status(500)
+      .send({ error: "An error occurred while creating checkout session" });
   }
 };
 

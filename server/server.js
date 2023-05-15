@@ -13,6 +13,9 @@ const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 const xss = require('xss-clean')
 const hpp = require('hpp')
+const {notFound} = require("./middleware/errorMiddleware.js")
+const {errorHandler} = require("./middleware/errorMiddleware.js")
+const {connectDB} = require("./config/db.js")
 
 
 
@@ -55,7 +58,7 @@ app.use(
 // app.use(express.static(`${__dirname}/public`));
 
 app.use(cors({origin: 'http://localhost:5173', credentials: true}))
-app.use(express.urlencoded({extended: false}))
+app.use(express.urlencoded({extended: true}))
 app.use(cookieParser());
 
 // Route imports
@@ -65,12 +68,11 @@ const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const stripeRoutes = require("./routes/stripeRoutes");
+const contactRoute = require("./routes/contactRoute");
 
 // Connect to database
-mongoose.connect(process.env.DB_LINK, (err) => {
-  if (err) throw err;
-  console.log("MongoDB is connected");
-});
+connectDB()
+
 
 // Routes
 app.use('/auth', authRoutes)
@@ -79,6 +81,10 @@ app.use('/products', productRoutes)
 app.use('/cart', cartRoutes)
 app.use('/orders', orderRoutes)
 app.use('/stripe', stripeRoutes)
+app.use('/contact', contactRoute)
+
+app.use(notFound)
+app.use(errorHandler)
 
 
 app.listen(PORT, () => {

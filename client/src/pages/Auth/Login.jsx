@@ -27,8 +27,11 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     dispatch(userActions.loginStart());
+
     try {
       const res = await axios.post(`${baseUrl}/auth/login`, userData);
+      console.log(res)
+
       if (res) {
         dispatch(userActions.loginSuccess(res.data));
         dispatch(cartActions.clearCart());

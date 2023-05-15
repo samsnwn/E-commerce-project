@@ -13,7 +13,7 @@ const CartProduct = () => {
   return (
     <>
     <div className="info flex-[3]">
-      {cart.products.map((product, i) => (
+      {cart.products.length > 0 && cart.products.map((product, i) => (
         <div className="flex justify-between items-center p-4 border border-gray-200 rounded-lg mb-4 w-[80%]">
       <div className="flex items-center space-x-4">
         <img
