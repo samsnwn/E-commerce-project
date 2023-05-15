@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const { protect, restrictTo } = require('../controllers/authControllers')
+const { protect, restrictTo } = require('../middleware/authMiddleware')
 const { updateController, deleteController, getUserController, getAllUsersController, getUserStatsController, updateMe, deleteMe } = require('../controllers/userControllers')
-const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
+const { verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
 
 // UPDATE
 router.put('/update/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, updateController)

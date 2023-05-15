@@ -2,10 +2,9 @@ const jwt = require("jsonwebtoken");
 const ExpressError = require("../utils/ExpressError");
 
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
   
-  if (authHeader) {
-    const token = authHeader.split(" ")[1];
+  const token = req.cookies.jwt
+  if (token) {
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
       if (err) {
         throw new ExpressError("Token is not valid!", 403);

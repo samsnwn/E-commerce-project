@@ -89,7 +89,7 @@ exports.getAllUsersController = async (req, res, next) => {
     const query = req.query.new
     try {
         const allUsers = query ? await User.find().select('-password').sort({_id:-1}).limit(5) : await User.find().select('-password');
-        res.status(200).json({allUsers})
+        res.status(200).json(allUsers)
     } catch (err) {
         next(new ExpressError('Failed to retrieve all users, try again please!', 500))
     }

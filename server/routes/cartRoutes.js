@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { protect, restrictTo } = require('../controllers/authControllers')
+const { protect, restrictTo } = require('../middleware/authMiddleware')
 const { createCartController, updateCartController, deleteCartController, getUserCartController, getAllCartsController} = require('../controllers/cartControllers')
 
 const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
