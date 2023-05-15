@@ -145,7 +145,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update changedPasswordAt property for the user(done in userSchema)
 
   // 4) Log user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, res);
+  res.status(201).json({message: "success"})
 });
 
 // Update Password controller
