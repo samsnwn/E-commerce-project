@@ -12,7 +12,7 @@ import baseUrl from "../config/config";
 const ShoppingList = ({cat}) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState("all");
-  const items = useSelector((state) => state.cart.items);
+  // const items = useSelector((state) => state.cart.items);
   const breakPoint = useMediaQuery("(min-width:600px)");
 
   const handleChange = (event, newValue) => {

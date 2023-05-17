@@ -6,7 +6,7 @@ const signToken = (id, isAdmin) => {
   });
 };
 
-const createSendToken = (user, res) => {
+const createSendToken = (user, statusCode, res) => {
   const accessToken = signToken(user._id, user.isAdmin);
 
   const cookieOptions = {
@@ -21,11 +21,9 @@ const createSendToken = (user, res) => {
   user.password = undefined;
   
   res.cookie("jwt", accessToken, cookieOptions);
-
-
-  // res
-  //   .status(statusCode)
-  //   .json({ status: "success", accessToken, data: { user } });
+  res
+    .status(statusCode)
+    .json({ status: "success", data: { id:user._id, email:user.email, name: user.name } });
 };
 
 module.exports = createSendToken;

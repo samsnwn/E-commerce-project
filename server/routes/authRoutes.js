@@ -2,6 +2,8 @@ const router = require('express').Router()
 const {registrationController, loginController, forgotPassword, resetPassword, updatePassword, logout} = require('../controllers/authControllers')
 const {checkingUser} = require('../middleware/registerValidation')
 const {protect, restrictTo} = require('../middleware/authMiddleware')
+const passport = require("passport")
+
 
 // REGISTER
 router.post('/register', checkingUser, registrationController)
@@ -18,6 +20,11 @@ router.patch('/updateMyPassword', protect, updatePassword)
 
 // LOGOUT
 router.post('/logout', logout)
+
+router.get("/google", passport.authenticate("google", {scope: ["profile"]}))
+router.get("/auth/callback/google", passport.authenticate("google", {failureRedirect: "/", }), (req, res) => {
+  res.redirect("/events")
+})
 
 
 

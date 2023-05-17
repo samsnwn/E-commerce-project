@@ -1,7 +1,9 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
 import userReducer from "./userSlice";
+import authReducer from "./authSlice";
 import wishlistReducer from "./wishlistSlice";
+import { apiSlice } from "./apiSlice";
 import {
   persistStore,
   persistReducer,
@@ -20,20 +22,30 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({user: userReducer, cart: cartReducer, wishlist: wishlistReducer})
+const rootReducer = combineReducers({
+  user: userReducer,
+  auth: authReducer,
+  cart: cartReducer,
+  wishlist: wishlistReducer,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    user: userReducer,
+    auth: authReducer,
+    cart: cartReducer,
+    wishlist: wishlistReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(apiSlice.middleware),
 });
-
 
 export let persistor = persistStore(store);
 

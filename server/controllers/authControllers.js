@@ -1,14 +1,14 @@
 const User = require("../models/UserModel");
 const Cart = require("../models/CartModel");
-const ExpressError = require("../utils/ExpressError");
+
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const sendEmail = require("../utils/email");
-const catchAsync = require("../utils/catchAsync");
-const asyncHandler = require("express-async-handler");
 const crypto = require("crypto");
-const createSendToken = require("../utils/generateToken");
 
+const asyncHandler = require("express-async-handler");
+const ExpressError = require("../utils/ExpressError");
+const sendEmail = require("../utils/email");
+const createSendToken = require("../utils/generateToken");
 
 // Registration Controller
 exports.registrationController = asyncHandler(async (req, res, next) => {
@@ -17,8 +17,7 @@ exports.registrationController = asyncHandler(async (req, res, next) => {
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error(`User already exists`);
+    throw new ExpressError(`User already exists`, 404);
   }
   // Create new User instance
   const newUser = new User({
@@ -38,50 +37,33 @@ exports.registrationController = asyncHandler(async (req, res, next) => {
     savedUser.password = undefined;
 
     // Create token with user id and isAdmin as payload
-    createSendToken(savedUser, res)
-
-    res
-      .status(201)
-      .json({
-        id: savedUser._id,
-        name: savedUser.name,
-        email: savedUser.email,
-      });
+    createSendToken(savedUser, 201, res);
   } else {
-    throw new Error('Invalid user data')
+    throw new ExpressError("Invalid user data", 500);
   }
-
 });
 
 // Login Controller
 exports.loginController = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-    // checks if email exists in DB
-    const user = await User.findOne({ email }).select("+password");
+  // checks if email exists in DB
+  const user = await User.findOne({ email }).select("+password");
 
-    // If user does not exist or password is incorrect(done in UserSchema)
-    if (!user || !(await user.correctPassword(password, user.password))) {
-     throw new Error("Invalid email or password");
-    }
+  // If user does not exist or password is incorrect(done in UserSchema)
+  if (!user || !(await user.correctPassword(password, user.password))) {
+    throw new ExpressError("Invalid email or password", 401);
+  }
 
-    // Make password undefined for security purposes
-    user.password = undefined;
+  // Make password undefined for security purposes
+  user.password = undefined;
 
-    // If everything is ok, send token to client
-    createSendToken(user, res);
-
-    res
-    .status(201)
-    .json({
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    });
+  // If everything is ok, send token to client
+  createSendToken(user, 201, res);
 });
 
 // Forgot Password Controller
-exports.forgotPassword = catchAsync(async (req, res, next) => {
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
   //  1) Get user based on posted email+
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -105,13 +87,10 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
       subject: "Your password reset token (valid for 10 min)",
       message,
     });
-    res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Token sent to email",
-        resetToken: resetToken,
-      });
+    res.status(200).json({
+      status: "success",
+      message: "Token sent to email",
+    });
   } catch (err) {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
@@ -121,7 +100,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 // Reset Password controller
-exports.resetPassword = catchAsync(async (req, res, next) => {
+exports.resetPassword = asyncHandler(async (req, res, next) => {
   // 1) Get user based on the token
   const hashedToken = crypto
     .createHash("sha256")
@@ -145,12 +124,11 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update changedPasswordAt property for the user(done in userSchema)
 
   // 4) Log user in, send JWT
-  createSendToken(user, res);
-  res.status(201).json({message: "success"})
+  createSendToken(user, 201, res);
 });
 
 // Update Password controller
-exports.updatePassword = catchAsync(async (req, res, next) => {
+exports.updatePassword = asyncHandler(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select("+password");
   const { currentPassword, newPassword, newPasswordConfirm } = req.body;
@@ -174,10 +152,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 });
 
 // Logout controller
-exports.logout = asyncHandler(async(req, res, next) => {
+exports.logout = asyncHandler(async (req, res, next) => {
   res.cookie("jwt", "", {
     httpOnly: true,
-    expires: new Date(0)
-  })
+    expires: new Date(0),
+  });
   res.status(200).json({ message: "User Logged out" });
 });

@@ -3,6 +3,9 @@ import { Input } from "@nextui-org/react";
 import axios from "axios";
 import baseUrl from "../../config/config";
 import { Link, useNavigate } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
+import Button from "../../components/UI/Button";
+
 
 const Register = () => {
   const [userData, setUserData] = useState();
@@ -72,6 +75,12 @@ const Register = () => {
             onChange={onChangeHandler}
             name="passwordConfirm"
           />
+                    <Button 
+        outline 
+        label="Continue with Google"
+        icon={FcGoogle}
+        onClick={() => {}}
+      />
           <span className="text-sm my-6">
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>

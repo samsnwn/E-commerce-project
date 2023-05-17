@@ -1,9 +1,10 @@
-const asyncHandler = require("express-async-handler");
 const User = require("../models/UserModel");
-const ExpressError = require("../utils/ExpressError");
+
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 
+const asyncHandler = require("express-async-handler");
+const ExpressError = require("../utils/ExpressError");
 
 
 exports.protect = asyncHandler(async (req, res, next) => {
@@ -12,8 +13,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
   // 1) Getting token and check if exists
 
   if (!token) {
-    res.status(401);
-    throw new Error("You are not logged in.Please log in to get access");
+    // throw new ExpressError("You are not logged in.Please log in to get access", 401); Same as below
+    return next(new ExpressError("You are not logged in.Please log in to get access", 401));
   }
 
   try {
@@ -26,23 +27,19 @@ exports.protect = asyncHandler(async (req, res, next) => {
     // 3) Check if user still exists
     const currentUser = await User.findById(decoded.id).select("-password");
     if (!currentUser) {
-      res.status(401);
-      throw new Error("The user does not longer exist!");
+      throw new ExpressError("The user does not longer exist!", 401);
       // 4) Check if user changed password after token was issued
     } else if (currentUser.changedPasswordAfter(decoded.iat)) {
-      res.status(401);
-      throw new Error("User recently changed password. Please login again");
+      throw new ExpressError("User recently changed password. Please login again", 401);
     }
     // GRANT ACCESS TO PROTECTED ROUTE
     req.user = currentUser;
     next();
   } catch (err) {
     if(err.name === "TokenExpiredError") {
-      res.status(401);
-      throw new Error("Token expired!. Please log in again");
+      throw new ExpressError("Token expired!. Please log in again", 401);
     } else {
-      res.status(401);
-      throw new Error("Invalid token!");
+      throw new ExpressError("Invalid token!", 401);
     }
   }
 });

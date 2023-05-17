@@ -15,8 +15,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Avatar } from "@nextui-org/react";
 
 const Nav = () => {
-  const quantity = useSelector((state) => state.cart.quantity);
-  const user = useSelector((state) => state.user.currentUser);
+  // const quantity = useSelector((state) => state.cart.quantity);
+  const userInfo = useSelector((state) => state.auth.userInfo);
   const [isInvisible, setIsInvisible] = useState(false);
 
   const collapseItems = [
@@ -131,10 +131,10 @@ const Nav = () => {
             contentRight={<SearchSharpIcon />}
           /> */}
         <SearchSharpIcon />
-        {user ? (
+        {userInfo ? (
           <Navbar.Link href="/profile">
             <Avatar
-              text={user.data.user.name.slice(0, 1).toUpperCase()}
+              text={userInfo.name.slice(0, 1).toUpperCase()}
               size="sm"
               bordered
               color="gradient"
@@ -150,7 +150,7 @@ const Nav = () => {
         <Navbar.Link href="/cart">
           <Badge
             color="primary"
-            content={quantity >= 1 ? quantity : ""}
+            // content={quantity >= 1 ? quantity : ""}
             isInvisible={isInvisible}
             shape="circle"
           >
