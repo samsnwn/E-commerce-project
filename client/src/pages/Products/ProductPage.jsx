@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import baseUrl from "../../config/config";
 import axios from "axios";
 import { cartActions } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +23,7 @@ const ProductPage = () => {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await axios.get(`${baseUrl}/products/product/${id}`);
+        const res = await axios.get(`api/products/product/${id}`);
         setProduct(res.data);
       } catch (err) {
         console.log(err);

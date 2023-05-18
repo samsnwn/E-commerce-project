@@ -1,3 +1,7 @@
+import image1 from "../../../public/images/pexels-photo-2983464.jpeg"
+import image2 from "../../../public/images/pexels-photo-5480696.jpeg"
+import image3 from "../../../public/images/pexels-photo-5886041.webp"
+
 export const sliderItems = [
     {
       id: 1,
@@ -25,19 +29,19 @@ export const sliderItems = [
   export const categories = [
     {
       id: 1,
-      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      img: image1,
       title: "Shirts",
       cat: "shirts"
     },
     {
       id: 2,
-      img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      img: image2,
       title: "Jeans",
       cat: "jeans"
     },
     {
       id: 3,
-      img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
+      img: image3,
       title: "Jackets",
       cat:"jackets"
     },

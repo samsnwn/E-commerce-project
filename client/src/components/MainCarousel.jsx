@@ -4,11 +4,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
-import image1 from '../assets/images/brooke-cagle-aVT8VkmzML4-unsplash.jpeg';
-import image2 from '../assets/images/chris-ghinda-wK2ESlRRZQ8-unsplash.jpeg';
-import image3 from '../assets/images/jc-gellidon-JM8TkWJ9UIY-unsplash.jpeg';
-import image4 from '../assets/images/larm-rmah-R1Ku62Z7zqE-unsplash.jpeg';
-import image5 from '../assets/images/toa-heftiba-dti56waifB4-unsplash.jpeg';
+import image1 from '../../public/images/brooke-cagle-aVT8VkmzML4-unsplash.jpeg';
+import image2 from '../../public/images/chris-ghinda-wK2ESlRRZQ8-unsplash.jpeg';
+import image3 from '../../public/images/jc-gellidon-JM8TkWJ9UIY-unsplash.jpeg';
+import image4 from '../../public/images/larm-rmah-R1Ku62Z7zqE-unsplash.jpeg';
+import image5 from '../../public/images/toa-heftiba-dti56waifB4-unsplash.jpeg';
 
 
 const heroImageImports = [ image1, image2, image3, image4, image5];

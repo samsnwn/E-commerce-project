@@ -42,7 +42,6 @@ const Home = () => {
       <h1 className="text-center mt-10">All Categories</h1>
       <Categories />
       <ShoppingList/>
-      {/* <AllProducts /> */}
       <NextEvents />
     </div>
   );

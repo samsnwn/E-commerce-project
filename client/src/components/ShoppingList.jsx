@@ -26,10 +26,10 @@ const ShoppingList = ({cat}) => {
       try {
         const res = await axios.get(
           cat
-          ? `${baseUrl}/products?category=${cat}`
-          : `${baseUrl}/products`
+          ? `api/products?category=${cat}`
+          : `api/products`
           );
-        setProducts(res.data);
+        setProducts(res.data.products);
       } catch (err) {
         console.log(err);
       }

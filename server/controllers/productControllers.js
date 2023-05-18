@@ -73,7 +73,7 @@ exports.getAllProductsController = async (req, res, next) => {
             products = await Product.find()
         }
 
-        res.status(200).json(products)
+        res.status(200).json({nbHits: products.length, products})
     } catch (err) {
         next(new ExpressError('Failed to retrieve all products, try again please!', 500))
     }
