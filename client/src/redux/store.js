@@ -36,7 +36,7 @@ const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     user: userReducer,
     auth: authReducer,
-    // cart: cartReducer,
+    cart: cartReducer,
     // wishlist: wishlistReducer,
   },
   middleware: (getDefaultMiddleware) =>

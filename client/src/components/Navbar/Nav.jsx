@@ -15,18 +15,17 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Avatar } from "@nextui-org/react";
 
 const Nav = () => {
-  // const quantity = useSelector((state) => state.cart.quantity);
   const userInfo = useSelector((state) => state.auth.userInfo);
+  const { cartItems } = useSelector((state) => state.cart);
   const [isInvisible, setIsInvisible] = useState(false);
 
   const collapseItems = [
     "Categories",
     "All Products",
     "About Us",
-    "Team",
-    "Help & Feedback",
-    "Login",
-    "Sign Up",
+    "Contact",
+    "Events",
+    "Sign In",
   ];
 
   return (
@@ -151,7 +150,7 @@ const Nav = () => {
           <Navbar.Link href="/cart">
             <Badge
               color="primary"
-              // content={quantity >= 1 ? quantity : ""}
+              content={cartItems.length >= 1 ? cartItems.length : ""}
               isInvisible={isInvisible}
               shape="circle"
             >

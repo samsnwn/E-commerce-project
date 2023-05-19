@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { cartActions } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,15 +14,16 @@ const ProductPage = () => {
   const { productId } = useParams();
   const { data, isLoading, error } = useGetProductQuery(productId);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   // const [product, setProduct] = useState({});
-  // const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.cart);
   // const wishlist = useSelector((state) => state.wishlist.items);
 
-  // const [isIncluded, setIsIncluded] = useState(
-  //   cart.products?.some((product) => product._id === id)
-  // );
+  const [isIncluded, setIsIncluded] = useState(
+    cart.products?.some((product) => product._id === id)
+  );
   // let isInWishlist = wishlist.some((p) => p._id === product._id);
 
   // useEffect(() => {
@@ -37,14 +38,14 @@ const ProductPage = () => {
   //   getProduct();
   // }, [productId]);
 
-  // const handleAddToCart = () => {
-  //   setIsIncluded(true);
-  //   dispatch(cartActions.addToCart(product));
-  // };
-  // const handleRemoveFromCart = () => {
-  //   setIsIncluded(false);
-  //   dispatch(cartActions.removeFromCart(product));
-  // };
+  const handleAddToCart = () => {
+    setIsIncluded(true);
+    dispatch(cartActions.addToCart({...data}));
+  };
+  const handleRemoveFromCart = () => {
+    setIsIncluded(false);
+    dispatch(cartActions.removeFromCart(data));
+  };
 
   // const handleAddToWishlist = () => {
   //   isInWishlist = true;
@@ -84,7 +85,7 @@ const ProductPage = () => {
             </div>
             {/* Add Container */}
             <div className="flex items-center w-1/2 justify-between">
-              {/* {isIncluded ? (
+              {isIncluded ? (
               <button
                 className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
                 onClick={handleRemoveFromCart}
@@ -99,7 +100,7 @@ const ProductPage = () => {
                 Add to cart
               </button>
             )}
-            {isInWishlist ? (
+            {/* {isInWishlist ? (
               <button
                 className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
                 onClick={()=>handleRemoveFromWishlist(product)}
