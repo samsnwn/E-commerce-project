@@ -13,7 +13,7 @@ router.put('/update/:id', protect, restrictTo('admin'), verifyTokenAndAdmin, upd
 router.delete('/delete/:id', protect, restrictTo('admin'), verifyTokenAndAdmin, deleteProductController)
 
 // GET PRODUCT
-router.get('/product/:id', getProductController)
+router.get('/:id', getProductController)
 
 // GET ALL PRODUCTS
 router.get('/', getAllProductsController)

@@ -6,29 +6,30 @@ import Nav from "../components/Navbar/Nav";
 import Newsletter from "../components/Newsletter";
 
 const RootLayout = () => {
-  const navigation = useNavigation()
-  const {pathname} = useLocation();
+  const navigation = useNavigation();
+  const { pathname } = useLocation();
 
   const ScrollToTop = () => {
     useEffect(() => {
-      window.scrollTo(0,0)
-    },[pathname])
-    return null
-  }
+      window.scrollTo(0, 0);
+    }, [pathname]);
+    return null;
+  };
 
   return (
     <>
-    <ScrollToTop />
-      <Announcement />
+      <ScrollToTop />
+      <header>
+        <Announcement />
+      </header>
       <Nav />
-
       <main>
         {/* {navigation.state === "loading" && <h2>Loading...</h2>} */}
         <Outlet />
       </main>
       <footer>
-        <Newsletter/>
-        {/* <Footer/> */}
+        <Newsletter />
+        <Footer />
       </footer>
     </>
   );

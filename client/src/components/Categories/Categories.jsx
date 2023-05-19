@@ -1,14 +1,17 @@
-import {categories} from '../../assets/api/salesData'
-import CategoryItem from './CategoryItem'
+import { categories } from "../../assets/api/salesData";
+import CategoryItem from "./CategoryItem";
+import Container from "../../components/UI/Container";
 
 const Categories = () => {
   return (
-    <div className="flex p-4 justify-between">
+    <Container>
+      <div className="flex p-4 justify-between">
         {categories.map((item, index) => (
-        <CategoryItem key={index} item={item}/>
+          <CategoryItem key={index} item={item} />
         ))}
-    </div>
-  )
-}
+      </div>
+    </Container>
+  );
+};
 
-export default Categories
+export default Categories;

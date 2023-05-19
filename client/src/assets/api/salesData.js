@@ -1,7 +1,3 @@
-import image1 from "../../../public/images/pexels-photo-2983464.jpeg"
-import image2 from "../../../public/images/pexels-photo-5480696.jpeg"
-import image3 from "../../../public/images/pexels-photo-5886041.webp"
-
 export const sliderItems = [
     {
       id: 1,
@@ -29,19 +25,19 @@ export const sliderItems = [
   export const categories = [
     {
       id: 1,
-      img: image1,
+      img: "../../src/images/pexels-photo-2983464.jpeg",
       title: "Shirts",
       cat: "shirts"
     },
     {
       id: 2,
-      img: image2,
+      img: "../../src/images/pexels-photo-5480696.jpeg",
       title: "Jeans",
       cat: "jeans"
     },
     {
       id: 3,
-      img: image3,
+      img: "../../src/images/pexels-photo-5886041.webp",
       title: "Jackets",
       cat:"jackets"
     },

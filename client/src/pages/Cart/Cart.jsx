@@ -8,10 +8,10 @@ import axios from "axios";
 import PayButton from "../../components/PayButton";
 
 const Cart = () => {
-  const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
-  const user = useSelector((state) => state.user.currentUser);
-  const wishlist = useSelector((state) => state.wishlist);
+  // const dispatch = useDispatch();
+  // const cart = useSelector((state) => state.cart);
+  // const user = useSelector((state) => state.user.currentUser);
+  // const wishlist = useSelector((state) => state.wishlist);
 
   // useEffect(() => {
   //   const getUserCart = async () => {
@@ -33,7 +33,6 @@ const Cart = () => {
   //   getUserCart();
   // }, [user]);
 
-
   return (
     <div className="min-h-[90vh]">
       <div className="p-5">
@@ -46,12 +45,12 @@ const Cart = () => {
             CONTINUE SHOPPING
           </Link>
           <Link to="/wishlist" className="underline cursor-pointer mx-2">
-            Your Wishlist({wishlist.items.length})
+            {/* Your Wishlist({wishlist.items.length}) */}
           </Link>
         </div>
 
         <div className="flex justify-center p-10 flex-col lg:flex-row">
-          {cart.products.length <= 0 ? (
+          {/* {cart.products.length <= 0 ? (
             <div className="self-center">
               <h1>Your cart is empty</h1>
               <Link
@@ -63,31 +62,31 @@ const Cart = () => {
             </div>
           ) : (
             <CartProduct />
-          )}
+          )} */}
           <div className="bottom flex justify-between">
             <div
-              className={`summary flex-1 border border-thin rounded-xl p-4 ${
-                cart.products.length <= 0 && "hidden"
-              }`}
+              // className={`summary flex-1 border border-thin rounded-xl p-4 ${
+              //   cart.products.length <= 0 && "hidden"
+              // }`}
             >
               <div className="summaryTitle font-semibold text-2xl">
                 ORDER SUMMARY
               </div>
               <div>
-                {cart.products.length > 0 && cart.products.map((product) => (
+                {/* {cart.products.length > 0 && cart.products.map((product) => (
                   <div key={product._id} className="summaryItem">
                     <span className="summaryItemText">1x {product.title}</span>
                     <span className="summaryItemPrice">{product.price}€</span>
                   </div>
-                ))}
+                ))} */}
               </div>
               <div className="h-[5px] w-full border"></div>
               <div className="summaryItem  font-extrabold">
                 <span className="summaryItemText">Subtotal</span>
-                <span className="summaryItemPrice">{cart.total}€</span>
+                {/* <span className="summaryItemPrice">{cart.total}€</span> */}
               </div>
-                <PayButton cart={cart.products}/>
-                {/* <Link to="/checkout">Checkout Now</Link> */}
+              {/* <PayButton cart={cart.products}/> */}
+              {/* <Link to="/checkout">Checkout Now</Link> */}
             </div>
           </div>
         </div>

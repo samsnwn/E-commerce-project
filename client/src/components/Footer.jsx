@@ -4,10 +4,12 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 const Footer = () => {
+  const currentYear  = new Date().getFullYear()
   return (
     <div className="flex">
       <div className="footerSection flex flex-col">
-        <h1 className="">LAMA</h1>
+        <h1 className="text-2xl">Oldies but Goodies Vintage 
+        Clothing &copy; {currentYear}</h1>
         <p className="my-2">
           There are many variations of passages of Lorem Ipsum available, but
           the majority have suffered alteration in some form, by injected

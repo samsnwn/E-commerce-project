@@ -16,7 +16,7 @@ const hpp = require("hpp");
 const { notFound } = require("./middleware/errorMiddleware.js");
 const { errorHandler } = require("./middleware/errorMiddleware.js");
 const { connectDB } = require("./config/db.js");
-const passport = require("passport");
+// const passport = require("passport");
 const session = require("express-session");
 
 // ***** MIDDLEWARE *****
@@ -50,15 +50,15 @@ app.use(
   })
 );
 
-app.use(
-  session({
-    secret: "session secret",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// app.use(
+//   session({
+//     secret: "session secret",
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 
-require("./config/passport.js")(passport);
+// require("./config/passport.js")(passport);
 
 // Serving static files
 app.use(express.static(`${__dirname}/public`));
@@ -68,8 +68,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Route imports
 const userRoutes = require("./routes/userRoutes");
