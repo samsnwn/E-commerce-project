@@ -68,7 +68,7 @@ text-decoration:underline
 
 .bgLogin {
   background: 
-    url("./assets/images/pexels-photo-6984650.jpeg");
+    url("../src/images/pexels-photo-6984650.jpeg");
   background-size: cover;
   display: flex;
   align-items: center;

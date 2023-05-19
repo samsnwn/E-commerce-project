@@ -15,7 +15,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Avatar } from "@nextui-org/react";
 
 const Nav = () => {
-  const userInfo = useSelector((state) => state.auth.userInfo);
+  const {userInfo} = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
   const [isInvisible, setIsInvisible] = useState(false);
 
@@ -134,7 +134,7 @@ const Nav = () => {
           {userInfo ? (
             <Navbar.Link href="/profile">
               <Avatar
-                text={userInfo.name.slice(0, 1).toUpperCase()}
+                text={userInfo.data.name.slice(0, 1).toUpperCase()}
                 size="sm"
                 bordered
                 color="gradient"
