@@ -2,10 +2,7 @@ import { Input } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import baseUrl from "../../config/config";
-import { userActions } from "../../redux/userSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { wishlistActions } from "../../redux/wishlistSlice";
 import {useLoginMutation} from "../../redux/userApiSlice";
 import {setCredentials} from "../../redux/authSlice";
 import {toast} from "react-toastify"
@@ -42,25 +39,10 @@ const Login = () => {
       const res = await login(userData).unwrap()
       dispatch(setCredentials({...res}))
       navigate("/")
+      console.log(res)
     } catch (err) {
       toast.error(err?.data?.message || err.error)
     }
-    // dispatch(userActions.loginStart());
-
-    // try {
-    //   const res = await axios.post(`${baseUrl}/auth/login`, userData);
-    //   console.log(res)
-
-    //   if (res) {
-    //     dispatch(userActions.loginSuccess(res.data));
-    //     dispatch(cartActions.clearCart());
-    //     dispatch(wishlistActions.clearWishlist());
-    //     navigate("/");
-    //   }
-    // } catch (error) {
-    //   dispatch(userActions.loginFailure());
-    //   console.log(error);
-    // }
   };
 
   const googleHandler = async() => {

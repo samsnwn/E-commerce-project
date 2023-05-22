@@ -16,7 +16,6 @@ const createSendToken = (user, statusCode, res) => {
     maxAge: 30 * 24 * 60 * 60 * 1000,
   };
 
-
   // Remove password from the output
   user.password = undefined;
   

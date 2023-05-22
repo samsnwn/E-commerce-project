@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import baseUrl from "../config/config";
 
 const PayButton = ({ cart }) => {
-  const user = useSelector((state) => state.user.currentUser);
 
   const handleCheckout = async (e) => {
     // try {

@@ -49,10 +49,8 @@ exports.deleteProductController = async (req, res, next) => {
 
 exports.getProductController = async (req, res, next) => {
     const productId = req.params.id
-    console.log(productId)
     try {
         const product = await Product.findById(productId)
-        console.log(product)
         res.status(200).json(product)
     } catch (err) {
         next(new ExpressError('Cannot find this product', 500))
