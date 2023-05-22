@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { cartActions } from "../../redux/cartSlice";
+import { addToCart, removeFromCart } from "../../redux/cartSlice";
 import { CartIcon } from "../Cart/CartIcon";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -10,18 +10,17 @@ import { wishlistActions } from "../../redux/wishlistSlice";
 
 const ProductComponent = ({ product }) => {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.cart.cartItems);
+  const cart = useSelector((state) => state.cart);
+  const {cartItems} = cart
+  let isIncluded = cartItems.some((p) => p._id === product._id);
   // const wishlist = useSelector((state) => state.wishlist.items);
-  let isIncluded = products.some((p) => p._id === product._id);
   // let isInWishlist = wishlist.some((p) => p._id === product._id)
 
   const handleAddToCart = async () => {
-      isIncluded = true;
-      dispatch(cartActions.addToCart(product));
+      dispatch(addToCart(product));
   };
-  const handleRemoveFromCart = () => {
-    isIncluded = false;
-    dispatch(cartActions.removeFromCart(product));
+  const handleRemoveFromCart = async(id) => {
+    dispatch(removeFromCart(id));
   };
 
   // const handleAddToWishlist = () => {
@@ -40,8 +39,8 @@ const ProductComponent = ({ product }) => {
       <div className="info w-full h-full absolute top-0 left-0 bg-black/20 z-[3] items-center justify-center flex opacity-0 group-hover:opacity-100 transition-all duration-500 ease cursor-pointer">
         <div className="productIcon">
           {isIncluded ? (
-            <button>
-              <RemoveOutlined onClick={() => handleRemoveFromCart(product)} />
+            <button onClick={() => handleRemoveFromCart(product._id)}>
+              <RemoveOutlined  />
             </button>
           ) : (
             <button onClick={handleAddToCart}>

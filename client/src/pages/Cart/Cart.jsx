@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import CartProduct from "../../components/Products/CartProduct";
 import baseUrl from "../../config/config";
-import { cartActions } from "../../redux/cartSlice";
+// import { cartActions } from "../../redux/cartSlice";
 import axios from "axios";
 import PayButton from "../../components/PayButton";
 

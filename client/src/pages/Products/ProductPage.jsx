@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { cartActions } from "../../redux/cartSlice";
+import { addToCart, removeFromCart } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { wishlistActions } from "../../redux/wishlistSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -17,13 +17,13 @@ const ProductPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  // const [product, setProduct] = useState({});
   const cart = useSelector((state) => state.cart);
-  // const wishlist = useSelector((state) => state.wishlist.items);
+  const {cartItems} = cart
 
   const [isIncluded, setIsIncluded] = useState(
-    cart.products?.some((product) => product._id === id)
-  );
+    cartItems.some((product) => product._id === productId)
+    );
+    // const wishlist = useSelector((state) => state.wishlist.items);
   // let isInWishlist = wishlist.some((p) => p._id === product._id);
 
   // useEffect(() => {
@@ -38,13 +38,13 @@ const ProductPage = () => {
   //   getProduct();
   // }, [productId]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async() => {
     setIsIncluded(true);
-    dispatch(cartActions.addToCart({...data}));
+    dispatch(addToCart({...data}));
   };
-  const handleRemoveFromCart = () => {
+  const handleRemoveFromCart = async(id) => {
     setIsIncluded(false);
-    dispatch(cartActions.removeFromCart(data));
+    dispatch(removeFromCart(id));
   };
 
   // const handleAddToWishlist = () => {
@@ -88,7 +88,7 @@ const ProductPage = () => {
               {isIncluded ? (
               <button
                 className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                onClick={handleRemoveFromCart}
+                onClick={()=>handleRemoveFromCart(data._id)}
               >
                 Remove from cart
               </button>

@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import RemoveOutlined from "@mui/icons-material/RemoveOutlined";
-import { cartActions } from "../../redux/cartSlice";
+import { addToCart, removeFromCart } from "../../redux/cartSlice";
 
 const CartProduct = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const removeFromCart = (product) => {
-    dispatch(cartActions.removeFromCart(product));
+  const handleRemoveFromCart = (id) => {
+    dispatch(removeFromCart(id));
   };
 
   return (
@@ -33,7 +33,7 @@ const CartProduct = () => {
               <div className="flex items-center space-x-2">
                 <button
                   className="text-gray-600 hover:text-gray-800"
-                  onClick={() => removeFromCart(product)}
+                  onClick={() => handleRemoveFromCart(product._id)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

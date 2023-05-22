@@ -4,7 +4,7 @@ import Categories from "../components/Categories/Categories";
 import NextEvents from "../components/NextEvents";
 import AllProducts from "../components/Products/AllProducts";
 import MainCarousel from "../components/MainCarousel";
-import { cartActions } from "../redux/cartSlice";
+// import { cartActions } from "../redux/cartSlice";
 import axios from "axios";
 import baseUrl from "../config/config";
 import ShoppingList from "../components/ShoppingList";

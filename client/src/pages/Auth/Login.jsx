@@ -5,7 +5,6 @@ import axios from "axios";
 import baseUrl from "../../config/config";
 import { userActions } from "../../redux/userSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { cartActions } from "../../redux/cartSlice";
 import { wishlistActions } from "../../redux/wishlistSlice";
 import {useLoginMutation} from "../../redux/userApiSlice";
 import {setCredentials} from "../../redux/authSlice";
