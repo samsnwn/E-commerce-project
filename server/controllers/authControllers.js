@@ -117,7 +117,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
   // 3) Update changedPasswordAt property for the user(done in userSchema)
 
-  // 4) Log user in, send JWT
+  // 4) Send success message
   res.status(201).json({
     status: "success",
     message: "Password changed successfully",
