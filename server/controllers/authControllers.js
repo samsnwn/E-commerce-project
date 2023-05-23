@@ -7,12 +7,13 @@ const crypto = require("crypto");
 
 const asyncHandler = require("express-async-handler");
 const ExpressError = require("../utils/ExpressError");
-const sendEmail = require("../utils/email");
 const createSendToken = require("../utils/generateToken");
+const { verifyEmailSender } = require("../models/Email");
 
 // Registration Controller
 exports.registrationController = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
+  const domain = req.get('origin');
 
   const userExists = await User.findOne({ email });
 
@@ -36,8 +37,11 @@ exports.registrationController = asyncHandler(async (req, res, next) => {
     // Make password undefined for security purposes
     savedUser.password = undefined;
 
-    // Create token with user id and isAdmin as payload
-    createSendToken(savedUser, 201, res);
+    // Send verification email
+    verifyEmailSender(savedUser.email, savedUser._id, domain);
+
+    // Send response to frontend
+    res.status(200).json({message: 'User created successfully'})
   } else {
     throw new ExpressError("Invalid user data", 500);
   }
@@ -58,13 +62,17 @@ exports.loginController = asyncHandler(async (req, res, next) => {
   // Make password undefined for security purposes
   user.password = undefined;
 
-  // If everything is ok, send token to client
+  // If everything is ok and user is verified, send token to client
+if(user.isVerified) {
   createSendToken(user, 201, res);
+} else {
+  throw new ExpressError("Please verify your email address", 401);
+}
 });
 
 // Forgot Password Controller
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
-  //  1) Get user based on posted email+
+  //  1) Get user based on posted email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
     return next(new ExpressError("A user does not exist with this email", 404));
@@ -74,19 +82,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   await user.save({ validateBeforeSave: false });
 
-  //  3) Send it to user email
-  const resetUrl = `${req.protocol}://${req.get(
-    "host"
-  )}/auth/resetPassword/${resetToken}`;
+  const domain = req.get('origin');
 
-  const message = `Forgot your password? Please submit a PATCH request with your new password and PasswordConfirm to the ${resetUrl}.\nIf you didn't forget your password, please ignore this email`;
+
+  //  3) Send it to user email
+  // const resetUrl = `${req.protocol}://${req.get(
+  //   "host"
+  // )}/api/auth/resetPassword/${resetToken}`;
+
+  // const message = `Forgot your password? Please submit a PATCH request with your new password and PasswordConfirm to the ${resetUrl}.\nIf you didn't forget your password, please ignore this email`;
 
   try {
-    await sendEmail({
-      email: user.email,
-      subject: "Your password reset token (valid for 10 min)",
-      message,
-    });
+    await resetPasswordMail(user.email, user._id, resetToken, domain);
     res.status(200).json({
       status: "success",
       message: "Token sent to email",
@@ -150,6 +157,17 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
+
+// Email verification controller
+exports.emailVerificationController = async(req, res, next) => {
+  const id = req.params.id
+  try {
+    await User.findByIdAndUpdate(id, {isVerified: true}, {new:true}).select("-password")
+    res.status(200).json({message:"Your email has been successfully verified"})
+  } catch (error) {
+    return next(new ExpressError("There has been an error, please try again", 401));
+  }
+}
 
 // Logout controller
 exports.logout = asyncHandler(async (req, res, next) => {

@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
-import axios from "axios";
-import baseUrl from "../../config/config";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import Button from "../../components/UI/Button";
+import { useRegisterMutation } from "../../redux/userApiSlice";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 
 const Register = () => {
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
+  const [register, {isLoading}] = useRegisterMutation()
+  const {userInfo} = useSelector((state) => state.auth);
+
+  // useEffect(() => {
+  //   if(userInfo) {
+  //     navigate("/")
+  //   }
+  // },[userInfo, navigate])
 
   const onChangeHandler = (e) => {
     const value = e.target.value.trim();
@@ -21,19 +30,21 @@ const Register = () => {
     });
   };
 
+
   const submitHandler = async (e) => {
     e.preventDefault();
-
-    try {
-      const res = await axios.post(`${baseUrl}/auth/register`, userData);
-      if (res) {
-        const token = res.data.accessToken;
-        navigate(`/email_confirmation/${token}`);
+    if(userData.password !== userData.passwordConfirm) {
+      toast.error("Passwords do not match")
+    } else {
+      try {
+        const res = await register(userData).unwrap()
+          navigate("/email_confirmation");
+      } catch (error) {
+        console.log(error)
+        toast.error(error?.data.message)
       }
-    } catch (error) {
-      console.log(error);
-      // Incorrect error incoming. MUST FIX IN VALIDATION OR RESPONSE CONTROLLER
     }
+
   };
 
   return (

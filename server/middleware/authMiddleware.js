@@ -8,9 +8,9 @@ const ExpressError = require("../utils/ExpressError");
 
 
 exports.protect = asyncHandler(async (req, res, next) => {
+  // 1) Getting token and check if exists
   let token;
   token = req.cookies.jwt;
-  // 1) Getting token and check if exists
 
   if (!token) {
     // throw new ExpressError("You are not logged in.Please log in to get access", 401); Same as below
@@ -57,3 +57,16 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.admin = (req, res, next) => {
+  if(req.user && req.user.isAdmin) {
+    next()
+  } else {
+      return next(
+        new ExpressError(
+          "Not authorized as admin",
+          403
+        )
+      );
+  }
+}

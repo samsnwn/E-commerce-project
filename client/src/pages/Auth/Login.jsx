@@ -2,10 +2,11 @@ import { Input } from "@nextui-org/react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {useLoginMutation} from "../../redux/userApiSlice";
 import {setCredentials} from "../../redux/authSlice";
 import {toast} from "react-toastify"
+import Loader from "../../components/UI/Loader"
 import Button from "../../components/UI/Button";
 import { FcGoogle } from "react-icons/fc";
 
@@ -17,11 +18,15 @@ const Login = () => {
   const [login, {isLoading}] = useLoginMutation()
   const {userInfo} = useSelector((state) => state.auth);
 
+  const {search} = useLocation()
+  const sp = new URLSearchParams(search)
+  const redirect = sp.get('redirect') || "/"
+
   useEffect(() => {
     if(userInfo) {
-      navigate("/")
+      navigate(redirect)
     }
-  },[navigate, userInfo])
+  },[redirect, userInfo, navigate])
 
   const onChangeHandler = (e) => {
     const value = e.target.value.trim();
@@ -38,8 +43,7 @@ const Login = () => {
     try {
       const res = await login(userData).unwrap()
       dispatch(setCredentials({...res}))
-      navigate("/")
-      console.log(res)
+      navigate(redirect)
     } catch (err) {
       toast.error(err?.data?.message || err.error)
     }
@@ -80,7 +84,7 @@ const Login = () => {
           />
           <button
             type="submit"
-            // disabled={user.isFetching}
+            disabled={isLoading}
             className={`w-[40%] py-2 px-3 bg-teal-200 mt-5 disabled:bg-green-300 disabled:cursor-not-allowed`}
           >
             Login
@@ -92,13 +96,11 @@ const Login = () => {
           <Link to="/forgot_password" className="loginLinks mt-6">
             DON'T REMEMBER THE PASSWORD?
           </Link>
-          <Link className="loginLinks" to="/register">
+          <Link className="loginLinks" to={redirect ? `/register?redirect=${redirect}` : "/register"}>
             CREATE A NEW ACCOUNT
           </Link>
         </form>
-
           <Link to="api/auth/google">GOOGLE</Link>
-
       </div>
     </div>
   );

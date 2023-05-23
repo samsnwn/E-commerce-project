@@ -48,7 +48,7 @@ const UserSchema = new Schema(
     },
     isVerified: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     active: {
       type: Boolean,
@@ -74,7 +74,7 @@ UserSchema.pre(/^find/, function (next) {
 
 //  This function fires before the create function is executed
 UserSchema.pre("save", async function (next) {
-  // Only run this function if password is modified
+  // Only run this function if password is not modified
   if (!this.isModified("password")) return next();
 
   // Hash the pass with cost of 12
@@ -115,8 +115,6 @@ UserSchema.methods.createPasswordResetToken = function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-
-  console.log({ resetToken }, this.passwordResetToken);
 
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 

@@ -22,6 +22,7 @@ import Checkout from "./pages/checkout/Checkout";
 import Confirmation from "./pages/checkout/Confirmation";
 import Payment from "./pages/checkout/Payment";
 import ContactForm from "./pages/Contact";
+import VerifyEmail from "./pages/Auth/VerifyEmail";
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,8 @@ const router = createBrowserRouter([
       { path: "products/:category", element: <ProductsList /> },
       { path: "product/:productId", element: <ProductPage /> },
       { path: "cart", element: <Cart /> },
-      { path: "email_confirmation/:token", element: <ConfirmEmail /> },
+      { path: "email_confirmation", element: <ConfirmEmail /> },
+      { path: "email_verification/:id", element: <VerifyEmail /> },
       { path: "forgot_password", element: <ForgotPassword /> },
       { path: "events", element: <Events /> },
       { path: "events/:eventId", element: <EventPage /> },

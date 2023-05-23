@@ -22,7 +22,7 @@ const session = require("express-session");
 // ***** MIDDLEWARE *****
 
 // Set Security Http Headers
-// app.use(helmet({contentSecurityPolicy: false}))
+app.use(helmet({contentSecurityPolicy: false}))
 
 // Development logging
 if (process.env.NODE_ENV === "development") {
