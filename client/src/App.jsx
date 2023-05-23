@@ -23,6 +23,8 @@ import Confirmation from "./pages/checkout/Confirmation";
 import Payment from "./pages/checkout/Payment";
 import ContactForm from "./pages/Contact";
 import VerifyEmail from "./pages/Auth/VerifyEmail";
+import SetNewPassword from "./pages/Auth/SetNewPassword";
+
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,7 @@ const router = createBrowserRouter([
       { path: "email_confirmation", element: <ConfirmEmail /> },
       { path: "email_verification/:id", element: <VerifyEmail /> },
       { path: "forgot_password", element: <ForgotPassword /> },
+      { path: "user/setNewPassword/:token", element: <SetNewPassword /> },
       { path: "events", element: <Events /> },
       { path: "events/:eventId", element: <EventPage /> },
       { path: "about", element: <AboutUs /> },

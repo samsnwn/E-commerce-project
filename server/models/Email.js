@@ -31,9 +31,6 @@ const verifyEmailSender = async (mailTo, userId) => {
   }
 };
 const resetPasswordMail = async (mailTo, userId, resetToken) => {
-  // const token = jwt.sign({ _id: userId }, process.env.RESTART_KEY, {
-  //   expiresIn: '15min',
-  // });
   try {
     await transporter.sendMail({
       from: '"Alzheimer" <admin@email.com>',
@@ -42,7 +39,7 @@ const resetPasswordMail = async (mailTo, userId, resetToken) => {
       text: 'Follow the link below',
       html: `<p>To get a new password, please click on this <a href="http://localhost:5173/user/setNewPassword/${resetToken}">link</a> and reset your password </p>`,
     });
-    // await User.findByIdAndUpdate(userId, { resetLink: token });
+
   } catch (err) {
     throw new ExpressError(err);
   }

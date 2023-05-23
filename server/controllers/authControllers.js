@@ -8,12 +8,12 @@ const crypto = require("crypto");
 const asyncHandler = require("express-async-handler");
 const ExpressError = require("../utils/ExpressError");
 const createSendToken = require("../utils/generateToken");
-const { verifyEmailSender } = require("../models/Email");
+const { verifyEmailSender, resetPasswordMail } = require("../models/Email");
 
 // Registration Controller
 exports.registrationController = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
-  const domain = req.get('origin');
+  const domain = req.get("origin");
 
   const userExists = await User.findOne({ email });
 
@@ -41,7 +41,7 @@ exports.registrationController = asyncHandler(async (req, res, next) => {
     verifyEmailSender(savedUser.email, savedUser._id, domain);
 
     // Send response to frontend
-    res.status(200).json({message: 'User created successfully'})
+    res.status(200).json({ message: "User created successfully" });
   } else {
     throw new ExpressError("Invalid user data", 500);
   }
@@ -63,11 +63,11 @@ exports.loginController = asyncHandler(async (req, res, next) => {
   user.password = undefined;
 
   // If everything is ok and user is verified, send token to client
-if(user.isVerified) {
-  createSendToken(user, 201, res);
-} else {
-  throw new ExpressError("Please verify your email address", 401);
-}
+  if (user.isVerified) {
+    createSendToken(user, 201, res);
+  } else {
+    throw new ExpressError("Please verify your email address", 401);
+  }
 });
 
 // Forgot Password Controller
@@ -80,30 +80,15 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
   //  2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
+  console.log("pass controller", resetToken);
   await user.save({ validateBeforeSave: false });
+  const domain = req.get("origin");
 
-  const domain = req.get('origin');
-
-
-  //  3) Send it to user email
-  // const resetUrl = `${req.protocol}://${req.get(
-  //   "host"
-  // )}/api/auth/resetPassword/${resetToken}`;
-
-  // const message = `Forgot your password? Please submit a PATCH request with your new password and PasswordConfirm to the ${resetUrl}.\nIf you didn't forget your password, please ignore this email`;
-
-  try {
-    await resetPasswordMail(user.email, user._id, resetToken, domain);
-    res.status(200).json({
-      status: "success",
-      message: "Token sent to email",
-    });
-  } catch (err) {
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save({ validateBeforeSave: false });
-    return next(new ExpressError("There was an error sending the email ", 500));
-  }
+  resetPasswordMail(user.email, user._id, resetToken, domain);
+  res.status(200).json({
+    status: "success",
+    message: "Check your inbox to proceed ",
+  });
 });
 
 // Reset Password controller
@@ -113,6 +98,8 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
+  // const body = req.body
+  // const hashedToken = jwt.sign({body},  process.env.JWT_SECRET_KEY)
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },
@@ -131,7 +118,10 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   // 3) Update changedPasswordAt property for the user(done in userSchema)
 
   // 4) Log user in, send JWT
-  createSendToken(user, 201, res);
+  res.status(201).json({
+    status: "success",
+    message: "Password changed successfully",
+  });
 });
 
 // Update Password controller
@@ -159,15 +149,23 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 });
 
 // Email verification controller
-exports.emailVerificationController = async(req, res, next) => {
-  const id = req.params.id
+exports.emailVerificationController = async (req, res, next) => {
+  const id = req.params.id;
   try {
-    await User.findByIdAndUpdate(id, {isVerified: true}, {new:true}).select("-password")
-    res.status(200).json({message:"Your email has been successfully verified"})
+    await User.findByIdAndUpdate(
+      id,
+      { isVerified: true },
+      { new: true }
+    ).select("-password");
+    res
+      .status(200)
+      .json({ message: "Your email has been successfully verified" });
   } catch (error) {
-    return next(new ExpressError("There has been an error, please try again", 401));
+    return next(
+      new ExpressError("There has been an error, please try again", 401)
+    );
   }
-}
+};
 
 // Logout controller
 exports.logout = asyncHandler(async (req, res, next) => {

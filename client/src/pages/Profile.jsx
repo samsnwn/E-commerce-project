@@ -27,6 +27,9 @@ const Profile = () => {
   return (
     <div>
       <h1>Welcome Back {userInfo.data.name}</h1>
+      <div>
+        
+      </div>
       <Button onClick={logoutHandler} label="LOGOUT" className="w-[50vw]">Logout</Button>
     </div>
   )
