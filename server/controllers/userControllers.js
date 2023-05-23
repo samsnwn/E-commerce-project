@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 
 const ExpressError = require("../utils/ExpressError");
 const asyncHandler = require("express-async-handler");
+const createSendToken = require("../utils/generateToken");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -29,19 +30,19 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
 
   // 2) Update user document
   const updatedUser = await User.findByIdAndUpdate(
-    req.user.id,
+    req.params.id,
     {
       $set: filteredBody,
     },
     { new: true, runValidators: true }
   );
 
-  res.status(200).json({
-    status: "success",
-    data: {
-      user: updatedUser,
-    },
-  });
+  createSendToken(updatedUser, 201, res)
+
+  // res.status(200).json({
+  //   status: "success",
+  //   message: "Your data has been updated successfully"
+  // });
 });
 
 // Update function only for admin

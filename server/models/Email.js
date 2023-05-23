@@ -1,7 +1,7 @@
-const nodemailer = require('nodemailer');
-const ExpressError = require('../utils/ExpressError');
-const jwt = require('jsonwebtoken');
-const User = require('./UserModel');
+const nodemailer = require("nodemailer");
+const ExpressError = require("../utils/ExpressError");
+const jwt = require("jsonwebtoken");
+const User = require("./UserModel");
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
@@ -23,7 +23,7 @@ const verifyEmailSender = async (mailTo, userId) => {
     await transporter.sendMail({
       from: '"Oldies but Goodies Vintage Clothing" <admin@email.com>', // sender address
       to: mailTo, // list of receivers
-      subject: 'Please verify your email address', // Subject line
+      subject: "Please verify your email address", // Subject line
       html: `<p>Thank you for registering, to prevent spam accounts, please follow this <a href="http://localhost:5173/email_verification/${userId}">link</a><p>`, // html body
     });
   } catch (err) {
@@ -33,13 +33,12 @@ const verifyEmailSender = async (mailTo, userId) => {
 const resetPasswordMail = async (mailTo, userId, resetToken) => {
   try {
     await transporter.sendMail({
-      from: '"Alzheimer" <admin@email.com>',
+      from: '"Admin" <admin@email.com>',
       to: mailTo,
-      subject: 'Password reset',
-      text: 'Follow the link below',
+      subject: "Password reset",
+      text: "Follow the link below",
       html: `<p>To get a new password, please click on this <a href="http://localhost:5173/user/setNewPassword/${resetToken}">link</a> and reset your password </p>`,
     });
-
   } catch (err) {
     throw new ExpressError(err);
   }
@@ -49,9 +48,9 @@ const sendContactUsEmail = (obj) => {
   return new Promise((resolve, reject) => {
     transporter
       .sendMail({
-        from: 'authentication-generator@outlook.com',
-        to: 'authentication-generator@outlook.com',
-        subject: 'User Messages: ' + obj.subject + ' from: ' + obj.name,
+        from: "authentication-generator@outlook.com",
+        to: "authentication-generator@outlook.com",
+        subject: "User Messages: " + obj.subject + " from: " + obj.name,
         html: `<h3>${obj.subject}</h3>
       <p>${obj.message}</p>
       <p>${obj.name}</p>

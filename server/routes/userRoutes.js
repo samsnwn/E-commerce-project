@@ -7,7 +7,7 @@ const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require(
 router.put('/update/:id', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, updateController)
 
 // UPDATE ME
-router.patch('/updateMe', protect, restrictTo('admin', 'user'),verifyToken, updateMe)
+router.patch('/updateMe/:id', protect, updateMe)
 
 // DELETE
 router.delete('/delete/:id', protect, restrictTo('admin'), admin, verifyTokenAndAdmin, deleteController)

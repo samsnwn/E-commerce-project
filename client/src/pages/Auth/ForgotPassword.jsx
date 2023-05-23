@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import baseUrl from "../../config/config";
-import {toast} from 'react-toastify'
-
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState();
@@ -15,13 +14,15 @@ const ForgotPassword = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-        const res = await axios.post(`${baseUrl}/api/auth/forgotPassword`, { email });
-        if (res) {
-          toast.success(res.data.message);
-        }
-        setEmail("")
+      const res = await axios.post(`${baseUrl}/api/auth/forgotPassword`, {
+        email,
+      });
+      if (res) {
+        toast.success(res.data.message);
+      }
+      setEmail("");
     } catch (error) {
-        toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
     }
   };
 
@@ -30,7 +31,7 @@ const ForgotPassword = () => {
       <form className="flex flex-col mb-10 p-10" onSubmit={submitHandler}>
         <label htmlFor="email">Please enter your email address</label>
         <input
-        // value={email}
+          // value={email}
           type="email"
           name="email"
           className="border-2"
