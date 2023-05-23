@@ -14,11 +14,11 @@ const Register = () => {
   const [register, {isLoading}] = useRegisterMutation()
   const {userInfo} = useSelector((state) => state.auth);
 
-  // useEffect(() => {
-  //   if(userInfo) {
-  //     navigate("/")
-  //   }
-  // },[userInfo, navigate])
+  useEffect(() => {
+    if(userInfo) {
+      navigate("/")
+    }
+  },[userInfo, navigate])
 
   const onChangeHandler = (e) => {
     const value = e.target.value.trim();
