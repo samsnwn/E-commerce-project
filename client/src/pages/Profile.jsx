@@ -6,6 +6,7 @@ import {toast} from "react-toastify"
 import Button from "../components/UI/Button"
 import { useState } from 'react';
 import axios from 'axios';
+import baseUrl from '../config/config';
 
 const Profile = () => {
   const dispatch = useDispatch()
@@ -38,7 +39,7 @@ const Profile = () => {
   const submitHandler = async(e) => {
     e.preventDefault()
     try {
-      const res = await axios.patch(`http://localhost:5000/api/user/updateMe/${userInfo.data.id}`, userInput)
+      const res = await axios.patch(`${baseUrl}/user/updateMe/${userInfo.data.id}`, userInput)
       toast.success(res.data.message)
     } catch (error) {
       toast.error("Error updating user")
@@ -93,6 +94,9 @@ const Profile = () => {
             Update
           </button>
         </form>
+        <button className="w-[40%] py-2 px-3 bg-teal-200" type="button">
+            Change password
+          </button>
       </div>
       <Button onClick={logoutHandler} label="LOGOUT" className="w-[50vw]">Logout</Button>
     </div>

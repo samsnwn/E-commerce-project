@@ -80,7 +80,6 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
 
   //  2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
-  console.log("pass controller", resetToken);
   await user.save({ validateBeforeSave: false });
   const domain = req.get("origin");
 
@@ -98,8 +97,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-  // const body = req.body
-  // const hashedToken = jwt.sign({body},  process.env.JWT_SECRET_KEY)
+
   const user = await User.findOne({
     passwordResetToken: hashedToken,
     passwordResetExpires: { $gt: Date.now() },

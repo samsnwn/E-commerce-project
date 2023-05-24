@@ -37,12 +37,12 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
     { new: true, runValidators: true }
   );
 
-  createSendToken(updatedUser, 201, res)
+  // createSendToken(updatedUser, 201, res)
 
-  // res.status(200).json({
-  //   status: "success",
-  //   message: "Your data has been updated successfully"
-  // });
+  res.status(200).json({
+    status: "success",
+    message: "Your data has been updated successfully"
+  });
 });
 
 // Update function only for admin

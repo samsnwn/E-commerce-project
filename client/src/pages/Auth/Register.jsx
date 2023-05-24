@@ -7,18 +7,17 @@ import { useRegisterMutation } from "../../redux/userApiSlice";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-
 const Register = () => {
   const [userData, setUserData] = useState();
   const navigate = useNavigate();
-  const [register, {isLoading}] = useRegisterMutation()
-  const {userInfo} = useSelector((state) => state.auth);
+  const [register, { isLoading }] = useRegisterMutation();
+  const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if(userInfo) {
-      navigate("/")
+    if (userInfo) {
+      navigate("/");
     }
-  },[userInfo, navigate])
+  }, [userInfo, navigate]);
 
   const onChangeHandler = (e) => {
     const value = e.target.value.trim();
@@ -30,21 +29,18 @@ const Register = () => {
     });
   };
 
-
   const submitHandler = async (e) => {
     e.preventDefault();
-    if(userData.password !== userData.passwordConfirm) {
-      toast.error("Passwords do not match")
+    if (userData.password !== userData.passwordConfirm) {
+      toast.error("Passwords do not match");
     } else {
       try {
-        const res = await register(userData).unwrap()
-          navigate("/email_confirmation");
+        const res = await register(userData).unwrap();
+        navigate("/emailconfirmation");
       } catch (error) {
-        console.log(error)
-        toast.error(error?.data.message)
+        toast.error(error?.data.message);
       }
     }
-
   };
 
   return (
@@ -86,17 +82,17 @@ const Register = () => {
             onChange={onChangeHandler}
             name="passwordConfirm"
           />
-                    <Button 
-        outline 
-        label="Continue with Google"
-        icon={FcGoogle}
-        onClick={() => {}}
-      />
+          <Button
+            outline
+            label="Continue with Google"
+            icon={FcGoogle}
+            onClick={() => {}}
+          />
           <span className="text-sm my-6">
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </span>
-          <button className="w-[40%] py-2 px-3 bg-teal-200" type="submit">
+          <button className="w-[40%] py-2 px-3 bg-teal-200" type="submit" disabled={isLoading}>
             CREATE
           </button>
           <Link className="loginLinks mt-3" to="/login">

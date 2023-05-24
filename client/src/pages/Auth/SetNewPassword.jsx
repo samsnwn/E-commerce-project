@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import baseUrl from "../../config/config";
 
 const SetNewPassword = () => {
   const [userData, setUserData] = useState();
@@ -24,7 +25,7 @@ const SetNewPassword = () => {
     e.preventDefault();
     try {
       const res = await axios.patch(
-        `http://localhost:5000/api/auth/resetPassword/${token}`,
+        `${baseUrl}/auth/resetPassword/${token}`,
         userData
       );
       toast.success(res.data.message);

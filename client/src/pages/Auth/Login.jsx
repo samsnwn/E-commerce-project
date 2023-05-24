@@ -93,7 +93,7 @@ const Login = () => {
           {/* {user.error && (
             <span className="text-red-500">Something went wrong...</span>
           )} */}
-          <Link to="/forgot_password" className="loginLinks mt-6">
+          <Link to="/forgotpassword" className="loginLinks mt-6">
             DON'T REMEMBER THE PASSWORD?
           </Link>
           <Link className="loginLinks" to={redirect ? `/register?redirect=${redirect}` : "/register"}>

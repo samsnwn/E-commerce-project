@@ -24,7 +24,7 @@ const verifyEmailSender = async (mailTo, userId) => {
       from: '"Oldies but Goodies Vintage Clothing" <admin@email.com>', // sender address
       to: mailTo, // list of receivers
       subject: "Please verify your email address", // Subject line
-      html: `<p>Thank you for registering, to prevent spam accounts, please follow this <a href="http://localhost:5173/email_verification/${userId}">link</a><p>`, // html body
+      html: `<p>Thank you for registering, to prevent spam accounts, please follow this <a href="http://localhost:5173/emailverification/${userId}">link</a><p>`, // html body
     });
   } catch (err) {
     throw new ExpressError(err);
@@ -37,7 +37,7 @@ const resetPasswordMail = async (mailTo, userId, resetToken) => {
       to: mailTo,
       subject: "Password reset",
       text: "Follow the link below",
-      html: `<p>To get a new password, please click on this <a href="http://localhost:5173/user/setNewPassword/${resetToken}">link</a> and reset your password </p>`,
+      html: `<p>To get a new password, please click on this <a href="http://localhost:5173/user/resetpassword/${resetToken}">link</a> and reset your password </p>`,
     });
   } catch (err) {
     throw new ExpressError(err);
