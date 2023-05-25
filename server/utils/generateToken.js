@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 
-const signToken = (id, isAdmin) => {
-  return jwt.sign({ id, isAdmin }, process.env.JWT_SECRET_KEY, {
+const signToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
 const createSendToken = (user, statusCode, res) => {
-  const accessToken = signToken(user._id, user.isAdmin);
+  const accessToken = signToken(user._id);
 
   const cookieOptions = {
     httpOnly: true,

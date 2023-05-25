@@ -11,7 +11,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
   // 1) Getting token and check if exists
   let token;
   token = req.cookies.jwt;
-  console.log(token)
 
   if (!token) {
     // throw new ExpressError("You are not logged in.Please log in to get access", 401); Same as below
