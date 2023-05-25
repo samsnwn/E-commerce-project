@@ -6,10 +6,11 @@ import baseUrl from "../../config/config";
 // import { cartActions } from "../../redux/cartSlice";
 import axios from "axios";
 import PayButton from "../../components/PayButton";
+import OrderSummary from "../../components/OrderSummary";
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const {cartItems} = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
   // const user = useSelector((state) => state.user.currentUser);
   // const wishlist = useSelector((state) => state.wishlist);
 
@@ -43,32 +44,10 @@ const Cart = () => {
           ) : (
             <CartProduct />
           )}
-          <div className="bottom flex justify-between">
-            <div
-              className={`summary flex-1 border border-thin rounded-xl p-4 ${
-                cartItems.length <= 0 && "hidden"
-              }`}
-            >
-              <div className="summaryTitle font-semibold text-2xl">
-                ORDER SUMMARY
-              </div>
-              <div>
-                {cartItems.length > 0 && cartItems.map((product) => (
-                  <div key={product._id} className="summaryItem">
-                    <span className="summaryItemText">1x {product.title}</span>
-                    <span className="summaryItemPrice">{product.price}€</span>
-                  </div>
-                ))}
-              </div>
-              <div className="h-[5px] w-full border"></div>
-              <div className="summaryItem  font-extrabold">
-                <span className="summaryItemText">Subtotal</span>
-                <span className="summaryItemPrice">{cartItems.reduce((acc,item) => acc + item.price, 0)}€</span>
-              </div>
-              <PayButton cart={cartItems}/>
-              <Link to="/checkout">Checkout Now</Link>
-            </div>
-          </div>
+          <OrderSummary>
+            <PayButton cart={cartItems} />
+            <Link to="/shipping">Checkout Now</Link>
+          </OrderSummary>
         </div>
       </div>
     </div>

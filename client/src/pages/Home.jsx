@@ -41,7 +41,7 @@ const Home = () => {
       <MainCarousel />
       <h1 className="text-center mt-10">All Categories</h1>
       <Categories />
-      {/* <ShoppingList/> */}
+      <ShoppingList/>
       <AllProducts/>
       <NextEvents />
     </div>

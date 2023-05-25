@@ -1,7 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Cart from "./pages/Cart/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
@@ -24,15 +21,19 @@ import Payment from "./pages/checkout/Payment";
 import ContactForm from "./pages/Contact";
 import VerifyEmail from "./pages/Auth/VerifyEmail";
 import SetNewPassword from "./pages/Auth/SetNewPassword";
-
+import ShippingScreen from "./pages/Shipping/ShippingScreen";
+import PrivateRoute from "./components/PrivateRoute";
+import PaymentScreen from "./pages/Shipping/PaymentScreen";
+import PlaceOrderScreen from "./pages/Shipping/PlaceOrderScreen";
+import OrderPage from "./pages/OrderPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home />, },
+      { index: true, element: <Home /> },
       { path: "products", element: <AllProducts /> },
       { path: "contact", element: <ContactForm /> },
       { path: "products/:category", element: <ProductsList /> },
@@ -47,30 +48,38 @@ const router = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
       { path: "profile", element: <Profile /> },
+      {
+        path: "",
+        element: <PrivateRoute />,
+        children: [
+          { path: "/shipping", element: <ShippingScreen /> },
+          { path: "/payment", element: <PaymentScreen /> },
+          { path: "/placeorder", element: <PlaceOrderScreen /> },
+          { path: "/order/:id", element: <OrderPage /> },
+        ],
+      },
     ],
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
   {
     path: "/checkout",
-    element: <Checkout />
+    element: <Checkout />,
   },
   {
     path: "/checkout-success",
-    element: <Confirmation />
-  }
+    element: <Confirmation />,
+  },
 ]);
 
 const App = () => {
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
