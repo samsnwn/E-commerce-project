@@ -1,9 +1,9 @@
-import {Nav} from 'react-bootstrap'
-import {LinkContainer} from 'react-router-bootstrap'
+import { Nav } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
-const CheckoutSteps = ({step1, step2, step3, step4}) => {
+const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
-    <Nav className='mb-4 flex flex-col'>
+    <Nav className="mb-4 flex flex-col">
       <Nav.Item>
         {step1 ? (
           <LinkContainer to="/login">
@@ -11,7 +11,6 @@ const CheckoutSteps = ({step1, step2, step3, step4}) => {
           </LinkContainer>
         ) : (
           <Nav.Link disabled>Sign In</Nav.Link>
-
         )}
       </Nav.Item>
       <Nav.Item>
@@ -21,7 +20,6 @@ const CheckoutSteps = ({step1, step2, step3, step4}) => {
           </LinkContainer>
         ) : (
           <Nav.Link disabled>Shipping</Nav.Link>
-
         )}
       </Nav.Item>
       <Nav.Item>
@@ -31,7 +29,6 @@ const CheckoutSteps = ({step1, step2, step3, step4}) => {
           </LinkContainer>
         ) : (
           <Nav.Link disabled>Payment</Nav.Link>
-
         )}
       </Nav.Item>
       <Nav.Item>
@@ -41,11 +38,10 @@ const CheckoutSteps = ({step1, step2, step3, step4}) => {
           </LinkContainer>
         ) : (
           <Nav.Link disabled>Place order</Nav.Link>
-
         )}
       </Nav.Item>
     </Nav>
-  )
-}
+  );
+};
 
-export default CheckoutSteps
+export default CheckoutSteps;
