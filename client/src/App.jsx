@@ -25,7 +25,9 @@ import ShippingScreen from "./pages/Shipping/ShippingScreen";
 import PrivateRoute from "./components/PrivateRoute";
 import PaymentScreen from "./pages/Shipping/PaymentScreen";
 import PlaceOrderScreen from "./pages/Shipping/PlaceOrderScreen";
-import OrderScreen from "./pages/OrderScreen";
+import OrderScreen from "./pages/Shipping/OrderScreen";
+
+
 
 const router = createBrowserRouter([
   {
@@ -79,7 +81,9 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+      <RouterProvider router={router} />
+  );
 };
 
 export default App;

@@ -17,6 +17,7 @@ let transporter = nodemailer.createTransport({
   },
 });
 
+
 // send mail with defined transport object
 const verifyEmailSender = async (mailTo, userId) => {
   try {
@@ -24,12 +25,14 @@ const verifyEmailSender = async (mailTo, userId) => {
       from: '"Oldies but Goodies Vintage Clothing" <admin@email.com>', // sender address
       to: mailTo, // list of receivers
       subject: "Please verify your email address", // Subject line
-      html: `<p>Thank you for registering, to prevent spam accounts, please follow this <a href="http://localhost:5173/emailverification/${userId}">link</a><p>`, // html body
+      html: `<p className="text-red-500">Thank you for registering, to prevent spam accounts, please follow this <a href="http://localhost:5173/emailverification/${userId}">link</a><p>`, // html body
     });
   } catch (err) {
     throw new ExpressError(err);
   }
 };
+
+
 const resetPasswordMail = async (mailTo, userId, resetToken) => {
   try {
     await transporter.sendMail({

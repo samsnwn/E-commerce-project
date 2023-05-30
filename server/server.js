@@ -72,13 +72,14 @@ app.use(cookieParser());
 // app.use(passport.session());
 
 // Route imports
-const userRoutes = require("./routes/userRoutes");
-const authRoutes = require("./routes/authRoutes");
-const productRoutes = require("./routes/productRoutes");
-const cartRoutes = require("./routes/cartRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const stripeRoutes = require("./routes/stripeRoutes");
-const contactRoute = require("./routes/contactRoute");
+const userRoutes = require("./routes/userRoutes.js");
+const authRoutes = require("./routes/authRoutes.js");
+const productRoutes = require("./routes/productRoutes.js");
+const cartRoutes = require("./routes/cartRoutes.js");
+const orderRoutes = require("./routes/orderRoutes.js");
+const stripeRoutes = require("./routes/stripeRoutes.js");
+const contactRoute = require("./routes/contactRoute.js");
+
 
 // Connect to database
 connectDB();
@@ -91,6 +92,8 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/stripe", stripeRoutes);
 app.use("/api/contact", contactRoute);
+
+app.get("/api/config/paypal", (req, res) => res.send({ clientId: process.env.PAYPAL_CLIENT_ID}));
 
 app.use(notFound);
 app.use(errorHandler);

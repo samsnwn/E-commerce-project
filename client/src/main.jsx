@@ -7,14 +7,18 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <Provider store={store}>
-      <NextUIProvider>
-        <ToastContainer />
-        <App />
-      </NextUIProvider>
+      <PayPalScriptProvider>
+        <NextUIProvider>
+          <ToastContainer />
+          <App />
+        </NextUIProvider>
+      </PayPalScriptProvider>
     </Provider>
-  // </React.StrictMode>
+  </React.StrictMode>
 );
