@@ -1,18 +1,11 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import CartProduct from "../../components/Products/CartProduct";
-import baseUrl from "../../config/config";
-// import { cartActions } from "../../redux/cartSlice";
-import axios from "axios";
 import PayButton from "../../components/PayButton";
 import OrderSummary from "../../components/OrderSummary";
 import CartItem from "../../components/Products/CartItem";
 
 const Cart = () => {
-  const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
-  // const user = useSelector((state) => state.user.currentUser);
   const {wishlistItems} = useSelector((state) => state.wishlist);
 
   return (
