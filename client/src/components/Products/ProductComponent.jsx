@@ -6,15 +6,16 @@ import SearchSharpIcon from "@mui/icons-material/SearchSharp";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import RemoveOutlined from "@mui/icons-material/RemoveOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { wishlistActions } from "../../redux/wishlistSlice";
+import { addToWishlist, removeFromWishlist, clearWishlist } from "../../redux/wishlistSlice";
 
 const ProductComponent = ({ product }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const {cartItems} = cart
+  const wishlist = useSelector((state) => state.wishlist);
+  const {wishlistItems} = wishlist
   let isIncluded = cartItems.some((p) => p._id === product._id);
-  // const wishlist = useSelector((state) => state.wishlist.items);
-  // let isInWishlist = wishlist.some((p) => p._id === product._id)
+  let isInWishlist = wishlistItems.some((p) => p._id === product._id)
 
   const handleAddToCart = async () => {
       dispatch(addToCart(product));
@@ -23,14 +24,17 @@ const ProductComponent = ({ product }) => {
     dispatch(removeFromCart(id));
   };
 
-  // const handleAddToWishlist = () => {
-  //   isInWishlist = true;
-  //   dispatch(wishlistActions.addToWishlist(product));
-  // };
-  // const handleRemoveFromWishlist = (product) => {
-  //   isInWishlist = false;
-  //   dispatch(wishlistActions.removeFromWishlist(product));
-  // };
+  const handleAddToWishlist = async() => {
+    dispatch(addToWishlist(product));
+    console.log(wishlist)
+  };
+
+  const handleRemoveFromWishlist = async(id) => {
+    dispatch(removeFromWishlist(id));
+    console.log(wishlist)
+
+  };
+
 
   return (
     <div className="flex-1 m-1 min-w-[280px] h-[350px] flex items-center justify-center bg-[rgba(227,238,241,0.98)] relative group">
@@ -54,9 +58,9 @@ const ProductComponent = ({ product }) => {
           </Link>
         </div>
         <div className="productIcon">
-          {/* {isInWishlist ? (
+          {isInWishlist ? (
             <>
-              <button onClick={() => handleRemoveFromWishlist(product)}>
+              <button onClick={() => handleRemoveFromWishlist(product._id)}>
               <FavoriteIcon color="error"/>
               </button>
             </>
@@ -66,7 +70,7 @@ const ProductComponent = ({ product }) => {
             <FavoriteBorderIcon />
               </button>
             </>
-          )} */}
+          )}
         </div>
       </div>
     </div>

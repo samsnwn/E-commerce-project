@@ -22,3 +22,9 @@ export const updateCart = (state) => {
 
   return state;
 };
+
+
+export const updateWishlist = (state) => {
+  localStorage.setItem("wishlist", JSON.stringify(state))
+  return state
+}

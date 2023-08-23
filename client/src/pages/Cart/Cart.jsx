@@ -7,12 +7,13 @@ import baseUrl from "../../config/config";
 import axios from "axios";
 import PayButton from "../../components/PayButton";
 import OrderSummary from "../../components/OrderSummary";
+import CartItem from "../../components/Products/CartItem";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
   // const user = useSelector((state) => state.user.currentUser);
-  // const wishlist = useSelector((state) => state.wishlist);
+  const {wishlistItems} = useSelector((state) => state.wishlist);
 
   return (
     <div className="min-h-[90vh]">
@@ -26,7 +27,7 @@ const Cart = () => {
             CONTINUE SHOPPING
           </Link>
           <Link to="/wishlist" className="underline cursor-pointer mx-2">
-            {/* Your Wishlist({wishlist.items.length}) */}
+            Your Wishlist({wishlistItems.length})
           </Link>
         </div>
 
@@ -42,7 +43,7 @@ const Cart = () => {
               </Link>
             </div>
           ) : (
-            <CartProduct />
+            <CartItem />
           )}
           <OrderSummary>
             <PayButton cart={cartItems} />

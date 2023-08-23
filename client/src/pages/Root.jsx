@@ -29,7 +29,7 @@ const RootLayout = () => {
       </main>
       <footer>
         <Newsletter />
-        <Footer />
+        {/* <Footer /> */}
       </footer>
     </>
   );

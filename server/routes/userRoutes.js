@@ -19,7 +19,7 @@ router.delete('/deleteMe', protect,verifyToken, deleteMe)
 router.get('/findById/:id', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, getUserController)
 
 // GET ALL USERS
-router.get('/findAll',protect, restrictTo('admin'),admin, verifyTokenAndAdmin, getAllUsersController)
+router.get('/findAll',protect, restrictTo('admin'),admin, getAllUsersController)
 
 // GET USER STATS
 router.get('/stats', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, getUserStatsController)

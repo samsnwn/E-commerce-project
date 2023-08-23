@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { addToCart, removeFromCart } from "../../redux/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { wishlistActions } from "../../redux/wishlistSlice";
+import { addToWishlist, removeFromWishlist } from "../../redux/wishlistSlice";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useGetProductQuery } from "../../redux/productsApiSlice";
@@ -23,8 +23,8 @@ const ProductPage = () => {
   const [isIncluded, setIsIncluded] = useState(
     cartItems.some((product) => product._id === productId)
     );
-    // const wishlist = useSelector((state) => state.wishlist.items);
-  // let isInWishlist = wishlist.some((p) => p._id === product._id);
+    const wishlist = useSelector((state) => state.wishlist.items);
+  let isInWishlist = wishlist.some((p) => p._id === product._id);
 
   // useEffect(() => {
   //   const getProduct = async () => {
@@ -47,14 +47,14 @@ const ProductPage = () => {
     dispatch(removeFromCart(id));
   };
 
-  // const handleAddToWishlist = () => {
-  //   isInWishlist = true;
-  //   dispatch(wishlistActions.addToWishlist(product));
-  // };
-  // const handleRemoveFromWishlist = (product) => {
-  //   isInWishlist = false;
-  //   dispatch(wishlistActions.removeFromWishlist(product));
-  // };
+  const handleAddToWishlist = () => {
+    isInWishlist = true;
+    dispatch(addToWishlist(product));
+  };
+  const handleRemoveFromWishlist = (product) => {
+    isInWishlist = false;
+    dispatch(removeFromWishlist(product));
+  };
 
   return (
     <>
@@ -100,7 +100,7 @@ const ProductPage = () => {
                 Add to cart
               </button>
             )}
-            {/* {isInWishlist ? (
+            {isInWishlist ? (
               <button
                 className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
                 onClick={()=>handleRemoveFromWishlist(product)}
@@ -114,7 +114,7 @@ const ProductPage = () => {
               >
                 <FavoriteBorderIcon />
               </button>
-            )} */}
+            )}
             </div>
             {/* <div>
             <Link to={`/products/${product.categories.filter(cat => cat === )}`} relative="path" className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]">See more of this category</Link>
