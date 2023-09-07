@@ -4,6 +4,7 @@ import {
   useGetOrderDetailsQuery,
   usePayOrderMutation,
   useGetPayPalClientIdQuery,
+  useDeliverOrderMutation
 } from "../../redux/ordersApiSlice";
 import Loader from "../../components/UI/Loader";
 import Message from "../../components/UI/Message";
@@ -23,6 +24,7 @@ const OrderScreen = () => {
   } = useGetOrderDetailsQuery(orderId);
 
   const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
+  const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -147,7 +149,7 @@ const OrderScreen = () => {
         </div>
         <div className="bg-white h-50 w-1/2 border">
           <div>
-            {!order.isPaid && (
+            {!order.isPaid ? (
               <div>
                 {loadingPay && <Loader />}
                 {isPending ? (
@@ -165,7 +167,7 @@ const OrderScreen = () => {
                   </div>
                 )}
               </div>
-            )}
+            ): <OrderSummary/>}
           </div>
         </div>
       </div>

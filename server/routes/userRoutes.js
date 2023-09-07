@@ -1,13 +1,19 @@
 const router = require('express').Router()
 const { protect, restrictTo, admin } = require('../middleware/authMiddleware')
-const { updateController, deleteController, getUserController, getAllUsersController, getUserStatsController, updateMe, deleteMe } = require('../controllers/userControllers')
+const { updateController, deleteController, getUserController, getAllUsersController, getUserStatsController, updateMe, deleteMe, getUserProfileController, updateUserProfileController } = require('../controllers/userControllers')
 const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
 
+
+// GET USER PROFILE
+router.get('/profile', protect, getUserProfileController)
+
+router.put('/update', protect, updateUserProfileController)
+
 // UPDATE
-router.put('/update/:id', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, updateController)
+// router.put('/update/:id', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, updateController)
 
 // UPDATE ME
-router.patch('/updateMe/:id', updateMe)
+router.put('/updateMe',protect, updateMe)
 
 // DELETE
 router.delete('/delete/:id', protect, restrictTo('admin'), admin, verifyTokenAndAdmin, deleteController)

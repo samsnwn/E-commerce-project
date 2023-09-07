@@ -21,8 +21,8 @@ const RootLayout = () => {
       <ScrollToTop />
       <header>
         <Announcement />
+        <Nav />
       </header>
-      <Nav />
       <main>
         {/* {navigation.state === "loading" && <h2>Loading...</h2>} */}
         <Outlet />

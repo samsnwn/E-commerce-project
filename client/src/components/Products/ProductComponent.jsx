@@ -26,13 +26,10 @@ const ProductComponent = ({ product }) => {
 
   const handleAddToWishlist = async() => {
     dispatch(addToWishlist(product));
-    console.log(wishlist)
   };
 
   const handleRemoveFromWishlist = async(id) => {
     dispatch(removeFromWishlist(id));
-    console.log(wishlist)
-
   };
 
 

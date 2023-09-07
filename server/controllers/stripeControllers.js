@@ -1,7 +1,8 @@
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const createCheckoutSession = async (req, res) => {
-  const line_items = req.body.map((item) => {
+  const cart = req.body
+  const line_items = cart.map((item) => {
     return {
       price_data: {
         currency: "eur",

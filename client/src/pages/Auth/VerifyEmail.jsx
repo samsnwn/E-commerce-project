@@ -1,17 +1,19 @@
 import { useState } from "react";
 import Button from "../../components/UI/Button";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 // import { useVerifyEmailMutation } from '../../redux/userApiSlice'
 import axios from "axios";
 import baseUrl from "../../config/config";
+import { toast } from "react-toastify";
+
 
 const VerifyEmail = () => {
   // const [verifyEmail, {isLoading}] = useVerifyEmailMutation()
+  const navigate = useNavigate()
   const location = useLocation();
   const userId = location.pathname.split("/")[2];
 
   const [isUserVerified, setIsUserVerified] = useState(false);
-  const [message, setMessage] = useState();
 
   const submitHandler = async () => {
     try {
@@ -21,8 +23,10 @@ const VerifyEmail = () => {
         userId
       );
       setIsUserVerified(true);
-      setMessage(res.data.message);
+      navigate("/login")
+      toast.success(res.data.message)
     } catch (error) {
+      toast.error(error)
       setIsUserVerified(false);
     }
   };

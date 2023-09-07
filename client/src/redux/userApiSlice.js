@@ -1,5 +1,5 @@
 import { apiSlice } from './apiSlice';
-import { AUTH_URL} from '../constants';
+import { AUTH_URL,  USERS_URL } from '../constants';
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -29,14 +29,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: data
       })
+    }),
+    profile: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/update`,
+        method: 'PUT',
+        body: data,
+      }),
+    }),
+    getUsers: builder.query({
+      query: () => ({
+        url: `${USERS_URL}/findAll`,
+      }),
+      keepUnusedDataFor: 5
     })
-    // updateUser: builder.mutation({
-    //   query: (data) => ({
-    //     url: `${AUTH_URL}/profile`,
-    //     method: 'PUT',
-    //     body: data,
-    //   }),
-    // }),
   }),
 });
 
@@ -45,5 +51,6 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useVerifyEmailMutation,
-  // useUpdateUserMutation,
+  useProfileMutation,
+  useGetUsersQuery
 } = userApiSlice;

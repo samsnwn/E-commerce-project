@@ -75,12 +75,13 @@ const Login = () => {
             className="input"
             name="email"
           />
-          <Input.Password
+          <Input
             onChange={onChangeHandler}
             underlined
             label="Password"
             className="input"
             name="password"
+            type="password"
           />
           <button
             type="submit"

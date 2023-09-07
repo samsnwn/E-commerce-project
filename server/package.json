@@ -40,11 +40,13 @@
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "path": "^0.12.7",
+    "resend": "^1.0.0",
     "stripe": "^11.15.0",
     "validator": "^13.7.0",
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.22.15",
     "@faker-js/faker": "^7.6.0",
     "nodemon": "^2.0.22"
   }

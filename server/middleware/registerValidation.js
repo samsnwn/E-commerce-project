@@ -18,7 +18,7 @@ exports.checkingUser = [
   check('password')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters long'),
-  check('passwordConfirmation')
+  check('passwordConfirm')
     .exists({ checkFalsy: true })
     .withMessage('Please confirm your password')
     .custom((val, { req }) => {

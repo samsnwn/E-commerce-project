@@ -16,21 +16,21 @@ const filterObj = (obj, ...allowedFields) => {
 
 exports.updateMe = asyncHandler(async (req, res, next) => {
   // 1) Create error if user posts password data
-  if (req.body.password || req.body.passwordConfirm) {
-    return next(
-      new ExpressError(
-        "This route is not for passwords updated.Please use /updateMyPassword",
-        400
-      )
-    );
-  }
+  // if (req.body.password || req.body.passwordConfirm) {
+  //   return next(
+  //     new ExpressError(
+  //       "This route is not for passwords updated.Please use /updateMyPassword",
+  //       400
+  //     )
+  //   );
+  // }
 
   // Filtered unwanted field names that are not allowed to be updated
-  const filteredBody = filterObj(req.body, "name", "email");
+  // const filteredBody = filterObj(req.body, "name", "email");
 
   // 2) Update user document
   const updatedUser = await User.findByIdAndUpdate(
-    req.params.id,
+    req.body._id,
     {
       $set: filteredBody,
     },
@@ -40,8 +40,8 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
   // createSendToken(updatedUser, 201, res)
 
   res.status(200).json({
-    status: "success",
-    message: "Your data has been updated successfully"
+    data: updatedUser,
+    status: "success"
   });
 });
 
@@ -134,3 +134,46 @@ exports.getUserStatsController = async (req, res, next) => {
     );
   }
 };
+
+
+exports.getUserProfileController = asyncHandler(async(req, res) => {
+  const user = await User.findById(req.user._id)
+
+  if(user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin
+    })
+  } else {
+    res.status(404)
+    throw new Error('User Not Found')
+  }
+})
+
+
+exports.updateUserProfileController = asyncHandler(async(req, res) => {
+  const user = await User.findById(req.user._id)
+
+  if(user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+
+    if(req.body.password) {
+      user.password = req.body.password
+    }
+
+    const updatedUser = await user.save()
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin
+    })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+
+})

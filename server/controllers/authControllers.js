@@ -139,9 +139,9 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
   // 3) Update the password
   user.password = newPassword;
-  user.passwordConfirm = newPasswordConfirm;
+  user.passwordConfirm = null;
   await user.save();
-
+s
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });

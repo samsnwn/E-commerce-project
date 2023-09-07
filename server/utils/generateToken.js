@@ -22,7 +22,7 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie("jwt", accessToken, cookieOptions);
   res
     .status(statusCode)
-    .json({ status: "success", data: { id:user._id, email:user.email, name: user.name } });
+    .json({ status: "success", data: { id:user._id, email:user.email, name: user.name, isAdmin:user.isAdmin } });
 };
 
 module.exports = createSendToken;

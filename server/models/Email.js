@@ -2,6 +2,8 @@ const nodemailer = require("nodemailer");
 const ExpressError = require("../utils/ExpressError");
 const jwt = require("jsonwebtoken");
 const User = require("./UserModel");
+// const render = require("@react-email/render")
+// const Email = require("../../client/src/emails/VerificationEmail")
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
@@ -16,6 +18,8 @@ let transporter = nodemailer.createTransport({
     rejectUnauthorized: false,
   },
 });
+
+// const emailHtml = render(Email({ url: "https://example.com" }));
 
 
 // send mail with defined transport object

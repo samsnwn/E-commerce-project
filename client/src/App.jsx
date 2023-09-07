@@ -26,8 +26,11 @@ import PrivateRoute from "./components/PrivateRoute";
 import PaymentScreen from "./pages/Shipping/PaymentScreen";
 import PlaceOrderScreen from "./pages/Shipping/PlaceOrderScreen";
 import OrderScreen from "./pages/Shipping/OrderScreen";
-
-
+import AdminRoute from "./components/AdminRoute";
+import OrderListScreen from "./pages/Admin/OrderListScreen";
+import AdminPage from "./pages/Admin/AdminPage";
+import UserListScreen from "./pages/Admin/UserListScreen";
+import ProductListScreen from "./pages/Admin/ProductListScreen";
 
 const router = createBrowserRouter([
   {
@@ -49,15 +52,25 @@ const router = createBrowserRouter([
       { path: "events/:eventId", element: <EventPage /> },
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
-      { path: "profile", element: <Profile /> },
       {
         path: "",
         element: <PrivateRoute />,
         children: [
+          { path: "/profile", element: <Profile /> },
           { path: "/shipping", element: <ShippingScreen /> },
           { path: "/payment", element: <PaymentScreen /> },
           { path: "/placeorder", element: <PlaceOrderScreen /> },
           { path: "/order/:id", element: <OrderScreen /> },
+        ],
+      },
+      {
+        path: "",
+        element: <AdminRoute />,
+        children: [
+          { path: "/admin", element: <AdminPage />},
+          { path: "/admin/order-list", element: <OrderListScreen /> },
+          { path: "/admin/user-list", element: <UserListScreen /> },
+          { path: "/admin/product-list", element: <ProductListScreen /> },
         ],
       },
     ],
@@ -81,9 +94,7 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return (
-      <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

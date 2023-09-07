@@ -8,17 +8,18 @@ import {
   Badge,
   Dropdown,
   css,
-  Avatar
+  Avatar,
+  Tooltip,
 } from "@nextui-org/react";
 import SearchSharpIcon from "@mui/icons-material/SearchSharp";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { CartIcon } from "../Cart/CartIcon";
 import { useSelector, useDispatch } from "react-redux";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useLogoutMutation } from "../../redux/userApiSlice";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/authSlice";
-import {toast} from "react-toastify"
-
+import { toast } from "react-toastify";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const Nav = () => {
   ];
 
   return (
+    // Logo and hamburger menu
     <Navbar isBordered variant="floating">
       <Navbar.Content>
         <Navbar.Brand>
@@ -60,18 +62,20 @@ const Nav = () => {
         </Navbar.Brand>
       </Navbar.Content>
 
+      {/* Links to pages */}
       <Navbar.Content enableCursorHighlight hideIn="sm" variant="underline">
         <Dropdown isBordered>
           <Navbar.Item>
             <Dropdown.Button
               auto
+              animated="false"
               light
               css={{
                 px: 0,
                 dflex: "center",
                 svg: { pe: "none" },
               }}
-              ripple={false}
+              ripple={true}
             >
               Categories
             </Dropdown.Button>
@@ -131,8 +135,10 @@ const Nav = () => {
         <Navbar.Link href="/contact">Contact</Navbar.Link>
       </Navbar.Content>
 
+      {/* cart and user  */}
       <Navbar.Content>
-      <Navbar.Link href="/cart">
+        <Tooltip content={"My cart"} rounded color="primary" placement="bottom">
+        <Navbar.Link href="/cart">
           <Badge
             color="primary"
             content={cartItems.length >= 1 ? cartItems.length : ""}
@@ -142,10 +148,10 @@ const Nav = () => {
             <CartIcon fill="black" size={26} />
           </Badge>
         </Navbar.Link>
-        {userInfo ? (
-          <Dropdown>
-            <Navbar.Item>
-              <Dropdown.Button>
+        </Tooltip>
+          {userInfo ? (
+            <Dropdown>
+              <Dropdown.Button >
                 <Avatar
                   text={userInfo.data.name.slice(0, 1).toUpperCase()}
                   size="md"
@@ -154,32 +160,37 @@ const Nav = () => {
                   textColor="black"
                   borderWeight="black"
                   css={{
-                    '&:hover': {
-                      background: '$gray100',
-                      color: '$gray800',
+                    "&:hover": {
+                      background: "$gray100",
+                      color: "$gray800",
                     },
                   }}
                 />
               </Dropdown.Button>
-            </Navbar.Item>
-            <Dropdown.Menu>
-              <Dropdown.Item>
-                <Navbar.Link href="/profile">Profile</Navbar.Link>
-              </Dropdown.Item>
-              <Dropdown.Item>
-                <Navbar.Item>
+              <Dropdown.Menu>
+                <Dropdown.Item aria-label="profile">
+                  <Navbar.Link href="/profile">Profile</Navbar.Link>
+                </Dropdown.Item>
+                <Dropdown.Item aria-label="logout">
                   <button onClick={logoutHandler}>Logout</button>
-                </Navbar.Item>
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        ) : (
-          <Navbar.Link href="/login">
-            <AccountCircleIcon fontSize="large"/>
-          </Navbar.Link>
-        )}
+                </Dropdown.Item >
+                {userInfo && userInfo.data.isAdmin && (
+                  <Dropdown.Item aria-label="admin">
+                    <Navbar.Item aria-label="admin">
+                      <Navbar.Link href="/admin">Admin</Navbar.Link>
+                    </Navbar.Item>
+                  </Dropdown.Item>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          ) : (
+            <Navbar.Link href="/login">
+              <AccountCircleIcon fontSize="large" />
+            </Navbar.Link>
+          )}
       </Navbar.Content>
-      
+
+      {/* Collapsed menu and items  */}
       <Navbar.Collapse>
         {collapseItems.map((item, index) => (
           <Navbar.CollapseItem key={index}>
