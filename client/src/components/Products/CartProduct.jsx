@@ -9,6 +9,7 @@ const CartProduct = () => {
   const handleRemoveFromCart = (id) => {
     dispatch(removeFromCart(id));
   };
+  console.log(cartItems)
 
   return (
     <>

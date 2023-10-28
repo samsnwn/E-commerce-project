@@ -3,16 +3,22 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { sliderItems } from "../assets/api/salesData";
-import { Link } from "react-router-dom";
+import { useGetProductQuery } from "../../redux/productsApiSlice";
+import { useParams } from "react-router-dom";
 
-const MainCarousel = () => {
-  const isNonMobile = useMediaQuery("(min-width:900px)");
+
+
+
+const ProductCarousel = () => {
+  const { productId } = useParams();
+  const { data, isLoading, error } = useGetProductQuery(productId);
+
 
   return (
     <Carousel
+    className="max-w-[500px] mx-auto"
       infiniteLoop={true}
-      showThumbs={false}
+      showThumbs={true}
       showIndicators={true}
       showStatus={false}
       renderArrowPrev={(onClickHandler, hasPrev, label) => (
@@ -45,49 +51,26 @@ const MainCarousel = () => {
           <NavigateNextIcon sx={{ fontSize: 40 }} />
         </IconButton>
       )}
-      autoPlay={true} // make true forauto play
+      autoPlay={false} // make true forauto play
       interval={3500}
       transitionTime={1000}
     >
-      {sliderItems.map((item, index) => (
+      {Object.values(data.image).map((image, index) => (
         <Box key={`carousel-image-${index}`}>
-          <img
-            src={item.img}
+          <img 
+          className="max-w-[700px]"
+            src={image}
             alt={`carousel-${index}`}
-            style={{
-              width: "100%",
-              height: "700px",
-              objectFit: "cover",
-              backgroundAttachment: "fixed",
-            }}
+            // style={{
+            //   height: "500px",
+            //   objectFit: "contain",
+            //   // backgroundAttachment: "fixed",
+            // }}
           />
-          <Box
-            color="white"
-            padding="20px"
-            borderRadius="10px"
-            textAlign={isNonMobile ? "left" : "center"}
-            backgroundColor="rgb(0, 0, 0, 0.4)"
-            position="absolute"
-            top="46%"
-            left={isNonMobile ? "10%" : "0"}
-            right={isNonMobile ? undefined : "0"}
-            margin={isNonMobile ? undefined : "0 auto"}
-            maxWidth={isNonMobile ? undefined : "60%"}
-          >
-            {/* <Typography >{item.desc}</Typography> */}
-            <Typography fontSize={isNonMobile ? "4rem" : "2rem"}>{item.title}</Typography>
-            <Typography
-              fontWeight="bold"
-              // color={shades.secondary[300]}
-              sx={{ textDecoration: "underline" }}
-            >
-              <Link to="/products">DISCOVER ALL</Link>
-            </Typography>
-          </Box>
         </Box>
       ))}
     </Carousel>
   );
 };
 
-export default MainCarousel;
+export default ProductCarousel;

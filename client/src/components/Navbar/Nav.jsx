@@ -20,6 +20,7 @@ import { useLogoutMutation } from "../../redux/userApiSlice";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../redux/authSlice";
 import { toast } from "react-toastify";
+import { categories } from "../../assets/api/salesData";
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const Nav = () => {
         <Navbar.Brand>
           <Navbar.Toggle aria-label="toggle navigation" showIn="sm" />
           <Navbar.Link color="inherit" href="/">
-            LOGO
+            Oldies but Goodies
           </Navbar.Link>
         </Navbar.Brand>
       </Navbar.Content>
@@ -75,9 +76,9 @@ const Nav = () => {
                 dflex: "center",
                 svg: { pe: "none" },
               }}
-              ripple={true}
+              ripple={false}
             >
-              Categories
+              Products
             </Dropdown.Button>
           </Navbar.Item>
           <Dropdown.Menu
@@ -100,34 +101,51 @@ const Nav = () => {
               },
             }}
           >
-            <Dropdown.Item
+            {" "}
+            <Dropdown.Item className="text-bold">
+              <Navbar.Link href={`/products`}>All products</Navbar.Link>
+            </Dropdown.Item>
+            {categories.map((category, i) => (
+              <Dropdown.Item key={i}  textValue={category.title}>
+                <Navbar.Link href={`/products/${category.cat}`}  textValue={category.title}>
+                  {category.title}
+                </Navbar.Link>
+              </Dropdown.Item>
+            ))}
+            {/* <Dropdown.Item
+              aria-label="jackets"
               key="jackets"
-              showFullDescription
-              description="2nd hand jackets"
+              // showFullDescription
+              // description="2nd hand jackets"
             >
-              Jackets
+              <Navbar.Item>
+                <Navbar.Link href="/products/jackets">Jackets</Navbar.Link>
+              </Navbar.Item>
             </Dropdown.Item>
             <Dropdown.Item
+              aria-label="jewelry"
               key="jewelry"
-              showFullDescription
-              description="Hand made jewelry"
+              // showFullDescription
+              // description="Hand made jewelry"
             >
-              Jewelry
+              <Navbar.Link href="/products/jewelry">Jewelry</Navbar.Link>
             </Dropdown.Item>
             <Dropdown.Item
+              aria-label="shirts"
               key="shirts"
-              showFullDescription
-              description="2nd hand shirts"
+              // showFullDescription
+              // description="2nd hand shirts"
             >
-              Shirts
+              <Navbar.Link href="/products/shirts">Shirts</Navbar.Link>
             </Dropdown.Item>
             <Dropdown.Item
+              aria-label="others"
               key="other"
-              showFullDescription
-              description="Other stuff"
+              // showFullDescription
+              // description="Other stuff"
             >
-              Others
-            </Dropdown.Item>
+              <Navbar.Link href="/products/others">Others</Navbar.Link>
+            </Dropdown.Item> */}
           </Dropdown.Menu>
         </Dropdown>
         <Navbar.Link href="/events">Events</Navbar.Link>
@@ -138,56 +156,56 @@ const Nav = () => {
       {/* cart and user  */}
       <Navbar.Content>
         <Tooltip content={"My cart"} rounded color="primary" placement="bottom">
-        <Navbar.Link href="/cart">
-          <Badge
-            color="primary"
-            content={cartItems.length >= 1 ? cartItems.length : ""}
-            isInvisible={isInvisible}
-            shape="circle"
-          >
-            <CartIcon fill="black" size={26} />
-          </Badge>
-        </Navbar.Link>
+          <Navbar.Link href="/cart">
+            <Badge
+              color="primary"
+              content={cartItems.length >= 1 ? cartItems.length : ""}
+              isInvisible={isInvisible}
+              shape="circle"
+            >
+              <CartIcon fill="black" size={26} />
+            </Badge>
+          </Navbar.Link>
         </Tooltip>
-          {userInfo ? (
-            <Dropdown>
-              <Dropdown.Button >
-                <Avatar
-                  text={userInfo.data.name.slice(0, 1).toUpperCase()}
-                  size="md"
-                  bordered
-                  pointer="true"
-                  textColor="black"
-                  borderWeight="black"
-                  css={{
-                    "&:hover": {
-                      background: "$gray100",
-                      color: "$gray800",
-                    },
-                  }}
-                />
-              </Dropdown.Button>
-              <Dropdown.Menu>
-                <Dropdown.Item aria-label="profile">
-                  <Navbar.Link href="/profile">Profile</Navbar.Link>
+        {userInfo ? (
+          <Dropdown>
+            <Dropdown.Button>
+              <Avatar
+                text={userInfo.data.name.slice(0, 1).toUpperCase()}
+                size="md"
+                bordered
+                pointer="true"
+                textColor="black"
+                borderWeight="black"
+                css={{
+                  "&:hover": {
+                    background: "$gray100",
+                    color: "$gray800",
+                  },
+                }}
+              />
+            </Dropdown.Button>
+            <Dropdown.Menu>
+              <Dropdown.Item aria-label="profile">
+                <Navbar.Link href="/profile">Profile</Navbar.Link>
+              </Dropdown.Item>
+              <Dropdown.Item aria-label="logout">
+                <button onClick={logoutHandler}>Logout</button>
+              </Dropdown.Item>
+              {userInfo && userInfo.data.isAdmin && (
+                <Dropdown.Item aria-label="admin">
+                  <Navbar.Item aria-label="admin">
+                    <Navbar.Link href="/admin">Admin</Navbar.Link>
+                  </Navbar.Item>
                 </Dropdown.Item>
-                <Dropdown.Item aria-label="logout">
-                  <button onClick={logoutHandler}>Logout</button>
-                </Dropdown.Item >
-                {userInfo && userInfo.data.isAdmin && (
-                  <Dropdown.Item aria-label="admin">
-                    <Navbar.Item aria-label="admin">
-                      <Navbar.Link href="/admin">Admin</Navbar.Link>
-                    </Navbar.Item>
-                  </Dropdown.Item>
-                )}
-              </Dropdown.Menu>
-            </Dropdown>
-          ) : (
-            <Navbar.Link href="/login">
-              <AccountCircleIcon fontSize="large" />
-            </Navbar.Link>
-          )}
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <Navbar.Link href="/login">
+            <AccountCircleIcon fontSize="large" />
+          </Navbar.Link>
+        )}
       </Navbar.Content>
 
       {/* Collapsed menu and items  */}

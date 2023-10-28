@@ -1,15 +1,21 @@
-const router = require('express').Router()
-const {registrationController, loginController, forgotPassword, resetPassword, updatePassword, logout, emailVerificationController} = require('../controllers/authControllers')
-const {checkingUser} = require('../middleware/registerValidation')
-const {protect, restrictTo} = require('../middleware/authMiddleware')
-const passport = require("passport")
+import express from 'express';
+const router = express.Router();
+import {registrationController, loginController,googleLoginController, forgotPassword, resetPassword, updatePassword, logout, emailVerificationController, googleRegistrationController} from '../controllers/authControllers.js'
+import {checkingUser}from '../middleware/registerValidation.js'
+import {protect, restrictTo} from '../middleware/authMiddleware.js'
 
 
 // REGISTER
 router.post('/register', checkingUser, registrationController)
 
+// Google REGISTER
+router.post('/google-register', googleRegistrationController)
+
 // LOGIN 
 router.post('/login', loginController)
+
+// GOOGLE LOGIN 
+router.post('/google-login', googleLoginController)
 
 // FORGOT AND RESET PASSWORD
 router.post('/forgotPassword', forgotPassword)
@@ -24,13 +30,5 @@ router.post('/logout', logout)
 // EMAIL VERIFICATION
 router.patch("/emailVerification/:id", emailVerificationController)
 
-router.get("/google", passport.authenticate("google", {scope: ["profile"]}))
-router.get("/auth/callback/google", passport.authenticate("google", {failureRedirect: "/", }), (req, res) => {
-  res.redirect("/events")
-})
 
-
-
-
-
-module.exports = router
+export default router;

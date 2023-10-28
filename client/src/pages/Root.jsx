@@ -4,6 +4,7 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Nav from "../components/Navbar/Nav";
 import Newsletter from "../components/Newsletter";
+import Loader from "../components/UI/Loader";
 
 const RootLayout = () => {
   const navigation = useNavigation();
@@ -21,15 +22,15 @@ const RootLayout = () => {
       <ScrollToTop />
       <header>
         <Announcement />
-        <Nav />
       </header>
+      <Nav />
       <main>
-        {/* {navigation.state === "loading" && <h2>Loading...</h2>} */}
+        {navigation.state === "loading" && <Loader/>}
         <Outlet />
       </main>
       <footer>
         <Newsletter />
-        {/* <Footer /> */}
+        <Footer /> 
       </footer>
     </>
   );

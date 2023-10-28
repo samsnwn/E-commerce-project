@@ -7,7 +7,7 @@ import ProductsList from "./pages/Products/ProductsList";
 import Register from "./pages/Auth/Register";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/ErrorPage";
-import AllProducts from "./components/Products/AllProducts";
+import AllProductsPage from "./pages/Products/AllProductsPage";
 import Events from "./pages/Events/Events";
 import EventPage from "./pages/Events/EventPage";
 import AboutUs from "./pages/AboutUs";
@@ -31,6 +31,7 @@ import OrderListScreen from "./pages/Admin/OrderListScreen";
 import AdminPage from "./pages/Admin/AdminPage";
 import UserListScreen from "./pages/Admin/UserListScreen";
 import ProductListScreen from "./pages/Admin/ProductListScreen";
+import Categories from "./components/Categories/Categories";
 
 const router = createBrowserRouter([
   {
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
-      { path: "products", element: <AllProducts /> },
+      { path: "products", element: <AllProductsPage /> },
       { path: "contact", element: <ContactForm /> },
       { path: "products/:category", element: <ProductsList /> },
       { path: "product/:productId", element: <ProductPage /> },
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: "events/:eventId", element: <EventPage /> },
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
+      { path: "categories", element: <Categories /> },
       {
         path: "",
         element: <PrivateRoute />,

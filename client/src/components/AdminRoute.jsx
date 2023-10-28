@@ -11,15 +11,14 @@ const AdminRoute = () => {
       {" "}
       <Container className="flex justify-center">
         <Button.Group size="md">
-          <Button bordered>
-          <Link href="/admin/user-list">Users</Link>
-
+          <Button bordered as="a"  href="/admin/user-list" >
+            Users
           </Button>
-          <Button bordered>
-          <Link href="/admin/product-list">Products</Link>
+          <Button bordered as="a" href="/admin/product-list">
+            Products
           </Button>
-          <Button bordered>
-            <Link href="/admin/order-list">Orders</Link>
+          <Button bordered as="a" href="/admin/order-list">
+            Orders
           </Button>
         </Button.Group>
       </Container>

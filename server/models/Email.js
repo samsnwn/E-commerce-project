@@ -1,7 +1,9 @@
-const nodemailer = require("nodemailer");
-const ExpressError = require("../utils/ExpressError");
-const jwt = require("jsonwebtoken");
-const User = require("./UserModel");
+import nodemailer from "nodemailer"
+import ExpressError from "../utils/ExpressError.js"
+import jwt from "jsonwebtoken"
+import User from "./UserModel.js"
+import dotenv from 'dotenv';
+dotenv.config();
 // const render = require("@react-email/render")
 // const Email = require("../../client/src/emails/VerificationEmail")
 
@@ -67,4 +69,4 @@ const sendContactUsEmail = (obj) => {
       .catch((err) => reject(err));
   });
 };
-module.exports = { verifyEmailSender, resetPasswordMail, sendContactUsEmail };
+export { verifyEmailSender, resetPasswordMail, sendContactUsEmail };

@@ -1,4 +1,4 @@
-const Container = ({ children }) => {
+const Page = ({ children }) => {
   return ( 
     <div
       className="
@@ -15,4 +15,4 @@ const Container = ({ children }) => {
    );
 }
  
-export default Container;
+export default Page;

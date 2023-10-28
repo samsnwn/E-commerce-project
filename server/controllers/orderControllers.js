@@ -1,111 +1,46 @@
-const Order = require("../models/OrderModel");
-const ExpressError = require("../utils/ExpressError");
-const asyncHandler = require("express-async-handler");
+import Order from "../models/OrderModel.js";
+import ExpressError from "../utils/ExpressError.js";
+import asyncHandler from "express-async-handler";
+import Product from '../models/ProductModel.js';
+import { calcPrices } from '../utils/calcPrices.js';
+import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
 
-// exports.createOrderController = async (req, res, next) => {
-//   const newOrder = new Order(req.body);
-//   try {
-//     const savedOrder = await newOrder.save();
-//     res.status(200).json(savedOrder);
-//   } catch (err) {
-//     next(new ExpressError("Failed to create order, Please Try Again", 500));
-//   }
-// };
 
-// exports.updateOrderController = async (req, res, next) => {
-//   const orderId = req.params.id;
-//   const updatedOrderData = req.body;
-//   try {
-//     const updatedOrder = await Cart.findByIdAndUpdate(
-//       orderId,
-//       {
-//         $set: updatedOrderData,
-//       },
-//       { new: true }
-//     );
-//     res.status(200).json(updatedOrder);
-//   } catch (err) {
-//     next(new ExpressError("Failed to update order, Please Try Again", 500));
-//   }
-// };
-
-// exports.deleteOrderController = async (req, res, next) => {
-//   const orderId = req.params.id;
-//   try {
-//     await Order.findByIdAndDelete(orderId);
-//     res.status(200).json("Order has been deleted");
-//   } catch (err) {
-//     next(
-//       new ExpressError("Failed to delete your order, try again please!", 500)
-//     );
-//   }
-// };
-
-// exports.getUserOrderController = async (req, res, next) => {
-//   try {
-//     const orders = await Order.find({ userId: req.params.userId });
-//     res.status(200).json(orders);
-//   } catch (err) {
-//     next(new ExpressError("Cannot find this order", 500));
-//   }
-// };
-
-// exports.getAllOrdersController = async (req, res, next) => {
-//   try {
-//     const orders = await Order.find();
-//     res.status(200).json(orders);
-//   } catch (err) {
-//     next(
-//       new ExpressError("Failed to retrieve all orders, try again please!", 500)
-//     );
-//   }
-// };
-
-// exports.getIncomeController = async (req, res, next) => {
-//   const date = new Date();
-//   const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
-//   const previousMonth = new Date(date.setMonth(lastMonth.getMonth() - 1));
-//   try {
-//     const income = await Order.aggregate([
-//       { $match: { createdAt: { $gte: previousMonth } } },
-//       { $project: { month: { $month: "$createdAt" }, sales: "$amount" } },
-//       { $group: { _id: "$month", total: { $sum: "$sales" } } },
-//     ]);
-//     res.status(200).json(income);
-//   } catch (err) {
-//     next(
-//       new ExpressError(
-//         "Failed to retrieve monthly income, try again please!",
-//         500
-//       )
-//     );
-//   }
-// };
-
-// @desc    Create new order
-// @route   POST /api/orders
-// @access  Private
-exports.addOrderItems = asyncHandler(async (req, res, next) => {
-  const {
-    orderItems,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body;
+export const addOrderItems = asyncHandler(async (req, res) => {
+  const { orderItems, shippingAddress, paymentMethod } = req.body;
 
   if (orderItems && orderItems.length === 0) {
     res.status(400);
-    throw new Error("No order items");
+    throw new Error('No order items');
   } else {
-    const order = new Order({
-      orderItems: orderItems.map((order) => ({
-        ...order,
-        product: order._id,
+    // NOTE: here we must assume that the prices from our client are incorrect.
+    // We must only trust the price of the item as it exists in
+    // our DB. This prevents a user paying whatever they want by hacking our client
+    // side code - https://gist.github.com/bushblade/725780e6043eaf59415fbaf6ca7376ff
+
+    // get the ordered items from our database
+    const itemsFromDB = await Product.find({
+      _id: { $in: orderItems.map((x) => x._id) },
+    });
+
+    // map over the order items and use the price from our items from database
+    const dbOrderItems = orderItems.map((itemFromClient) => {
+      const matchingItemFromDB = itemsFromDB.find(
+        (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
+      );
+      return {
+        ...itemFromClient,
+        product: itemFromClient._id,
+        price: matchingItemFromDB.price,
         _id: undefined,
-      })),
+      };
+    });
+
+    // calculate prices
+    const { itemsPrice, taxPrice, shippingPrice, totalPrice } = calcPrices(dbOrderItems);
+
+    const order = new Order({
+      orderItems: dbOrderItems,
       user: req.user._id,
       shippingAddress,
       paymentMethod,
@@ -117,38 +52,56 @@ exports.addOrderItems = asyncHandler(async (req, res, next) => {
 
     const createdOrder = await order.save();
 
+    // Update inStock and qty field of each item
+
+    const soldItems = itemsFromDB.map((item) => {
+
+    })
+
+    // const updatedItems = await soldItem.save()
+
+    // console.log("soldItems", soldItems)
+
     res.status(201).json(createdOrder);
   }
 });
 
-// @desc    Update order to paid
-// @route   GET /api/orders/:id/pay
-// @access  Private
-exports.updateOrderToPaid = asyncHandler(async (req, res, next) => {
+export const updateOrderToPaid = asyncHandler(async (req, res) => {
+  // NOTE: here we need to verify the payment was made to PayPal before marking
+  // the order as paid
+  const { verified, value } = await verifyPayPalPayment(req.body.id);
+  if (!verified) throw new Error('Payment not verified');
+
+  // check if this transaction has been used before
+  const isNewTransaction = await checkIfNewTransaction(Order, req.body.id);
+  if (!isNewTransaction) throw new Error('Transaction has been used before');
+
   const order = await Order.findById(req.params.id);
 
-  if(order) {
+  if (order) {
+    // check the correct amount was paid
+    const paidCorrectAmount = order.totalPrice.toString() === value;
+    if (!paidCorrectAmount) throw new Error('Incorrect amount paid');
+
     order.isPaid = true;
     order.paidAt = Date.now();
     order.paymentResult = {
-      id:req.body.id,
-      status:req.body.status,
+      id: req.body.id,
+      status: req.body.status,
       update_time: req.body.update_time,
-      email_address: req.body.email_address
-    }
-    const updtatedOrder = await order.save()
-    res.status(201).json(updtatedOrder);
-  } else {
-    res.status(404)
-    throw new Error("Order not found")
-  }
+      email_address: req.body.payer.email_address,
+    };
 
+    const updatedOrder = await order.save();
+
+    res.json(updatedOrder);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
 });
 
-// @desc    Update order to delivered
-// @route   GET /api/orders/:id/deliver
-// @access  Private/Admin
-exports.updateOrderToDelivered = asyncHandler(async (req, res, next) => {
+export const updateOrderToDelivered = asyncHandler(async (req, res, next) => {
   const orderId = req.params.id
   const order = await Order.findById(orderId)
   if(order) {
@@ -163,26 +116,17 @@ exports.updateOrderToDelivered = asyncHandler(async (req, res, next) => {
   }
 });
 
-// @desc    Get logged in user orders
-// @route   GET /api/orders/myorders
-// @access  Private
-exports.getMyOrders = asyncHandler(async (req, res, next) => {
+export const getMyOrders = asyncHandler(async (req, res, next) => {
   const orders = await Order.find({ user: req.user._id });
   res.status(201).json(orders);
 });
 
-// @desc    Get all orders
-// @route   GET /api/orders
-// @access  Private/Admin
-exports.getOrders = asyncHandler(async (req, res, next) => {
+export const getOrders = asyncHandler(async (req, res, next) => {
   const orders = await Order.find({}).populate('user', 'id name')
   res.status(201).json(orders);
 });
 
-// @desc    Get order by ID
-// @route   GET /api/orders/:id
-// @access  Private
-exports.getOrderById = asyncHandler(async (req, res, next) => {
+export const getOrderById = asyncHandler(async (req, res, next) => {
   const order = await Order.findById(req.params.id).populate(
     "user",
     "name email"

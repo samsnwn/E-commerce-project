@@ -1,5 +1,5 @@
-const jwt = require("jsonwebtoken");
-const ExpressError = require("../utils/ExpressError");
+import jwt from "jsonwebtoken";
+import ExpressError from "../utils/ExpressError.js";
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.jwt
@@ -39,4 +39,4 @@ const verifyTokenAndAdmin = (req, res, next) => {
 
 
 
-module.exports = { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin };
+export { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin };

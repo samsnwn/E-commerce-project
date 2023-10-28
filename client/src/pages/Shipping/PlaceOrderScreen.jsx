@@ -1,17 +1,15 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import CheckoutSteps from "../../components/CheckoutSteps";
-import { toast } from "react-toastify";
 import Message from "../../components/UI/Message";
 import Loader from "../../components/UI/Loader";
 import { useCreateOrderMutation } from "../../redux/ordersApiSlice";
 import { clearCartItems } from "../../redux/cartSlice";
 import OrderSummary from "../../components/OrderSummary";
 import Button from "../../components/UI/Button";
-import axios from "axios";
-import baseUrl from "../../config/config";
+import OrderItem from "../../components/Products/OrderItem";
+import Container from "../../components/UI/Container";
 
 const PlaceOrderScreen = () => {
   const dispatch = useDispatch();
@@ -40,89 +38,71 @@ const PlaceOrderScreen = () => {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
-      }
-      const res = await createOrder(finalOrder).unwrap()
+      };
+      const res = await createOrder(finalOrder).unwrap();
       dispatch(clearCartItems());
-      navigate(`/order/${res._id}`)
+      navigate(`/order/${res._id}`);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   return (
-    <>
+    <div className="sm:w-[80%] lg:w-2/3 mx-auto p-5 md:px-2 max-w-[1500px]">
       <CheckoutSteps step1 step2 step3 step4 />
-      <div className="flex justify-between">
-        <Col md={8}>
-          <ListGroup>
-            <ListGroup.Item>
-              <h2>Shipping</h2>
-              <p>
-                <strong>Address:</strong>
-                {cart.shippingAddress.address} , {cart.shippingAddress.city},{" "}
-                {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
-              </p>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method:</strong>
-                {cart.paymentMethod}
-              </p>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <h2>Order Items:</h2>
-              {cart.cartItems.length === 0 ? (
-                <Message>Your Cart is empty</Message>
-              ) : (
-                <ListGroup>
-                  {cart.cartItems.map((item, index) => (
-                    <div key={index}>
-                      <div className="flex">
-                        <div md={1}>
-                          <Image src={item.image} alt={item.name} />
-                        </div>
-                        <div>
-                          <Link to={`/product/${item._id}`}>{item.title}</Link>
-                        </div>
-                        <div>{item.price}€</div>
-                      </div>
-                    </div>
-                  ))}
-                </ListGroup>
-              )}
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
+      <div className="flex flex-col md:flex-row gap-10">
+        <div className="lg:flex-1">
+          <div className="mb-4">
+            <h2>Shipping information</h2>
+            <p>
+              <strong>Address: </strong>
+              {cart.shippingAddress.address} , {cart.shippingAddress.city},{" "}
+              {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
+            </p>
+          </div>
+        <div className="border border-slate-200 h-[2px] rounded-md mb-2"></div>
 
-        <Col md={4}>
-          <OrderSummary>
-            <div className="flex justify-between">
-              <h2>Shipping</h2>
-              <p>{cart.shippingPrice}€</p>
-            </div>
-            <div className="flex justify-between">
-              <h2>Taxes</h2>
-              <p>{cart.taxPrice}€</p>
-            </div>
-            <div className="flex justify-between">
-              <h2>
-                <strong>Total</strong>
-              </h2>
-              <strong>{cart.totalPrice}€</strong>
-            </div>
-            <div>{error && <Message />}</div>
-            <Button
-              disabled={cart.cartItems.length === 0}
-              label="Place Order"
-              onClick={placeOrderHandler}
-            ></Button>
-            {isLoading && <Loader />}
-          </OrderSummary>
-        </Col>
+          <ul>
+            <h2 className="mb-2">Order Items:</h2>
+            {cart.cartItems.length === 0 ? (
+              <Message>Your Cart is empty</Message>
+            ) : (
+              <li>
+                {cart.cartItems.map((item, index) => (
+                  <OrderItem item={item} key={index} />
+                ))}
+              </li>
+            )}
+          </ul>
+        </div>
+
+        <div className="border border-slate-200 h-[2px] rounded-md mb-2"></div>
+        <OrderSummary>
+          <div className="flex justify-between">
+            <h2>Shipping</h2>
+            <p>{cart.shippingPrice}€</p>
+          </div>
+          <div className="flex justify-between">
+            <h2>Taxes</h2>
+            <p>{cart.taxPrice}€</p>
+          </div>
+          <div className="flex justify-between mb-4">
+            <h2>
+              <strong>Total</strong>
+            </h2>
+            <strong>{cart.totalPrice}€</strong>
+          </div>
+          <div>{error && <Message />}</div>
+          <Button
+          outline
+            disabled={cart.cartItems.length === 0}
+            label="Go to payment"
+            onClick={placeOrderHandler}
+          ></Button>
+          {isLoading && <Loader />}
+        </OrderSummary>
       </div>
-    </>
+    </div>
   );
 };
 

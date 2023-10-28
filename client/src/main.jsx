@@ -13,7 +13,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <PayPalScriptProvider>
+      <PayPalScriptProvider deferLoading={true} options={{"client-id": ""}}>
         <NextUIProvider>
           <ToastContainer />
           <App />

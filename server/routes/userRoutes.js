@@ -1,7 +1,26 @@
-const router = require('express').Router()
-const { protect, restrictTo, admin } = require('../middleware/authMiddleware')
-const { updateController, deleteController, getUserController, getAllUsersController, getUserStatsController, updateMe, deleteMe, getUserProfileController, updateUserProfileController } = require('../controllers/userControllers')
-const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
+
+import express from 'express';
+const router = express.Router();
+
+import { protect, restrictTo, admin } from '../middleware/authMiddleware.js';
+
+import {
+  updateController,
+  deleteController,
+  getUserController,
+  getAllUsersController,
+  getUserStatsController,
+  updateMe,
+  deleteMe,
+  getUserProfileController,
+  updateUserProfileController,
+} from '../controllers/userControllers.js';
+
+import {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} from '../middleware/verifyToken.js';
 
 
 // GET USER PROFILE
@@ -30,4 +49,4 @@ router.get('/findAll',protect, restrictTo('admin'),admin, getAllUsersController)
 // GET USER STATS
 router.get('/stats', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, getUserStatsController)
 
-module.exports = router
+export default router

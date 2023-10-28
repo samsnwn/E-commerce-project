@@ -11,7 +11,7 @@ const WishlistItem = () => {
     dispatch(removeFromWishlist(id));
   };
   return (
-    <div className="px-6 py-5 info flex-[3]">
+    <div className="px-6 py-5 info flex justify-center m-6">
       {wishlistItems.length > 0 &&
         wishlistItems.map((product, i) => (
           <div
@@ -22,7 +22,7 @@ const WishlistItem = () => {
               <div className="flex items-center space-x-4">
                 <img
                   className=" h-[200px] object-cover rounded-md w-[200px]"
-                  src={product.image}
+                  src={product.image[0]}
                   alt={product.title}
                 />
                 <div>

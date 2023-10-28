@@ -4,7 +4,7 @@ const ErrorPage = () => {
   return (
     <>
       <Nav />
-      <main>
+      <main className="text-center">
         <h1>An error occurred</h1>
         <h2>404 Not Found!</h2>
       </main>

@@ -1,8 +1,8 @@
-const {check} = require('express-validator')
-const User = require('../models/UserModel')
-const ExpressError = require("../utils/ExpressError");
+import {check} from 'express-validator'
+import User from '../models/UserModel.js'
+import ExpressError from "../utils/ExpressError.js"
 
-exports.checkingUser = [
+export const checkingUser = [
     check('email')
     .normalizeEmail({ gmail_remove_dots: false })
     .isEmail({})

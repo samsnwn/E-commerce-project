@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
@@ -6,7 +6,7 @@ const signToken = (id) => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+export const createSendToken = (user, statusCode, res) => {
   const accessToken = signToken(user._id);
 
   const cookieOptions = {
@@ -25,4 +25,3 @@ const createSendToken = (user, statusCode, res) => {
     .json({ status: "success", data: { id:user._id, email:user.email, name: user.name, isAdmin:user.isAdmin } });
 };
 
-module.exports = createSendToken;

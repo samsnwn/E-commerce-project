@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose"
 const Schema = mongoose.Schema;
-const bcrypt = require("bcrypt");
-const validator = require("validator");
-const crypto = require("crypto");
+import bcrypt from "bcrypt"
+import validator from "validator"
+import crypto from "crypto"
 
 const UserSchema = new Schema(
   {
@@ -13,6 +13,7 @@ const UserSchema = new Schema(
       lowercase: true,
       validate: [validator.isEmail, "Please provide a valid email address"],
     },
+    googleId: String,
     role: {
       type: String,
       enum: ["user", "admin"],
@@ -122,4 +123,4 @@ UserSchema.methods.createPasswordResetToken = function () {
 };
 
 const User = mongoose.model("User", UserSchema);
-module.exports = User;
+export default User;

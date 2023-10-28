@@ -8,8 +8,13 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useGetProductQuery } from "../../redux/productsApiSlice";
 import Loader from "../../components/UI/Loader";
 import Message from "../../components/UI/Message";
+import cloudinaryConfig from "../../config/cloudinary";
+import ProductCarousel from "../../components/Products/ProductCarousel";
+import { Container } from "@mui/material";
+import { toast } from "react-toastify";
 
 const ProductPage = () => {
+  const { cloudName, apiKey, apiSecret } = cloudinaryConfig;
   const { productId } = useParams();
   const { data, isLoading, error } = useGetProductQuery(productId);
 
@@ -32,6 +37,7 @@ const ProductPage = () => {
   const handleAddToCart = async () => {
     setIsIncluded(true);
     dispatch(addToCart({ ...data }));
+    toast.success("item added to cart");
   };
   const handleRemoveFromCart = async (id) => {
     setIsIncluded(false);
@@ -41,6 +47,7 @@ const ProductPage = () => {
   const handleAddToWishlist = async () => {
     setIsInWishlist(true);
     dispatch(addToWishlist({ ...data }));
+    toast.success("item added to Wishlist");
   };
   const handleRemoveFromWishlist = async (id) => {
     setIsInWishlist(false);
@@ -56,62 +63,60 @@ const ProductPage = () => {
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <div className="p-5 flex">
-          <div className="flex-1 ">
-            <img
-              src={data.image}
-              alt=""
-              className="w-full h-[90vh] object-cover"
-            />
-          </div>
-          <div className="flex-1 px-5">
-            <h1 className="font-extralight">{data.title}</h1>
-            <p className="my-4"> {data.description}</p> 
-            <span className="font-thin text-4xl">{data.price}€</span>
-            {/* Filter Container */}
-            <div className="flex justify-between w-[50%] my-3">
-              <div className="filter">
-                <span className="text-xl font-extralight">
-                  Size {data.size}
-                </span>
+        <div className="p-4 md:p-8 lg:flex lg:max-w-[1800px] ">
+          {isLoading ? <Loader /> : <ProductCarousel />}
+          <div className="p-5 sm:max-w-[500px] sm:mx-auto">
+            <h2 className="text-2xl text-center">{data.title}</h2>
+            <div className="flex flex-col gap-7 p-7">
+              <p className="font-light"> {data.description}</p>
+              <span className="font-extralight text-4xl">{data.price}€</span>
+              <div className="flex justify-between">
+                  <span className="text-xl font-extralight">
+                    Size {data.size}
+                  </span>
+                  <span className="text-xl font-extralight">
+                    Brand {data.brand}
+                  </span>
               </div>
-            </div>
-            {/* Add Container */}
-            <div className="flex items-center w-1/2 justify-between">
-              {isIncluded ? (
-                <button
-                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                  onClick={() => handleRemoveFromCart(data._id)}
-                >
-                  Remove from cart
-                </button>
-              ) : (
-                <button
-                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                  onClick={handleAddToCart}
-                >
-                  Add to cart
-                </button>
-              )}
-              {isInWishlist ? (
-                <button
-                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                  onClick={() => handleRemoveFromWishlist(data._id)}
-                >
-                  <FavoriteIcon color="error" />
-                </button>
-              ) : (
-                <button
-                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                  onClick={handleAddToWishlist}
-                >
-                  <FavoriteBorderIcon />
-                </button>
-              )}
-            </div>
-            {/* <div>
+              {/* Filter Container */}
+
+              {/* Add Container */}
+              <div className="flex items-center justify-between">
+                {isIncluded ? (
+                  <button
+                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                    onClick={() => handleRemoveFromCart(data._id)}
+                  >
+                    Remove from cart
+                  </button>
+                ) : (
+                  <button
+                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                    onClick={handleAddToCart}
+                  >
+                    Add to cart
+                  </button>
+                )}
+                {isInWishlist ? (
+                  <button
+                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                    onClick={() => handleRemoveFromWishlist(data._id)}
+                  >
+                    <FavoriteIcon color="error" />
+                  </button>
+                ) : (
+                  <button
+                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                    onClick={handleAddToWishlist}
+                  >
+                    <FavoriteBorderIcon />
+                  </button>
+                )}
+              </div>
+              {/* <div>
             <Link to={`/products/${product.categories.filter(cat => cat === )}`} relative="path" className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]">See more of this category</Link>
           </div> */}
+            </div>
           </div>
         </div>
       )}

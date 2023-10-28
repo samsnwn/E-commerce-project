@@ -13,6 +13,8 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Col } from "react-bootstrap";
+import axios from "axios"
+import OrderItem from "../../components/Products/OrderItem";
 
 const OrderScreen = () => {
   const { id: orderId } = useParams();
@@ -42,7 +44,7 @@ const OrderScreen = () => {
         paypalDispatch({
           type: "resetOptions",
           value: {
-            "client-id": payload.clientId,
+            "client-id": paypal.clientId,
             currency: "EUR",
           },
         });
@@ -56,13 +58,9 @@ const OrderScreen = () => {
     }
   }, [order, paypal, paypalDispatch, loadingPayPal, errorPayPal]);
 
-  const onApproveTest = async() => {
-    await payOrder({orderId, details: {payer: {}}})
-    refetch()
-    toast.success("test payment successful")
-  };
 
   const createOrder = (data, actions) => {
+    
     return actions.order.create({
       purchase_units: [
         {
@@ -78,12 +76,14 @@ const OrderScreen = () => {
 
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async(details) => {
+      console.log(details)
       try {
-        await payOrder({orderId, details})
+        await payOrder({orderId, details}).unwrap()
         refetch()
         toast.success("payment successful")
       } catch(error) {
         toast.error(error?.data?.message || error.message)
+        console.log(error)
       }
     })
   };
@@ -97,8 +97,7 @@ const OrderScreen = () => {
     <Message />
   ) : (
     <>
-      <h1>Order: {order._id}</h1>
-      <div className="flex justify-around">
+      <div className="flex flex-col md:flex-row gap-5 p-5">
         <div>
           <div>
             <h2>Shipping</h2>
@@ -134,20 +133,21 @@ const OrderScreen = () => {
               <Message>Not Paid</Message>
             )}
           </div>
-          <div>
+          {/* <div>
             <h2>Order Items:</h2>
             {order.orderItems.map((item, index) => (
-              <div key={index}>
-                <div>
-                  <div>
-                    <Link to={`/product/${item.product}`}> {item.title}</Link>
-                  </div>
-                </div>
-              </div>
+              <OrderItem item={item} key={index}/>
+              // <div key={index}>
+              //   <div>
+              //     <div>
+              //       <Link to={`/product/${item.product}`}> {item.title}</Link>
+              //     </div>
+              //   </div>
+              // </div>
             ))}
-          </div>
+          </div> */}
         </div>
-        <div className="bg-white h-50 w-1/2 border">
+        <div className="bg-white h-50 w-2/3 mx-auto">
           <div>
             {!order.isPaid ? (
               <div>
@@ -156,14 +156,12 @@ const OrderScreen = () => {
                   <Loader />
                 ) : (
                   <div>
-                    {/* <button onClick={onApproveTest}>Test pay order</button> */}
-                    <div>
                       <PayPalButtons
                         createOrder={createOrder}
                         onApprove={onApprove}
                         onError={onError}
                       ></PayPalButtons>
-                    </div>
+
                   </div>
                 )}
               </div>

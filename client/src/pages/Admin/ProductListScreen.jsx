@@ -29,7 +29,7 @@ const ProductListScreen = () => {
           <Table.Body>
             {products.products && products.products.map((product) => (
               <Table.Row key={product._id}>
-                <Table.Cell>{product._id}</Table.Cell>
+                <Table.Cell>{product.rn}</Table.Cell>
                 <Table.Cell>{product.title}</Table.Cell>
                 <Table.Cell>{product.price }</Table.Cell>
               </Table.Row>

@@ -38,7 +38,7 @@
     @apply my-3 flex justify-between;
   }
   .nav-link {
-    @apply  hover:text-gray-800 hover:underline
+    @apply  hover:text-blue-500 hover:underline
   } 
   .nav-link-active {
     @apply active:underline 

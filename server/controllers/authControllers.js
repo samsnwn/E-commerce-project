@@ -1,17 +1,11 @@
-const User = require("../models/UserModel");
-const Cart = require("../models/CartModel");
+import User from "../models/UserModel.js";
+import { createHash } from "crypto";
+import asyncHandler from "express-async-handler";
+import ExpressError from "../utils/ExpressError.js";
+import { createSendToken } from "../utils/generateToken.js";
+import { verifyEmailSender, resetPasswordMail } from "../models/Email.js";
 
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-
-const asyncHandler = require("express-async-handler");
-const ExpressError = require("../utils/ExpressError");
-const createSendToken = require("../utils/generateToken");
-const { verifyEmailSender, resetPasswordMail } = require("../models/Email");
-
-// Registration Controller
-exports.registrationController = asyncHandler(async (req, res, next) => {
+export const registrationController = asyncHandler(async (req, res, next) => {
   const { email } = req.body;
   const domain = req.get("origin");
 
@@ -47,8 +41,42 @@ exports.registrationController = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Login Controller
-exports.loginController = asyncHandler(async (req, res, next) => {
+export const googleRegistrationController = asyncHandler(
+  async (req, res, next) => {
+    const { email } = req.body.email;
+    const user = await User.findOne({ email });
+
+    const hashedPassword = createHash("sha256")
+      .update(req.body.aud)
+      .digest("hex");
+
+    if (user) {
+      createSendToken(user, 201, res);
+    } else {
+      const newUser = new User({
+        name: req.body.name,
+        password: hashedPassword,
+        passwordConfirm: hashedPassword,
+        email: req.body.email,
+        googleId: req.body.sub,
+        isVerified: req.body.email_verified,
+      });
+      const savedUser = await User.create(newUser);
+
+      if (savedUser) {
+        // Make password undefined for security purposes
+        savedUser.password = undefined;
+
+        // Send response to frontend
+        createSendToken(savedUser, 201, res);
+      } else {
+        throw new ExpressError("Invalid user data", 500);
+      }
+    }
+  }
+);
+
+export const loginController = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   // checks if email exists in DB
@@ -70,8 +98,24 @@ exports.loginController = asyncHandler(async (req, res, next) => {
   }
 });
 
-// Forgot Password Controller
-exports.forgotPassword = asyncHandler(async (req, res, next) => {
+export const googleLoginController = asyncHandler(async (req, res, next) => {
+  const { email } = req.body;
+
+  // checks if email exists in DB
+  const user = await User.findOne({ email });
+
+  // If everything is ok and user is verified, send token to client
+  if (user) {
+    createSendToken(user, 201, res);
+  } else {
+    throw new ExpressError(
+      "User does not exist, please create a new account first",
+      401
+    );
+  }
+});
+
+export const forgotPassword = asyncHandler(async (req, res, next) => {
   //  1) Get user based on posted email
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -90,11 +134,9 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Reset Password controller
-exports.resetPassword = asyncHandler(async (req, res, next) => {
+export const resetPassword = asyncHandler(async (req, res, next) => {
   // 1) Get user based on the token
-  const hashedToken = crypto
-    .createHash("sha256")
+  const hashedToken = createHash("sha256")
     .update(req.params.token)
     .digest("hex");
 
@@ -122,8 +164,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Update Password controller
-exports.updatePassword = asyncHandler(async (req, res, next) => {
+export const updatePassword = asyncHandler(async (req, res, next) => {
   // 1) Get user from collection
   const user = await User.findById(req.user.id).select("+password");
   const { currentPassword, newPassword, newPasswordConfirm } = req.body;
@@ -141,13 +182,13 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   user.password = newPassword;
   user.passwordConfirm = null;
   await user.save();
-s
+  s;
   // 4) Log user in, send JWT
   createSendToken(user, 200, res);
 });
 
 // Email verification controller
-exports.emailVerificationController = async (req, res, next) => {
+export async function emailVerificationController(req, res, next) {
   const id = req.params.id;
   try {
     await User.findByIdAndUpdate(
@@ -163,10 +204,9 @@ exports.emailVerificationController = async (req, res, next) => {
       new ExpressError("There has been an error, please try again", 401)
     );
   }
-};
+}
 
-// Logout controller
-exports.logout = asyncHandler(async (req, res, next) => {
+export const logout = asyncHandler(async (req, res, next) => {
   res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),

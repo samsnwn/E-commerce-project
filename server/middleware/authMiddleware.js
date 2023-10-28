@@ -1,13 +1,13 @@
-const User = require("../models/UserModel");
+import User from "../models/UserModel.js"
 
-const { promisify } = require("util");
-const jwt = require("jsonwebtoken");
+import { promisify }  from "util"
+import jwt  from "jsonwebtoken"
 
-const asyncHandler = require("express-async-handler");
-const ExpressError = require("../utils/ExpressError");
+import asyncHandler  from "express-async-handler"
+import ExpressError  from "../utils/ExpressError.js"
 
 
-exports.protect = asyncHandler(async (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   // 1) Getting token and check if exists
   let token;
   token = req.cookies.jwt;
@@ -44,7 +44,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-exports.restrictTo = (...roles) => {
+export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
       return next(
@@ -58,7 +58,7 @@ exports.restrictTo = (...roles) => {
   };
 };
 
-exports.admin = (req, res, next) => {
+export const admin = (req, res, next) => {
   if(req.user && req.user.isAdmin) {
     next()
   } else {

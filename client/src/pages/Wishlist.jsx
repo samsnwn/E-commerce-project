@@ -11,8 +11,8 @@ const Wishlist = () => {
   return (
     <div className="min-h-[80vh]">
       {wishlistItems.length <= 0 ? (
-        <div className="self-center">
-          <h1>Your wishlist is empty</h1>
+        <div className="flex flex-col items-center m-6 gap-5">
+          <h1 className="text-3xl">Your wishlist is empty</h1>
           <Link
             to="/products"
             className="p-3 font-semibold cursor-pointer border border-black-400"

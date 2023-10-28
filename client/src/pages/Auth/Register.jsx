@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
-import Button from "../../components/UI/Button";
+import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../../redux/userApiSlice";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import GoogleRegisterButton from "../../components/GoogleRegisterButton";
 
 const Register = () => {
   const [userData, setUserData] = useState();
@@ -45,11 +44,11 @@ const Register = () => {
 
   return (
     <div className="w-screen h-screen bgImage flex flex-col items-center justify-center">
-      <Link className="" to="/">
+      <Link className="my-5" to="/">
         GO BACK TO SHOP
       </Link>
-      <div className="p-5 w-[40%] bg-white ">
-        <h1 className="text-2xl font-light">CREATE AN ACCOUNT</h1>
+      <div className="p-5 w-[70%] lg:w-[40%] bg-white ">
+        <h1 className="text-2xl font-light text-center">CREATE AN ACCOUNT</h1>
         <form action="" className="flex flex-col mt-4" onSubmit={submitHandler}>
           <Input
             clearable
@@ -82,23 +81,30 @@ const Register = () => {
             onChange={onChangeHandler}
             name="passwordConfirm"
           />
-          <Button
-            outline
-            label="Continue with Google"
-            icon={FcGoogle}
-            onClick={() => {}}
-          />
+
           <span className="text-sm my-6">
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </span>
-          <button className="w-[40%] py-2 px-3 bg-teal-200" type="submit" disabled={isLoading}>
+          <button
+            className="w-full py-2 px-3 bg-teal-200"
+            type="submit"
+            disabled={isLoading}
+          >
             CREATE
           </button>
           <Link className="loginLinks mt-3" to="/login">
             LOGIN TO EXISTING ACCOUNT
           </Link>
         </form>
+        <div className="flex my-5 w-[80%] mx-auto">
+          <span className="h-[1px] w-full border border-neutral-500 my-[12px]"></span>
+          <p className="mx-2">Or</p>
+          <span className="h-[1px] w-full border border-neutral-500 my-[12px]"></span>
+        </div>
+        <div className="my-5 flex justify-center">
+          <GoogleRegisterButton />
+        </div>
       </div>
     </div>
   );

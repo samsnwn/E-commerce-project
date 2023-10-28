@@ -31,7 +31,7 @@ const UserListScreen = () => {
                 <Table.Row key={user._id}>
                   <Table.Cell>{user.name}</Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
-                  <Table.Cell>{user.active ? <h3>Active</h3> : <h3>Not Active</h3> }</Table.Cell>
+                  <Table.Cell>{!user.active ? <h3>Active</h3> : <h3>Not Active</h3> }</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

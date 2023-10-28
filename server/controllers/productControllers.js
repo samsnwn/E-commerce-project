@@ -1,21 +1,9 @@
-const Product = require('../models/ProductModel')
-const ExpressError = require("../utils/ExpressError");
-const { faker } = require('@faker-js/faker');
+import Product from '../models/ProductModel.js';
+import ExpressError from "../utils/ExpressError.js";
 
-exports.createProductController = async (req, res, next) => {
+export async function createProductController(req, res, next) {
 
-    const fakeProduct = {
-        title: faker.commerce.productName(),
-        description: faker.commerce.productDescription(),
-        image: faker.image.fashion(width = 640, height= 480, randomize = true),
-        categories: ["jackets", "jeans", "shirts"],
-        size: "S",
-        color: faker.color.human(),
-        price: faker.commerce.price(),
-        priceId: "price_1MolBWJNdqxiOr5VRjXrvTGl"
-    }
-
-    const newProduct = new Product(fakeProduct)
+    const newProduct = new Product(req.body)
     try {
         const savedProduct = await newProduct.save()
         res.status(200).json(savedProduct)
@@ -24,7 +12,7 @@ exports.createProductController = async (req, res, next) => {
     }
 }
 
-exports.updateProductController = async (req, res, next) => {
+export async function updateProductController(req, res, next) {
     const productId = req.params.id
     const updatedProductData = req.body
     try {
@@ -37,7 +25,7 @@ exports.updateProductController = async (req, res, next) => {
     }
 }
 
-exports.deleteProductController = async (req, res, next) => {
+export async function deleteProductController(req, res, next) {
     const productId = req.params.id
     try {
         await Product.findByIdAndDelete(productId)
@@ -47,7 +35,7 @@ exports.deleteProductController = async (req, res, next) => {
     }
 }
 
-exports.getProductController = async (req, res, next) => {
+export async function getProductController(req, res, next) {
     const productId = req.params.id
     try {
         const product = await Product.findById(productId)
@@ -57,7 +45,7 @@ exports.getProductController = async (req, res, next) => {
     }
 }
 
-exports.getAllProductsController = async (req, res, next) => {
+export async function getAllProductsController(req, res, next) {
     const queryNew = req.query.new
     const queryCategory = req.query.category
 

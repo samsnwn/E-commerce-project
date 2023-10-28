@@ -1,10 +1,10 @@
-const User = require("../models/UserModel");
+import User from "../models/UserModel.js";
 
-const bcrypt = require("bcrypt");
+import { genSalt, hash as _hash } from "bcrypt";
 
-const ExpressError = require("../utils/ExpressError");
-const asyncHandler = require("express-async-handler");
-const createSendToken = require("../utils/generateToken");
+import ExpressError from "../utils/ExpressError.js";
+import asyncHandler from "express-async-handler";
+import {createSendToken} from "../utils/generateToken.js";
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -14,7 +14,7 @@ const filterObj = (obj, ...allowedFields) => {
   return newObj;
 };
 
-exports.updateMe = asyncHandler(async (req, res, next) => {
+export const updateMe = asyncHandler(async (req, res, next) => {
   // 1) Create error if user posts password data
   // if (req.body.password || req.body.passwordConfirm) {
   //   return next(
@@ -46,14 +46,14 @@ exports.updateMe = asyncHandler(async (req, res, next) => {
 });
 
 // Update function only for admin
-exports.updateController = async (req, res, next) => {
+export const updateController = async(req, res, next) => {
   const userId = req.params.id;
 
   try {
     // If its the password that will be updated go here
     if (req.body.password) {
-      const salt = await bcrypt.genSalt(12);
-      const hash = await bcrypt.hash(userUpdatedData.password, salt);
+      const salt = await genSalt(12);
+      const hash = await _hash(userUpdatedData.password, salt);
       req.body.password = hash;
     }
 
@@ -75,9 +75,9 @@ exports.updateController = async (req, res, next) => {
   } catch (err) {
     next(new ExpressError("Failed to Update, Please Try Again", 400));
   }
-};
+}
 
-exports.deleteMe = asyncHandler(async (req, res, next) => {
+export const deleteMe = asyncHandler(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.user.id, { active: false });
   res.status(200).json({
     status: "success",
@@ -85,25 +85,25 @@ exports.deleteMe = asyncHandler(async (req, res, next) => {
   });
 });
 
-exports.deleteController = async (req, res, next) => {
+export const deleteController = async(req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json("User has been deleted");
   } catch (err) {
     next(new ExpressError("Failed to delete, try again please!", 500));
   }
-};
+}
 
-exports.getUserController = async (req, res, next) => {
+export const getUserController = async(req, res, next) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
     res.status(200).json({ user });
   } catch (err) {
     next(new ExpressError("Cannot find user", 500));
   }
-};
+}
 
-exports.getAllUsersController = async (req, res, next) => {
+export const getAllUsersController = async(req, res, next) => {
   const query = req.query.new;
   try {
     const allUsers = query
@@ -115,9 +115,9 @@ exports.getAllUsersController = async (req, res, next) => {
       new ExpressError("Failed to retrieve all users, try again please!", 500)
     );
   }
-};
+}
 
-exports.getUserStatsController = async (req, res, next) => {
+export const getUserStatsController = async(req, res, next) => {
   const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
 
@@ -133,10 +133,10 @@ exports.getUserStatsController = async (req, res, next) => {
       new ExpressError("Failed to retrieve user stats, try again please!", 500)
     );
   }
-};
+}
 
 
-exports.getUserProfileController = asyncHandler(async(req, res) => {
+export const getUserProfileController = asyncHandler(async(req, res) => {
   const user = await User.findById(req.user._id)
 
   if(user) {
@@ -153,7 +153,7 @@ exports.getUserProfileController = asyncHandler(async(req, res) => {
 })
 
 
-exports.updateUserProfileController = asyncHandler(async(req, res) => {
+export const updateUserProfileController = asyncHandler(async(req, res) => {
   const user = await User.findById(req.user._id)
 
   if(user) {

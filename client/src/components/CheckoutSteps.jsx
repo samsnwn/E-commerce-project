@@ -3,7 +3,7 @@ import { LinkContainer } from "react-router-bootstrap";
 
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
   return (
-    <Nav className="mb-4 flex flex-col">
+    <Nav className="m-8 flex w-2/3 mx-auto justify-around flex-wrap">
       <Nav.Item>
         {step1 ? (
           <LinkContainer to="/login">
@@ -24,20 +24,20 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
       </Nav.Item>
       <Nav.Item>
         {step3 ? (
-          <LinkContainer to="/payment">
-            <Nav.Link>Payment</Nav.Link>
+          <LinkContainer to="/summary">
+            <Nav.Link>Summary</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Payment</Nav.Link>
+          <Nav.Link disabled>Summary</Nav.Link>
         )}
       </Nav.Item>
       <Nav.Item>
         {step4 ? (
           <LinkContainer to="/placeorder">
-            <Nav.Link>Place order</Nav.Link>
+            <Nav.Link>Payment</Nav.Link>
           </LinkContainer>
         ) : (
-          <Nav.Link disabled>Place order</Nav.Link>
+          <Nav.Link disabled>Payment</Nav.Link>
         )}
       </Nav.Item>
     </Nav>

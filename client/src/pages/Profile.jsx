@@ -35,7 +35,6 @@ const Profile = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(userInfo.data);
     if (password !== confirmPassword) {
       toast.error("Paswords do not match");
     }
@@ -58,7 +57,7 @@ const Profile = () => {
     <Page className="">
       <h1>Welcome Back {userInfo.data.name}</h1>
       <Container>
-        <form
+        {/* <form
           action=""
           className="flex flex-col mt-4 text-black"
           onSubmit={submitHandler}
@@ -77,7 +76,7 @@ const Profile = () => {
             className="input"
             type="email"
             label="Email"
-          />
+          /> */}
           {/* <label htmlFor="password">New Password:</label>
           <input
             onChange={(e) => setPassword(e.target.value)}
@@ -94,10 +93,10 @@ const Profile = () => {
             className="input"
             label="passwordConfirm"
           /> */}
-          <button className="w-[40%] py-2 px-3 bg-teal-200" type="submit">
+          {/* <button className="w-[40%] py-2 px-3 bg-teal-200" type="submit">
             Update
           </button>
-        </form>
+        </form> */}
         {/* <button className="w-[40%] py-2 px-3 bg-teal-200" type="button">
           Change password
         </button> */}
