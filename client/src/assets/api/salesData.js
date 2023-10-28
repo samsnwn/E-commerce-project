@@ -1,22 +1,22 @@
 export const sliderItems = [
     {
       id: 1,
-      img: "https://i.ibb.co/DG69bQ4/2.png",
-      title: "SUMMER SALE",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695465897/Products/Crazy%20Jackets%20%28A%29/A3/IMG_20230525_152623_stb9yz.jpg",
+      title: "2nd HAND VINTAGE CLOTHING",
       desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
       bg: "#EBF0F3",
     },
     {
       id: 2,
-      img: "https://i.ibb.co/XsdmR2c/1.png",
-      title: "AUTUMN COLLECTION",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695470048/Products/Leather%20Jackets%20%28B%29/B2/IMG_20230404_195934_fiiv46.jpg",
+      title: "HANDMADE CLOTHING",
       desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
       bg: "#F2E8E4",
     },
     {
       id: 3,
-      img: "https://i.ibb.co/cXFnLLV/3.png",
-      title: "LOUNGEWEAR LOVE",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469071/Products/Crazy%20Blouses%20%28F%29/F10/IMG_20230503_204305_nmcjlm.jpg",
+      title: "HANDMADE JEWELRY",
       desc: "DON'T COMPROMISE ON STYLE! GET FLAT 30% OFF FOR NEW ARRIVALS.",
       bg: "#fbf0f4",
     },
@@ -24,22 +24,100 @@ export const sliderItems = [
 
   export const categories = [
     {
-      id: 1,
-      img: "https://images.pexels.com/photos/5886041/pexels-photo-5886041.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "Shirts",
-      cat: "shirts"
+      id: "A",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695465897/Products/Crazy%20Jackets%20%28A%29/A3/IMG_20230525_152623_stb9yz.jpg",
+      title: "Crazy Jackets",
+      cat: "crazyjackets"
     },
     {
-      id: 2,
-      img: "https://images.pexels.com/photos/2983464/pexels-photo-2983464.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-      title: "Jeans",
-      cat: "jeans"
+      id: "F",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469071/Products/Crazy%20Blouses%20%28F%29/F10/IMG_20230503_204305_nmcjlm.jpg",
+      title: "Crazy Blouses",
+      cat:"crazyblouses"
     },
     {
-      id: 3,
-      img: "https://images.pexels.com/photos/5480696/pexels-photo-5480696.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      title: "Jackets",
-      cat:"jackets"
+      id: "B",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695470034/Products/Leather%20Jackets%20%28B%29/B1/IMG_20230404_195353_iwfcll.jpg",
+      title: "Leather & Navajo Jackets",
+      cat: "leatherjackets"
+    },
+    // {
+    //   id: "C",
+    //   img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695470048/Products/Leather%20Jackets%20%28B%29/B2/IMG_20230404_195934_fiiv46.jpg",
+    //   title: "Navajo Jackets",
+    //   cat:"navajojackets"
+    // },
+    {
+      id: "D",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695310062/Products/Ski%20Wear%20%28K%29/K1/IMG_20230525_154251_xalzut.jpg",
+      title: "Winter Jackets",
+      cat:"rainjackets"
+    },
+    {
+      id: "H",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695470058/Products/Leather%20Jackets%20%28B%29/B3/IMG_20230408_180212_qhg2hu.jpg  ",
+      title: "Coats",
+      cat:"coats"
+    },
+    // {
+    //   id: "E",
+    //   img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695467713/Products/Sportswear%20%28G%29/G2/IMG_20230525_160319_vgnkys.jpg",
+    //   title: "Wind Jackets",
+    //   cat:"windjackets"
+    // },
+    {
+      id: "G",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695468275/Products/Sportswear%20%28G%29/G4/IMG_20230525_153829_zhraad.jpg",
+      title: "Sportswear",
+      cat:"sportswear"
+    },
+    {
+      id: "I",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469274/Products/Crazy%20Jackets%20%28A%29/A7/IMG_20230503_213035_rh5w8p.jpg",
+      title: "Trousers & Shorts",
+      cat:"trousers"
+    },
+    // {
+    //   id: "J",
+    //   img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469264/Products/Crazy%20Jackets%20%28A%29/A6/IMG_20230503_222148_lgbiet.jpg",
+    //   title: "Shorts",
+    //   cat:"shorts"
+    // },
+    {
+      id: "K",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469526/Products/Ski%20Wear%20%28K%29/K6/IMG_20230427_183810_ihachi.jpg",
+      title: "Ski Wear",
+      cat:"skiwear"
+    },
+    {
+      id: "L",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695467089/Products/Fleece%20%28L%29/L1/IMG_20230525_162520_gwck09.jpg",
+      title: "Fleece",
+      cat:"fleece"
+    },
+    {
+      id: "M",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695310409/Products/Crazy%20Jackets%20%28A%29/A2/IMG_20230503_213617_b7gi4c.jpg",
+      title: "ObG",
+      cat:"obg"
+    },
+    {
+      id: "N",
+      img: "../../src/images/pexels-photo-5886041.webp",
+      title: "Upcycled Jewelry",
+      cat:"jewelry"
+    },
+    {
+      id: "O",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469256/Products/Crazy%20Jackets%20%28A%29/A5/IMG_20230505_233236_ac9sbp.jpg",
+      title: "Second hand vinyls",
+      cat:"secondhandvinyls"
+    },
+    {
+      id: "P",
+      img: "https://res.cloudinary.com/dxt6vjbw2/image/upload/v1695469289/Products/Crazy%20Jackets%20%28A%29/A9/IMG_20230503_205351_b7cd1x.jpg",
+      title: "Accesories & Others",
+      cat:"accesoriesothers"
     },
   ];
 

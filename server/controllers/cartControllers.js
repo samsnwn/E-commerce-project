@@ -1,8 +1,8 @@
-const Cart = require('../models/CartModel')
-const ExpressError = require("../utils/ExpressError");
+import Cart from '../models/CartModel.js';
+import ExpressError from "../utils/ExpressError.js";
 
 
-exports.createCartController = async (req, res, next) => {
+export async function createCartController(req, res, next) {
     const newCart = new Cart(req.body)
     try {
         const savedCart = await newCart.save()
@@ -12,11 +12,11 @@ exports.createCartController = async (req, res, next) => {
     }
 }
 
-exports.updateCartController = async (req, res, next) => {
+export async function updateCartController(req, res, next) {
     const cartId = req.params.id
     const updatedCartData = req.body
     try {
-        const updatedCart = await Cart.findByIdAndUpdate(cartId, {
+        const updatedCart = await findByIdAndUpdate(cartId, {
             $set: updatedCartData
         }, {new: true})
         res.status(200).json(updatedCart)
@@ -25,28 +25,28 @@ exports.updateCartController = async (req, res, next) => {
     }
 }
 
-exports.deleteCartController = async (req, res, next) => {
+export async function deleteCartController(req, res, next) {
     const cartId = req.params.id
     try {
-        await Cart.findByIdAndDelete(cartId)
+        await findByIdAndDelete(cartId)
         res.status(200).json('Cart has been deleted')
     } catch (err) {
         next(new ExpressError('Failed to delete your cart, try again please!', 500))
     }
 }
 
-exports.getUserCartController = async (req, res, next) => {
+export async function getUserCartController(req, res, next) {
     try {
-        const cart = await Cart.findOne({userId: req.params.userId})
+        const cart = await findOne({userId: req.params.userId})
         res.status(200).json(cart)
     } catch (err) {
         next(new ExpressError('Cannot find this product', 500))
     }
 }
 
-exports.getAllCartsController = async (req, res, next) => {
+export async function getAllCartsController(req, res, next) {
     try {
-        const carts = await Cart.find()
+        const carts = await find()
         res.status(200).json(carts)
     } catch (err) {
         next(new ExpressError('Failed to retrieve all carts, try again please!', 500))

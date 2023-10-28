@@ -20,14 +20,15 @@ const ProductList = () => {
 
   return (
     <div className="">
-      <h1 className="m-5">{cat}</h1>
+      <h1 className="m-7 text-4xl text-center">{cat[0].toUpperCase() + cat.slice(1)}</h1>
       <div className="flex justify-between ">
         <div className="m-5">
           <span className="text-sm font-bold mr-2">Filter by size:</span>
           <select name="size" id="" className="select" onChange={handleFilters}>
-            <option disabled defaultValue>
+            <option disabled>
               Size
             </option>
+            <option>All</option>
             <option>XS</option>
             <option>S</option>
             <option>M</option>

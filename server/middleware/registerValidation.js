@@ -1,8 +1,8 @@
-const {check} = require('express-validator')
-const User = require('../models/UserModel')
-const ExpressError = require("../utils/ExpressError");
+import {check} from 'express-validator'
+import User from '../models/UserModel.js'
+import ExpressError from "../utils/ExpressError.js"
 
-exports.checkingUser = [
+export const checkingUser = [
     check('email')
     .normalizeEmail({ gmail_remove_dots: false })
     .isEmail({})
@@ -18,7 +18,7 @@ exports.checkingUser = [
   check('password')
     .isLength({ min: 8 })
     .withMessage('Password must be at least 8 characters long'),
-  check('passwordConfirmation')
+  check('passwordConfirm')
     .exists({ checkFalsy: true })
     .withMessage('Please confirm your password')
     .custom((val, { req }) => {

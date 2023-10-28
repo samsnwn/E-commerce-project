@@ -1,49 +1,69 @@
-const router = require("express").Router();
-const { protect, restrictTo } = require("../controllers/authControllers");
-const {
-  createOrderController,
-  updateOrderController,
-  deleteOrderController,
-  getUserOrderController,
-  getAllOrdersController,
-  getIncomeController,
-} = require("../controllers/orderControllers");
+import express from "express"
+const router = express.Router();
+import {
+  addOrderItems,
+  getOrderById,
+  updateOrderToPaid,
+  updateOrderToDelivered,
+  getMyOrders,
+  getOrders,
+} from"../controllers/orderControllers.js"
 
-const {
-  verifyToken,
-  verifyTokenAndAdmin,
-  verifyTokenAndAuthorization,
-} = require("../middleware/verifyToken");
+import { protect, admin } from '../middleware/authMiddleware.js'
 
-// CREATE
-router.post("/create", createOrderController);
+// const { protect, restrictTo } = require('../middleware/authMiddleware')
+// const {
+//   createOrderController,
+//   updateOrderController,
+//   deleteOrderController,
+//   getUserOrderController,
+//   getAllOrdersController,
+//   getIncomeController,
+// } = require("../controllers/orderControllers");
 
-// UPDATE
-router.put("/update/:id", protect, restrictTo("admin"), verifyTokenAndAdmin, updateOrderController);
+// const {
+//   verifyToken,
+//   verifyTokenAndAdmin,
+//   verifyTokenAndAuthorization,
+// } = require("../middleware/verifyToken");
 
-// DELETE
-router.delete(
-  "/delete/:id",
-  protect,
-  restrictTo("admin"),
-  verifyTokenAndAdmin,
-  deleteOrderController
-);
+// // CREATE
+// router.post("/create", createOrderController);
 
-// GET USER ORDER
-router.get(
-  "/order/:userId",
-  protect,
-  restrictTo("admin", "user"),
-  verifyTokenAndAuthorization,
-  getUserOrderController
-);
+// // UPDATE
+// router.put("/update/:id", protect, restrictTo("admin"), verifyTokenAndAdmin, updateOrderController);
 
-// GET ALL ORDERS
-router.get("/", protect, restrictTo("admin"), verifyTokenAndAdmin, getAllOrdersController);
+// // DELETE
+// router.delete(
+//   "/delete/:id",
+//   protect,
+//   restrictTo("admin"),
+//   verifyTokenAndAdmin,
+//   deleteOrderController
+// );
+
+// // GET USER ORDER
+// router.get(
+//   "/order/:userId",
+//   protect,
+//   restrictTo("admin", "user"),
+//   verifyTokenAndAuthorization,
+//   getUserOrderController
+// );
+
+// // GET ALL ORDERS
+// router.get("/", protect, restrictTo("admin"), verifyTokenAndAdmin, getAllOrdersController);
 
 
-// GET MONTHLY INCOME
-router.get("/income", protect, restrictTo("admin"), verifyTokenAndAdmin, getIncomeController);
+// // GET MONTHLY INCOME
+// router.get("/income", protect, restrictTo("admin"), verifyTokenAndAdmin, getIncomeController);
 
-module.exports = router;
+
+
+router.route('/').post(protect, addOrderItems).get(protect, admin, getOrders)
+router.route('/myorders').get(protect, getMyOrders)
+router.route('/:id').get(protect, getOrderById)
+router.route('/:id/pay').put(protect, updateOrderToPaid)
+router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered)
+
+export default router;

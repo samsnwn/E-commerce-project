@@ -3,24 +3,17 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-
-import image1 from '../assets/images/brooke-cagle-aVT8VkmzML4-unsplash.jpeg';
-import image2 from '../assets/images/chris-ghinda-wK2ESlRRZQ8-unsplash.jpeg';
-import image3 from '../assets/images/jc-gellidon-JM8TkWJ9UIY-unsplash.jpeg';
-import image4 from '../assets/images/larm-rmah-R1Ku62Z7zqE-unsplash.jpeg';
-import image5 from '../assets/images/toa-heftiba-dti56waifB4-unsplash.jpeg';
-
-
-const heroImageImports = [ image1, image2, image3, image4, image5];
+import { sliderItems } from "../assets/api/salesData";
+import { Link } from "react-router-dom";
 
 const MainCarousel = () => {
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const isNonMobile = useMediaQuery("(min-width:900px)");
 
   return (
     <Carousel
       infiniteLoop={true}
       showThumbs={false}
-      showIndicators={false}
+      showIndicators={true}
       showStatus={false}
       renderArrowPrev={(onClickHandler, hasPrev, label) => (
         <IconButton
@@ -52,14 +45,14 @@ const MainCarousel = () => {
           <NavigateNextIcon sx={{ fontSize: 40 }} />
         </IconButton>
       )}
-      autoPlay={true}
+      autoPlay={true} // make true forauto play
       interval={3500}
       transitionTime={1000}
     >
-      {Object.values(heroImageImports).map((image, index) => (
+      {sliderItems.map((item, index) => (
         <Box key={`carousel-image-${index}`}>
           <img
-            src={image}
+            src={item.img}
             alt={`carousel-${index}`}
             style={{
               width: "100%",
@@ -71,24 +64,24 @@ const MainCarousel = () => {
           <Box
             color="white"
             padding="20px"
-            borderRadius="1px"
-            textAlign="left"
+            borderRadius="10px"
+            textAlign={isNonMobile ? "left" : "center"}
             backgroundColor="rgb(0, 0, 0, 0.4)"
             position="absolute"
             top="46%"
             left={isNonMobile ? "10%" : "0"}
             right={isNonMobile ? undefined : "0"}
             margin={isNonMobile ? undefined : "0 auto"}
-            maxWidth={isNonMobile ? undefined : "240px"}
+            maxWidth={isNonMobile ? undefined : "60%"}
           >
-            <Typography >-- NEW ITEMS</Typography>
-            <Typography variant="h1">Summer Sale</Typography>
+            {/* <Typography >{item.desc}</Typography> */}
+            <Typography fontSize={isNonMobile ? "4rem" : "2rem"}>{item.title}</Typography>
             <Typography
               fontWeight="bold"
               // color={shades.secondary[300]}
               sx={{ textDecoration: "underline" }}
             >
-              Discover More
+              <Link to="/products">DISCOVER ALL</Link>
             </Typography>
           </Box>
         </Box>

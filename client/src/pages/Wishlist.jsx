@@ -1,26 +1,28 @@
-import { wishlistActions } from "../redux/wishlistSlice";
-import { useDispatch, useSelector } from "react-redux";
+import WishlistItem from "../components/Products/WishlistItem";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 
 const Wishlist = () => {
-  const dispatch = useDispatch();
-  const wishlist = useSelector((state) => state.wishlist.items);
+  const wishlist = useSelector((state) => state.wishlist);
+  const { wishlistItems } = wishlist;
 
-  console.log()
+  console.log();
   return (
     <div className="min-h-[80vh]">
-      {wishlist && wishlist.map((item) => {
-        return <div key={item._id}>
-          <h2>{item.title}</h2>
-          <p>{item.price}</p>
-          <button
-            onClick={() =>
-              dispatch(wishlistActions.removeFromWishlist(item))
-            }
+      {wishlistItems.length <= 0 ? (
+        <div className="flex flex-col items-center m-6 gap-5">
+          <h1 className="text-3xl">Your wishlist is empty</h1>
+          <Link
+            to="/products"
+            className="p-3 font-semibold cursor-pointer border border-black-400"
           >
-            Remove
-          </button>
-        </div>;
-      })}
+            CONTINUE SHOPPING
+          </Link>
+        </div>
+      ) : (
+        <WishlistItem />
+      )}
     </div>
   );
 };

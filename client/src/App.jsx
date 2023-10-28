@@ -1,7 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Cart from "./pages/Cart/Cart";
 import Home from "./pages/Home";
 import Login from "./pages/Auth/Login";
@@ -10,7 +7,7 @@ import ProductsList from "./pages/Products/ProductsList";
 import Register from "./pages/Auth/Register";
 import RootLayout from "./pages/Root";
 import ErrorPage from "./pages/ErrorPage";
-import AllProducts from "./components/Products/AllProducts";
+import AllProductsPage from "./pages/Products/AllProductsPage";
 import Events from "./pages/Events/Events";
 import EventPage from "./pages/Events/EventPage";
 import AboutUs from "./pages/AboutUs";
@@ -22,50 +19,84 @@ import Checkout from "./pages/checkout/Checkout";
 import Confirmation from "./pages/checkout/Confirmation";
 import Payment from "./pages/checkout/Payment";
 import ContactForm from "./pages/Contact";
+import VerifyEmail from "./pages/Auth/VerifyEmail";
+import SetNewPassword from "./pages/Auth/SetNewPassword";
+import ShippingScreen from "./pages/Shipping/ShippingScreen";
+import PrivateRoute from "./components/PrivateRoute";
+import PaymentScreen from "./pages/Shipping/PaymentScreen";
+import PlaceOrderScreen from "./pages/Shipping/PlaceOrderScreen";
+import OrderScreen from "./pages/Shipping/OrderScreen";
+import AdminRoute from "./components/AdminRoute";
+import OrderListScreen from "./pages/Admin/OrderListScreen";
+import AdminPage from "./pages/Admin/AdminPage";
+import UserListScreen from "./pages/Admin/UserListScreen";
+import ProductListScreen from "./pages/Admin/ProductListScreen";
+import Categories from "./components/Categories/Categories";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    errorElement: <ErrorPage/>,
+    errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home />, },
-      { path: "products", element: <AllProducts /> },
+      { index: true, element: <Home /> },
+      { path: "products", element: <AllProductsPage /> },
       { path: "contact", element: <ContactForm /> },
       { path: "products/:category", element: <ProductsList /> },
       { path: "product/:productId", element: <ProductPage /> },
       { path: "cart", element: <Cart /> },
-      { path: "email_confirmation/:token", element: <ConfirmEmail /> },
-      { path: "forgot_password", element: <ForgotPassword /> },
+      { path: "emailconfirmation", element: <ConfirmEmail /> },
+      { path: "emailverification/:id", element: <VerifyEmail /> },
+      { path: "forgotpassword", element: <ForgotPassword /> },
+      { path: "user/resetpassword/:token", element: <SetNewPassword /> },
       { path: "events", element: <Events /> },
       { path: "events/:eventId", element: <EventPage /> },
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
-      { path: "profile", element: <Profile /> },
+      { path: "categories", element: <Categories /> },
+      {
+        path: "",
+        element: <PrivateRoute />,
+        children: [
+          { path: "/profile", element: <Profile /> },
+          { path: "/shipping", element: <ShippingScreen /> },
+          { path: "/payment", element: <PaymentScreen /> },
+          { path: "/placeorder", element: <PlaceOrderScreen /> },
+          { path: "/order/:id", element: <OrderScreen /> },
+        ],
+      },
+      {
+        path: "",
+        element: <AdminRoute />,
+        children: [
+          { path: "/admin", element: <AdminPage />},
+          { path: "/admin/order-list", element: <OrderListScreen /> },
+          { path: "/admin/user-list", element: <UserListScreen /> },
+          { path: "/admin/product-list", element: <ProductListScreen /> },
+        ],
+      },
     ],
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
   {
     path: "/checkout",
-    element: <Checkout />
+    element: <Checkout />,
   },
   {
     path: "/checkout-success",
-    element: <Confirmation />
-  }
+    element: <Confirmation />,
+  },
 ]);
 
 const App = () => {
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;

@@ -4,11 +4,13 @@ import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 const Footer = () => {
+  const currentYear  = new Date().getFullYear()
   return (
     <div className="flex">
       <div className="footerSection flex flex-col">
-        <h1 className="">LAMA</h1>
-        <p className="my-2">
+        <h1 className="text-2xl">Oldies but Goodies Vintage 
+        Clothing &copy; {currentYear}</h1>
+        <p className="my-2 lg:block hidden">
           There are many variations of passages of Lorem Ipsum available, but
           the majority have suffered alteration in some form, by injected
           humour, or randomised words which don't look even slightly believable.
@@ -56,11 +58,6 @@ const Footer = () => {
         <div className="contactItem">
           <EmailOutlinedIcon style={{marginRight: '10px'}}/> contact@contact.com
         </div>
-        <img
-          src="https://i.ibb.co/Qfvn4z6/payment.png"
-          alt=""
-          className="w-50"
-        />
       </div>
     </div>
   );

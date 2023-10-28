@@ -1,10 +1,12 @@
-const router = require('express').Router()
-const { protect, restrictTo } = require('../controllers/authControllers')
-const {createProductController, updateProductController, deleteProductController, getProductController, getAllProductsController} = require('../controllers/productControllers')
-const {verifyTokenAndAdmin} = require('../middleware/verifyToken')
+import express from 'express';
+const router = express.Router();
+
+import { protect, restrictTo } from'../middleware/authMiddleware.js'
+import {createProductController, updateProductController, deleteProductController, getProductController, getAllProductsController} from'../controllers/productControllers.js'
+import {verifyTokenAndAdmin} from'../middleware/verifyToken.js'
 
 // CREATE
-router.post('/create', protect, restrictTo('admin'), verifyTokenAndAdmin, createProductController)
+router.post('/create',protect,restrictTo('admin'), createProductController)
 
 // UPDATE
 router.put('/update/:id', protect, restrictTo('admin'), verifyTokenAndAdmin, updateProductController)
@@ -13,9 +15,9 @@ router.put('/update/:id', protect, restrictTo('admin'), verifyTokenAndAdmin, upd
 router.delete('/delete/:id', protect, restrictTo('admin'), verifyTokenAndAdmin, deleteProductController)
 
 // GET PRODUCT
-router.get('/product/:id', getProductController)
+router.get('/:id', getProductController)
 
 // GET ALL PRODUCTS
 router.get('/', getAllProductsController)
 
-module.exports = router
+export default router

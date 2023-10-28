@@ -1,27 +1,52 @@
-const router = require('express').Router()
-const { protect, restrictTo } = require('../controllers/authControllers')
-const { updateController, deleteController, getUserController, getAllUsersController, getUserStatsController, updateMe, deleteMe } = require('../controllers/userControllers')
-const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('../middleware/verifyToken')
+
+import express from 'express';
+const router = express.Router();
+
+import { protect, restrictTo, admin } from '../middleware/authMiddleware.js';
+
+import {
+  updateController,
+  deleteController,
+  getUserController,
+  getAllUsersController,
+  getUserStatsController,
+  updateMe,
+  deleteMe,
+  getUserProfileController,
+  updateUserProfileController,
+} from '../controllers/userControllers.js';
+
+import {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} from '../middleware/verifyToken.js';
+
+
+// GET USER PROFILE
+router.get('/profile', protect, getUserProfileController)
+
+router.put('/update', protect, updateUserProfileController)
 
 // UPDATE
-router.put('/update/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, updateController)
+// router.put('/update/:id', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, updateController)
 
 // UPDATE ME
-router.patch('/updateMe', protect, updateMe)
+router.put('/updateMe',protect, updateMe)
 
 // DELETE
-router.delete('/delete/:id', protect, restrictTo('admin', 'user'), verifyTokenAndAuthorization, deleteController)
+router.delete('/delete/:id', protect, restrictTo('admin'), admin, verifyTokenAndAdmin, deleteController)
 
 // DELETE ME
-router.delete('/deleteMe', protect, deleteMe)
+router.delete('/deleteMe', protect,verifyToken, deleteMe)
 
 // GET USER
-router.get('/findById/:id', protect, restrictTo('admin'), verifyTokenAndAdmin, getUserController)
+router.get('/findById/:id', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, getUserController)
 
 // GET ALL USERS
-router.get('/findAll',protect, restrictTo('admin'), verifyTokenAndAdmin, getAllUsersController)
+router.get('/findAll',protect, restrictTo('admin'),admin, getAllUsersController)
 
 // GET USER STATS
-router.get('/stats', protect, restrictTo('admin'), verifyTokenAndAdmin, getUserStatsController)
+router.get('/stats', protect, restrictTo('admin'),admin, verifyTokenAndAdmin, getUserStatsController)
 
-module.exports = router
+export default router
