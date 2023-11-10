@@ -15,9 +15,6 @@ import ConfirmEmail from "./pages/Auth/ConfirmEmail";
 import Wishlist from "./pages/Wishlist";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Profile from "./pages/Profile";
-import Checkout from "./pages/checkout/Checkout";
-import Confirmation from "./pages/checkout/Confirmation";
-import Payment from "./pages/checkout/Payment";
 import ContactForm from "./pages/Contact";
 import VerifyEmail from "./pages/Auth/VerifyEmail";
 import SetNewPassword from "./pages/Auth/SetNewPassword";
@@ -32,6 +29,8 @@ import AdminPage from "./pages/Admin/AdminPage";
 import UserListScreen from "./pages/Admin/UserListScreen";
 import ProductListScreen from "./pages/Admin/ProductListScreen";
 import Categories from "./components/Categories/Categories";
+import TermsServices from "./pages/TermsServices";
+import RefundPolicy from "./pages/RefundPolicy";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +53,8 @@ const router = createBrowserRouter([
       { path: "about", element: <AboutUs /> },
       { path: "wishlist", element: <Wishlist /> },
       { path: "categories", element: <Categories /> },
+      { path: "terms", element: <TermsServices /> },
+      { path: "refunds", element: <RefundPolicy /> },
       {
         path: "",
         element: <PrivateRoute />,
@@ -84,15 +85,7 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
-  },
-  {
-    path: "/checkout",
-    element: <Checkout />,
-  },
-  {
-    path: "/checkout-success",
-    element: <Confirmation />,
-  },
+  }
 ]);
 
 const App = () => {

@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import PayButton from "../../components/PayButton";
 import OrderSummary from "../../components/OrderSummary";
 import CartItem from "../../components/Products/CartItem";
 import Container from "../../components/UI/Container";
@@ -71,7 +70,6 @@ const Cart = () => {
               cartItems.map((item, i) => <CartItem item={item} key={i} />)}
           </div>
           <OrderSummary>
-            {/* <PayButton cart={cartItems} /> */}
             <Link to="/shipping">
               {" "}
               <Button outline label={"Checkout"}></Button>

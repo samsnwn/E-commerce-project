@@ -35,9 +35,13 @@ const ProductPage = () => {
   );
 
   const handleAddToCart = async () => {
-    setIsIncluded(true);
-    dispatch(addToCart({ ...data }));
-    toast.success("item added to cart");
+    if (data.inStock === false ) {
+      toast.error("Item is not in stock at the moment")
+    } else {
+      setIsIncluded(true);
+      dispatch(addToCart({ ...data }));
+      toast.success("item added to cart");
+    }
   };
   const handleRemoveFromCart = async (id) => {
     setIsIncluded(false);
@@ -63,62 +67,60 @@ const ProductPage = () => {
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <div className="p-4 md:p-8 lg:flex lg:max-w-[1800px] ">
+        <section className="p-4 md:p-8 lg:flex lg:max-w-[1800px] lg:mx-auto">
           {isLoading ? <Loader /> : <ProductCarousel />}
-          <div className="p-5 sm:max-w-[500px] sm:mx-auto">
-            <h2 className="text-2xl text-center">{data.title}</h2>
-            <div className="flex flex-col gap-7 p-7">
-              <p className="font-light"> {data.description}</p>
-              <span className="font-extralight text-4xl">{data.price}€</span>
-              <div className="flex justify-between">
-                  <span className="text-xl font-extralight">
-                    Size {data.size}
-                  </span>
-                  <span className="text-xl font-extralight">
-                    Brand {data.brand}
-                  </span>
+          <div className="p-5 sm:max-w-[500px] sm:mx-auto lg:max-w-[1000px] flex flex-col justify-between lg:h-[500px]">
+            <div className="">
+              <h2 className="text-2xl text-center">{data.title}</h2>
+              <div className="flex flex-col gap-7 p-7">
+                <p className="font-light"> {data.description}</p>
+                {data.inStock === false ? (<p className="text-2xl text-red-600">Out of Stock</p>) : null}
+                <span className="font-extralight text-4xl">{data.price}€</span>
+                <span className="text-xl font-extralight">
+                  Size {data.size}
+                </span>
+                <span className="text-xl font-extralight">
+                  Brand {data.brand}
+                </span>
               </div>
-              {/* Filter Container */}
+            </div>
+            {/* Filter Container */}
 
-              {/* Add Container */}
-              <div className="flex items-center justify-between">
-                {isIncluded ? (
-                  <button
-                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                    onClick={() => handleRemoveFromCart(data._id)}
-                  >
-                    Remove from cart
-                  </button>
-                ) : (
-                  <button
-                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                    onClick={handleAddToCart}
-                  >
-                    Add to cart
-                  </button>
-                )}
-                {isInWishlist ? (
-                  <button
-                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                    onClick={() => handleRemoveFromWishlist(data._id)}
-                  >
-                    <FavoriteIcon color="error" />
-                  </button>
-                ) : (
-                  <button
-                    className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
-                    onClick={handleAddToWishlist}
-                  >
-                    <FavoriteBorderIcon />
-                  </button>
-                )}
-              </div>
-              {/* <div>
-            <Link to={`/products/${product.categories.filter(cat => cat === )}`} relative="path" className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]">See more of this category</Link>
-          </div> */}
+            {/* Add Container */}
+            <div className="flex items-center justify-between">
+              {isIncluded ? (
+                <button
+                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                  onClick={() => handleRemoveFromCart(data._id)}
+                >
+                  Remove from cart
+                </button>
+              ) : (
+                <button
+                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                  onClick={handleAddToCart}
+                >
+                  Add to cart
+                </button>
+              )}
+              {isInWishlist ? (
+                <button
+                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                  onClick={() => handleRemoveFromWishlist(data._id)}
+                >
+                  <FavoriteIcon color="error" />
+                </button>
+              ) : (
+                <button
+                  className="p-3 border border-teal-300 rounded-lg font-semibold hover:bg-[#fae9e9]"
+                  onClick={handleAddToWishlist}
+                >
+                  <FavoriteBorderIcon />
+                </button>
+              )}
             </div>
           </div>
-        </div>
+        </section>
       )}
     </>
   );

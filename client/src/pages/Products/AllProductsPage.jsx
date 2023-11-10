@@ -54,7 +54,7 @@ const AllProducts = () => {
             <option default>All</option>
             {categories.map((category, index) => (
               <option value={category.cat} key={index}>
-                {category.cat}
+                {category.title}
               </option>
             ))}
           </select>
@@ -89,7 +89,7 @@ const AllProducts = () => {
             </Message>
           ) : (
             <div className="flex p-4 flex-wrap justify-between mx-auto">
-              {products.length >1 ? products.map((product, index) => (
+              {products.length >=1 ? products.map((product, index) => (
                 <ProductComponent key={index} product={product} />
               )) : <div className="w-full text-center"><h2 className="text-center">No items for this category yet. Please stay tuned!</h2></div>}
             </div>

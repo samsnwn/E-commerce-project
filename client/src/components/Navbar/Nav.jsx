@@ -42,14 +42,14 @@ const Nav = () => {
     }
   };
 
-  const collapseItems = [
-    "Categories",
-    "All Products",
-    "About Us",
-    "Contact",
-    "Events",
-    "Sign In",
-  ];
+  const items = [
+    {title: "Categories", link: "Categories"},
+    {title: "All Products", link: "products"},
+    {title: "About Us", link: "about"},
+    {title: "Events", link: "events"},
+    {title: "Contact", link: "contact"},
+    {title: "My Wishlist", link: "wishlist"}
+  ]
 
   return (
     // Logo and hamburger menu
@@ -189,6 +189,9 @@ const Nav = () => {
               <Dropdown.Item aria-label="profile">
                 <Navbar.Link href="/profile">Profile</Navbar.Link>
               </Dropdown.Item>
+              <Dropdown.Item aria-label="wishlist">
+                <Navbar.Link href="/wishlist">My Wishlist</Navbar.Link>
+              </Dropdown.Item>
               <Dropdown.Item aria-label="logout">
                 <button onClick={logoutHandler}>Logout</button>
               </Dropdown.Item>
@@ -210,19 +213,22 @@ const Nav = () => {
 
       {/* Collapsed menu and items  */}
       <Navbar.Collapse>
-        {collapseItems.map((item, index) => (
+        {items.map((item, index) => (
           <Navbar.CollapseItem key={index}>
             <Link
               color="inherit"
               css={{
                 minWidth: "100%",
               }}
-              href={`/${item.toLowerCase()}`}
+              href={`/${item.link}`}
             >
-              {item}
+              {item.title}
             </Link>
           </Navbar.CollapseItem>
         ))}
+        <Navbar.CollapseItem>
+          {userInfo ? <Link href="/profile"  color="inherit">My profile</Link>: <Link href="/login"  color="inherit">Sign In</Link>}
+        </Navbar.CollapseItem>
       </Navbar.Collapse>
     </Navbar>
   );

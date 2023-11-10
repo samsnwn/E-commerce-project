@@ -94,9 +94,7 @@ import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
-// const stripeRoutes = require("./routes/stripeRoutes.js");
 import contactRoute from "./routes/contactRoute.js";
-// import payPalRoutes from "./routes/payPalRoutes.js"
 
 // Connect to database
 connectDB();

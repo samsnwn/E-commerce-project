@@ -53,14 +53,12 @@ export const addOrderItems = asyncHandler(async (req, res) => {
     const createdOrder = await order.save();
 
     // Update inStock and qty field of each item
-
-    const soldItems = itemsFromDB.map((item) => {
-
+    itemsFromDB.forEach(async(item) => {
+      await Product.findByIdAndUpdate(item._id, {
+        qty: item.qty - 1,
+        inStock: item.qty === 1 ? false : item.inStock
+      })
     })
-
-    // const updatedItems = await soldItem.save()
-
-    // console.log("soldItems", soldItems)
 
     res.status(201).json(createdOrder);
   }

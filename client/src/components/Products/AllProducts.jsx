@@ -3,8 +3,7 @@ import { useGetProductsQuery } from "../../redux/productsApiSlice";
 import Loader from "../UI/Loader";
 import Message from "../UI/Message";
 import { useEffect, useState } from "react";
-import axios from "axios"
-
+import axios from "axios";
 
 const Products = ({ cat, filters, sort }) => {
   const [products, setProducts] = useState([]);
@@ -15,10 +14,8 @@ const Products = ({ cat, filters, sort }) => {
     const getProducts = async () => {
       try {
         const res = await axios.get(
-          cat
-          ? `/api/products?category=${cat}`
-          : `/api/products`
-          );
+          cat ? `/api/products?category=${cat}` : `/api/products`
+        );
         setProducts(res.data.products);
       } catch (err) {
         console.log(err);
@@ -27,9 +24,8 @@ const Products = ({ cat, filters, sort }) => {
     getProducts();
   }, [cat]);
 
-
   useEffect(() => {
-    if(filters.size !== "All") {
+    if (filters.size !== "All") {
       cat &&
         setFilteredProducts(
           products.filter((item) =>
@@ -39,7 +35,7 @@ const Products = ({ cat, filters, sort }) => {
           )
         );
     } else {
-      setFilteredProducts(products)
+      setFilteredProducts(products);
     }
   }, [cat, filters, products]);
 
@@ -61,29 +57,23 @@ const Products = ({ cat, filters, sort }) => {
 
   return (
     <>
-    {isLoading ? (
-        <Loader/>
+      {isLoading ? (
+        <Loader />
       ) : error ? (
-        <Message variant='danger'>{error?.data?.message || error.error}</Message>
-      ) : ( <div  className="flex p-4 flex-wrap justify-between">
-      {/* {isLoading ? (
-        <Loader/>
-      ) : error ? (
-        <Message variant='danger'>{error?.data?.message || error.error}</Message>
+        <Message variant="danger">
+          {error?.data?.message || error.error}
+        </Message>
       ) : (
         <div className="flex p-4 flex-wrap justify-between">
-          {data.products.map((product, index) => (
-            <ProductComponent key={index} product={product} />
-          ))}
+          {cat
+            ? filteredProducts.map((product, index) => (
+                <ProductComponent key={index} product={product} />
+              ))
+            : products.map((product, index) => (
+                <ProductComponent key={index} product={product} />
+              ))}
         </div>
-      )} */}
-      {cat ? filteredProducts.map((product, index) => ( 
-        <ProductComponent key={index} product={product} />
-      )): products.map((product, index) => (
-        <ProductComponent key={index} product={product} />
-     ))}
-    </div>)}
-   
+      )}
     </>
   );
 };

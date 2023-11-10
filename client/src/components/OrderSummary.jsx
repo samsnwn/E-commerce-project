@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import PayButton from "./PayButton";
 import { Link } from "react-router-dom";
 
 const OrderSummary = ({ children }) => {

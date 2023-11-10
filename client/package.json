@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "email": "email dev --dir src/emails",
     "dev": "vite",
     "build": "webpack --config webpack.config.js",
     "preview": "vite preview"
